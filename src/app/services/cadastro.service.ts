@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import aluno from '../interfaces/aluno';
+import findTypes from '../interfaces/find-types';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AlunoService {
+export class CadastroService {
   http = inject(HttpClient);
 
-  getAllStudents = () => this.http.get<aluno[]>('nest-api/alunos');
+  getAll = ({ typeName }: findTypes) => this.http.get(`nest-api/${typeName}`);
 }
