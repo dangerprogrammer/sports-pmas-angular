@@ -8,5 +8,7 @@ import findTypes from '../interfaces/find-types';
 export class CadastroService {
   http = inject(HttpClient);
 
+  getToken = () => localStorage.getItem("token");
+
   getAll = ({ typeName }: findTypes) => this.http.get(`nest-api/${typeName}`);
 }
