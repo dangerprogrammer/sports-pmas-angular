@@ -1,7 +1,7 @@
 import { CanActivateFn, Router } from "@angular/router";
 import { CadastroService } from "../services/cadastro.service";
 
-export const tokenGuard: CanActivateFn = (route, state) => {
+export const tokenGuard: CanActivateFn = (_route, _state) => {
     const { getToken } = new CadastroService();
     const routerService = new Router();
 
