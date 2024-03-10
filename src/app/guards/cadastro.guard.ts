@@ -1,18 +1,24 @@
-import { CanActivateFn, Router } from "@angular/router";
+import { ActivatedRoute, CanActivateFn, Router } from "@angular/router";
 import { CadastroService } from "../services/cadastro.service";
+import { inject } from "@angular/core";
 
 export const cadastroGuard: CanActivateFn = (_route, _state) => {
-    const { getToken, getCadastroType } = new CadastroService();
-    const routerService = new Router();
+    const { getToken, getCadastroType } = inject(CadastroService);
+    const router = inject(Router);
+    const activeRoute = inject(ActivatedRoute);
 
     const token = getToken();
     const cadastroType = getCadastroType();
 
     if (!token) {
-        if (cadastroType) routerService.navigate([`/cadastro/${cadastroType}`]);
+        if (cadastroType) {
+            router.navigate(['/cadastro/aluno']);
+            return !1;
+        };
+
         return !0;
     };
 
-    routerService.navigate(["/"]);
+    router.navigate(["/"]);
     return !1;
 }
