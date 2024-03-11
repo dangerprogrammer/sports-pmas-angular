@@ -6,10 +6,12 @@ import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { cadastroGuard } from './guards/cadastro.guard';
 import { cadChildGuard } from './guards/cad-child.guard';
 import { FuncionarioComponent } from './pages/cadastro/funcionario/funcionario.component';
+import { LoginComponent } from './pages/login/login.component';
+import { loginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
-    {
-        path: '', component: HomeComponent, canActivate: [tokenGuard],
+    {// if verify cadastrado, use tokenGuard
+        path: '', component: HomeComponent//, canActivate: [tokenGuard],
     },
     {
         path: 'cadastro', component: CadastroComponent,
@@ -20,5 +22,9 @@ export const routes: Routes = [
             { path: 'aluno', component: AlunoComponent },
             { path: 'funcionario', component: FuncionarioComponent }
         ]
+    },
+    {
+        path: 'login', component: LoginComponent,
+        canActivate: [loginGuard]
     }
 ];

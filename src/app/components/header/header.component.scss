@@ -1,0 +1,15 @@
+@use '../../../styles.scss' as global;
+
+.main-header {
+    padding: .5em 2em;
+    color: #eee;
+    height: global.$header-height;
+    background: global.$green-color;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: .9em;
+    justify-content: space-between;
+    font-weight: 600;
+    letter-spacing: .04em;
+}

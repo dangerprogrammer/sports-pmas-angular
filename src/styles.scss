@@ -7,9 +7,33 @@
 }
 
 $green-color: #055;
+$header-height: 3rem;
 
-body, app-root, app-cadastro {
+html {
+    font-family: Roboto, RobotoFallback, "Noto Kufi Arabic", Helvetica, Arial, sans-serif;
+}
+
+body,
+app-root,
+app-root > *:not(router-outlet) {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+app-main {
+    background: #f5f5f5;
+    flex-grow: 1;
+
+    .main-button {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.ionicon {
+    display: block;
+    height: 1em;
+    width: 1em;
+    fill: currentColor;
 }

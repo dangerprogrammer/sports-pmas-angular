@@ -1,0 +1,19 @@
+.main-button {
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 .5rem 1em #0163;
+    min-height: 6rem;
+    width: 100%;
+    max-width: 32rem;
+    padding: 1rem;
+    border-radius: .5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+    transition: .1s ease-in-out;
+
+    &:hover {
+        background: #eee;
+    }
+}

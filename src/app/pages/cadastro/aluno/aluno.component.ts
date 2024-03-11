@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { BackButtonComponent } from '../../../components/back-button/back-button.component';
+import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
+import { MainComponent } from '../../../components/main/main.component';
+import { FormCadastroComponent } from '../../../components/form-cadastro/form-cadastro.component';
 
 @Component({
   selector: 'app-aluno',
   standalone: true,
-  imports: [BackButtonComponent],
-  templateUrl: './aluno.component.html',
-  styleUrl: './aluno.component.scss'
+  imports: [CadastrosHeaderComponent, MainComponent, FormCadastroComponent],
+  templateUrl: './aluno.component.html'
 })
 export class AlunoComponent {
-  removeCadastroType() {
-    localStorage.removeItem("cadastro-type");
-  }
 }

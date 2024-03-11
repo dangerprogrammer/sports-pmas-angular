@@ -1,7 +1,21 @@
 @use '../../../styles.scss' as global;
 
-.main-header {
-    padding: .5em 2em;
-    color: #eee;
-    background: global.$green-color;
+.cadastro-icon {
+    font-size: 2.5em;
+    color: #777;
+    padding: .75em;
+    flex-shrink: 0;
+}
+
+.cadastro-content {
+    flex-grow: 1;
+    text-align: start;
+
+    .cadastro-title {
+        color: global.$green-color;
+    }
+
+    .desc {
+        color: #444;
+    }
 }

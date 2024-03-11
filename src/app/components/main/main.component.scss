@@ -1,0 +1,10 @@
+.main-container {
+    --inline-padding: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(24rem, calc(100vw - (var(--inline-padding) * 2))), 1fr));
+    align-items: center;
+    max-width: 64rem;
+    margin-inline: auto;
+    padding: 1em var(--inline-padding);
+    gap: .65rem 1rem;
+}

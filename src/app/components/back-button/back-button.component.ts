@@ -9,19 +9,15 @@ import { Router } from '@angular/router';
   styleUrl: './back-button.component.scss'
 })
 export class BackButtonComponent {
-  @Input() text?: string;
   @Input() link?: string;
-  @Input() buttonClick?: any;
+  @Input() click?: Function;
 
   constructor(
     private router: Router
   ) {}
 
-  defText: string = "Voltar";
-  defLink: string = "/";
-
-  redirect(link?: string, buttonClick?: any) {
-    buttonClick();
-    this.router.navigate([link || this.defLink]);
+  redirect(link?: string, click?: Function) {
+    if (click) click();
+    this.router.navigate([link || "/"]);
   }
 }

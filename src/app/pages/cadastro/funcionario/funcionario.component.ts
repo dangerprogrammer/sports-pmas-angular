@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { BackButtonComponent } from '../../../components/back-button/back-button.component';
+import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
+import { MainComponent } from '../../../components/main/main.component';
+import { FormCadastroComponent } from '../../../components/form-cadastro/form-cadastro.component';
 
 @Component({
   selector: 'app-funcionario',
   standalone: true,
-  imports: [BackButtonComponent],
-  templateUrl: './funcionario.component.html',
-  styleUrl: './funcionario.component.scss'
+  imports: [CadastrosHeaderComponent, MainComponent, FormCadastroComponent],
+  templateUrl: './funcionario.component.html'
 })
 export class FuncionarioComponent {
-  removeCadastroType() {
-    localStorage.removeItem("cadastro-type");
-  }
 }
