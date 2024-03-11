@@ -18,6 +18,6 @@ export class CadastroComponent {
 
   setCadastro(type: cadastroTypes) {
     this.cadastro.setCadastroType(type);
-    this.route.navigate([`/cadastro/${type}`]);
+    this.route.navigate(['/cadastro', type]);
   }
 }

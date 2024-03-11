@@ -1,0 +1,7 @@
+@use '../../../styles.scss' as global;
+
+.main-header {
+    padding: .5em 2em;
+    color: #eee;
+    background: global.$green-color;
+}

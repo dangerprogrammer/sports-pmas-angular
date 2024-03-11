@@ -12,13 +12,13 @@ export const cadastroGuard: CanActivateFn = (_route, _state) => {
 
     if (!token) {
         if (cadastroType) {
-            router.navigate(['/cadastro/aluno']);
+            router.navigate(['/cadastro', cadastroType]);
             return !1;
         };
 
         return !0;
     };
 
-    router.navigate(["/"]);
+    router.navigate(['/']);
     return !1;
 }

@@ -11,16 +11,16 @@ export const cadChildGuard: CanActivateFn = ({ routeConfig }, _state) => {
 
     if (!token) {
         if (!cadastroType) {
-            routerService.navigate(["/cadastro"]);
+            routerService.navigate(['/cadastro']);
             return !1;
-        } else if (routeConfig && !routeConfig.path?.endsWith(cadastroType)) {
-            routerService.navigate([`/cadastro/${cadastroType}`]);
-            return !0;
+        } else if (routeConfig && routeConfig.path != cadastroType) {
+            routerService.navigate(['/cadastro', cadastroType]);
+            return !1;
         };
 
         return !0;
     };
 
-    routerService.navigate(["/"]);
+    routerService.navigate(['/']);
     return !1;
 }
