@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { cadastroTypes, subscribeTypes } from '../interfaces';
+import { cadastroTypes, subscribeTypes } from '../types';
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CadastroService } from '../../services/cadastro.service';
-import { subscribeTypes } from '../../interfaces';
+import { subscribeTypes } from '../../types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { MainComponent } from '../../components/main/main.component';

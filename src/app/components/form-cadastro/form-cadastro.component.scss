@@ -1,0 +1,61 @@
+@use '../../../styles.scss' as global;
+
+.form-cadastro {
+    background: white;
+    border-radius: .5em;
+    box-shadow: 0 .5rem 1em #0163;
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+
+    .form-title {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: global.$green-color;
+        user-select: none;
+
+        &::before {
+            content: '';
+            height: 1px;
+            background: #9998;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            translate: 0 -50%;
+            position: absolute;
+        }
+
+        span {
+            position: relative;
+            z-index: 10;
+            padding: 0 1em;
+            background: white;
+        }
+    }
+
+    .list-titles {
+        display: flex;
+        flex-direction: row;
+        gap: .5em;
+
+        .title {
+            background: red;
+            cursor: pointer;
+            user-select: none;
+
+            &.active {
+                background: blue;
+            }
+        }
+    }
+
+    .form-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+    }
+}

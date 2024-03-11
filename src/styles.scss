@@ -13,8 +13,6 @@ html {
     font-family: Roboto, RobotoFallback, "Noto Kufi Arabic", Helvetica, Arial, sans-serif;
 }
 
-body,
-app-root,
 app-root > *:not(router-outlet) {
     display: flex;
     flex-direction: column;
@@ -36,4 +34,12 @@ app-main {
     height: 1em;
     width: 1em;
     fill: currentColor;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    color: inherit;
 }

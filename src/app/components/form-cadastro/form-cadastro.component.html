@@ -1,1 +1,17 @@
-<form>Opa</form>
+<form class="form-cadastro" (click)="logTitles()">
+    @if (titleForm) {
+    <h1 class="form-title">
+        <span>{{titleForm}}</span>
+    </h1>
+    }
+    @if (titlesSwitch) {
+    <section class="list-titles">
+        @for (title of titlesSwitch; track $index) {
+        <div class="title" (click)="selectTitle(title)">{{title.title}}</div>
+        }
+    </section>
+    }
+    <ul class="form-inputs">
+        <ng-content></ng-content>
+    </ul>
+</form>
