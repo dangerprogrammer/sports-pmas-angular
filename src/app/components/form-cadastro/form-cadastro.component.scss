@@ -40,15 +40,59 @@
     .list-titles {
         display: flex;
         flex-direction: row;
-        gap: .5em;
+        height: global.$header-height;
+        background: global.$green-color;
+        overflow: hidden;
+        $radius: .75rem;
+        border-radius: calc($radius * 1.5);
 
         .title {
-            background: red;
+            position: relative;
             cursor: pointer;
             user-select: none;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-grow: 1;
+            font-size: 1.2em;
+            padding-inline: 1em;
+            letter-spacing: .04em;
+
+            &:not(.active) {
+                color: #eee8;
+            }
 
             &.active {
-                background: blue;
+                pointer-events: none;
+                background: white;
+                color: global.$green-color;
+                border-top-left-radius: $radius;
+                border-top-right-radius: $radius;
+
+                &::before,
+                &::after {
+                    content: '';
+                    position: absolute;
+                    height: $radius;
+                    width: $radius;
+                    bottom: 0;
+                }
+
+                &::before {
+                    left: 0;
+                    translate: -100%;
+                    border-bottom-right-radius: $radius;
+                    box-shadow: calc($radius / 3) calc($radius / 3) 0 1px #fff;
+                }
+
+                &::after {
+                    right: 0;
+                    translate: 100%;
+                    border-bottom-left-radius: $radius;
+                    box-shadow: calc($radius / -3) calc($radius / 3) 0 1px #fff;
+                }
             }
         }
     }
