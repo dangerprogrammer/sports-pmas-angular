@@ -6,11 +6,13 @@ import { BackButtonComponent } from '../../components/back-button/back-button.co
 import { MainComponent } from '../../components/main/main.component';
 import { MainButtonComponent } from '../../components/main/main-button/main-button.component';
 import { cadastroTypes } from '../../types';
+import { CadastroSidebarComponent } from '../../components/cadastro-sidebar/cadastro-sidebar.component';
+import { CadastroLogoComponent } from '../../components/cadastro-logo/cadastro-logo.component';
 
 @Component({
   selector: 'app-cadastro',
   standalone: true,
-  imports: [HeaderComponent, BackButtonComponent, MainComponent, MainButtonComponent],
+  imports: [HeaderComponent, BackButtonComponent, MainComponent, MainButtonComponent, CadastroSidebarComponent, CadastroLogoComponent],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.scss'
 })

@@ -19,3 +19,17 @@
         color: #444;
     }
 }
+
+app-main-button {
+    display: flex;
+    justify-content: center;
+}
+
+cadastro-logo, cadastro-sidebar {
+    height: 100%;
+}
+
+cadastro-logo {
+    flex-grow: 1;
+    background: red;
+}
