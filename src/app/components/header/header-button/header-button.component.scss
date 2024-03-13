@@ -1,4 +1,4 @@
-@use '../../styles/button.scss';
+@use '../../../styles';
 
 .header-button {
     @extend %button;

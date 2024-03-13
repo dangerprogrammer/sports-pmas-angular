@@ -1,17 +1,19 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, ViewChildren } from '@angular/core';
 import { formTitle } from '../../types';
 import { FormContentComponent } from '../form-content/form-content.component';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form-cadastro',
   standalone: true,
-  imports: [FormContentComponent],
+  imports: [ReactiveFormsModule, FormContentComponent],
   templateUrl: './form-cadastro.component.html',
   styleUrl: './form-cadastro.component.scss'
 })
 export class FormCadastroComponent implements AfterViewInit {
   @Input() titleForm?: string;
   @Input() titlesSwitch?: formTitle[];
+  @Input() form!: FormGroup;
   @ViewChildren('title') titles!: ElementRef[];
 
   constructor(
@@ -36,5 +38,7 @@ export class FormCadastroComponent implements AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  contentTitle = (title: formTitle) => 'app-form-inpute';
+  submitForm() {
+    console.log(this.form.value);
+  }
 }

@@ -1,3 +1,16 @@
+@use '../../../../styles.scss' as global;
+
 .form-input {
-    background: red;
+    display: flex;
+    flex-direction: column;
+
+    .input-title {
+        font-weight: 600;
+        color: global.$green-color;
+    }
+
+    .input {
+        background: #eee;
+        width: 100%;
+    }
 }

@@ -1,12 +1,18 @@
 .main-container {
-    display: flex;
-    flex-direction: row;
-    // display: grid;
-    // grid-template-columns: repeat(auto-fit, minmax(min(24rem, calc(100vw - (var(--inline-padding) * 2))), 1fr));
-    // align-items: center;
-    // max-width: 64rem;
-    // margin-inline: auto;
-    // gap: .45rem 1rem;
-    gap: 1rem;
     flex-grow: 1;
+
+    &.cadastro {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &:not(.cadastro) {
+        --inline-padding: 1rem;
+        padding: 1rem var(--inline-padding);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(24rem, calc(100vw - (var(--inline-padding) * 2))), 1fr));
+        max-width: 64rem;
+        margin-inline: auto;
+        gap: .45rem 1rem;
+    }
 }

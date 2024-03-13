@@ -1,7 +1,7 @@
 <app-header>
     <app-back-button link="/">Voltar</app-back-button>
 </app-header>
-<app-main>
+<app-main [cadastro]=true>
     <cadastro-logo></cadastro-logo>
     <cadastro-sidebar>
         <app-main-button class="main-button" [click]="setCadastro('aluno')">

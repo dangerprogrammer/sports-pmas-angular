@@ -1,6 +1,13 @@
 .cadastro-sidebar {
     display: flex;
     flex-direction: column;
-    padding: 1em;
+    padding: 1em max(2em, min(3em, 4vw));
+    height: 100%;
     gap: .45rem 1rem;
+}
+
+@media screen and (max-width: 72rem) {
+    .cadastro-sidebar {
+        padding: 1em max(2em, min(3em, 4vw));
+    }
 }

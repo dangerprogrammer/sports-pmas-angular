@@ -1,3 +1,22 @@
-<li class="form-input">
-    <ng-content></ng-content>
+<li class="form-input" [formGroup]="form">
+    <label class="input-title">
+        <ng-content></ng-content>
+    </label>
+    <div class="input-content">
+        @if (options) {
+        <!-- <select class="input" name="options-list" [formControlName]="controlName" #optionsList>
+            @for (option of options; track $index) {
+            <option [value]="option.id" [defaultSelected]="$index == selectedOption">{{option.text}}</option>
+            }
+        </select> -->
+        @for (option of options; track $index) {
+        <div>
+            <input type="radio" name="options-list" [id]="option.id" #options/>
+            <label [htmlFor]="option.id">{{option.text}}</label>
+        </div>
+        }
+        } @else {
+        <input class="input" [formControlName]="controlName" [type]="type" />
+        }
+    </div>
 </li>
