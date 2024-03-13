@@ -43,7 +43,7 @@ export class AlunoComponent {
       endereco: ['', Validators.required],
       bairro: ['', Validators.required],
       data_nasc: ['', Validators.required],
-      sexo: ['TESTE', Validators.required]
+      sexo: ['', Validators.required]
     })
   });
 

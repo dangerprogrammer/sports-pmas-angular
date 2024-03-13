@@ -12,6 +12,7 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 export class FormInputComponent implements AfterViewInit {
   @Input() controlName!: string;
   @Input() type?: any;
+  @Input() textarea: boolean = !1;
   @Input() form!: FormGroup;
   @Input() options?: { id: string, text: string }[];
   @Input() selectedOption: number = 0;

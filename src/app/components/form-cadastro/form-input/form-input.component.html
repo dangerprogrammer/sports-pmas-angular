@@ -16,6 +16,9 @@
         </div>
         }
         } @else {
+            @if (textarea) {
+                <textarea class="input" [formControlName]="controlName"/>
+            }
         <input class="input" [formControlName]="controlName" [type]="type" />
         }
     </div>
