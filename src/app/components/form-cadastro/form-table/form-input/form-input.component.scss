@@ -1,0 +1,106 @@
+@use '../../../../../styles.scss' as global;
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: .2rem;
+
+    .input-title {
+        font-weight: 600;
+        user-select: none;
+        color: global.$green-color;
+    }
+
+    .input-content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: .3em;
+        overflow: hidden;
+
+        &:not(.options-content) {
+            width: 100%;
+        }
+
+        .input {
+            font-size: 1em;
+            background: #eee;
+            padding: .4em;
+            width: 100%;
+        }
+
+        .textarea {
+            min-height: 2em;
+            height: 4em;
+            max-height: 10em;
+            resize: vertical;
+        }
+
+        .radio-option {
+            display: flex;
+        }
+
+        .option {
+            position: relative;
+            background: #eee;
+            padding: .3em .5em;
+            border-radius: .3em;
+            font-size: .9em;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: .35em;
+            transition: .1s ease-in-out;
+
+            &:not(.select) {
+                cursor: pointer;
+                color: global.$green-color;
+                font-weight: 600;
+
+                &:hover {
+                    background: #ddd;
+                }
+            }
+
+            .option-icon {
+                display: flex;
+                height: 1em;
+                width: 1em;
+
+                .ionicon {
+                    position: absolute;
+                    transition: .1s ease-in-out opacity;
+
+                    &.checked {
+                        opacity: 0;
+                        scale: .5;
+                        transition:
+                            .1s ease-in-out opacity,
+                            .1s ease-in-out scale;
+                    }
+
+                    &:not(.checked) {
+                        opacity: 1;
+                        scale: .85;
+                    }
+                }
+            }
+        }
+
+        input:checked~.option {
+            pointer-events: none;
+            background: global.$green-color;
+            color: #eee;
+
+            .ionicon.checked {
+                opacity: 1;
+                scale: 1.1;
+            }
+
+            .ionicon:not(.checked) {
+                opacity: 0;
+            }
+        }
+    }
+}

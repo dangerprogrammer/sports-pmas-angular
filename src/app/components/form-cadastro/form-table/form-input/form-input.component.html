@@ -1,0 +1,34 @@
+<li class="form-input" [formGroup]="form">
+    <label class="input-title">
+        <ng-content></ng-content>
+    </label>
+    <div class="input-content" [class.options-content]="options">
+        @if (options) {
+        <!-- <select class="input option select" name="options-list" [formControlName]="controlName" [(ngModel)]="radioOption">
+            @for (option of options; track $index) {
+            <option [value]="option.id" #options>{{option.text}}</option>
+            }
+        </select> -->
+        @for (option of options; track $index) {
+        <div class="radio-option">
+            <input type="radio" [id]="option.id" [value]="option.id" #options hidden [formControlName]="controlName" [name]="controlName" [(ngModel)]="radioOption" />
+            <label [htmlFor]="option.id" class="option">
+                <div class="option-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                        <circle cx="256" cy="256" r="192" fill="none" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="32" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon checked" viewBox="0 0 512 512">
+                        <path
+                            d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm108.25 138.29l-134.4 160a16 16 0 01-12 5.71h-.27a16 16 0 01-11.89-5.3l-57.6-64a16 16 0 1123.78-21.4l45.29 50.32 122.59-145.91a16 16 0 0124.5 20.58z" />
+                    </svg>
+                </div>
+                <span>{{option.text}}</span>
+            </label>
+        </div>
+        }
+        } @else {
+        <input class="input" [formControlName]="controlName" [type]="type" [autocomplete]="autocomplete" />
+        }
+    </div>
+</li>

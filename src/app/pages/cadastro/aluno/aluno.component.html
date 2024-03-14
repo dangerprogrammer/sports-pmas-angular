@@ -1,14 +1,14 @@
 <app-cadastros-header></app-cadastros-header>
 <app-main>
-    <app-form-cadastro titleForm="Cadastro do Aluno" [form]="form">
-        <form-table>
-            <form-input [form]="form" controlName="nome_comp">Nome Completo</form-input>
-            <form-input [form]="form" controlName="cpf">CPF</form-input>
-            <form-input [form]="solicGroup" controlName="desc" textarea>Descrição/Comentário</form-input>
-            <form-input [form]="alunoGroup" controlName="email">E-mail</form-input>
-            <form-input [form]="alunoGroup" controlName="tel">Celular</form-input>
-            <form-input [form]="alunoGroup" controlName="bairro">Bairro</form-input>
-            <form-input [form]="alunoGroup" controlName="endereco">Endereço</form-input>
+    <app-form-cadastro titleForm="Cadastro do Aluno">
+        <form-table [form]="form">
+            <form-input [form]="form" controlName="nome_comp" autocomplete="on">Nome Completo</form-input>
+            <form-input [form]="form" controlName="cpf" autocomplete="on">CPF</form-input>
+            <form-input [form]="alunoGroup" controlName="email" autocomplete="email">E-mail</form-input>
+            <form-input [form]="form" controlName="password" autocomplete="new-password">Senha</form-input>
+            <form-input [form]="alunoGroup" controlName="tel" autocomplete="on">Celular</form-input>
+            <form-input [form]="alunoGroup" controlName="bairro" autocomplete="on">Bairro</form-input>
+            <form-input [form]="alunoGroup" controlName="endereco" autocomplete="on">Endereço</form-input>
             <form-input [form]="alunoGroup" controlName="data_nasc" type="date">Nascimento</form-input>
             <form-input [form]="alunoGroup" controlName="sexo" [options]="genders">Gênero</form-input>
         </form-table>

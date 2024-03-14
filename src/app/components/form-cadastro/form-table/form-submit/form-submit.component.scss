@@ -1,0 +1,38 @@
+@use '../../../../../styles.scss' as global;
+
+.submit-button {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    color: #eee;
+    font-weight: 600;
+    font-size: 1.15em;
+    border-radius: .5rem;
+    padding: .6em 2em;
+    overflow: hidden;
+    transition: .3s ease-in-out;
+
+    &:not(.submit) {
+        opacity: .65;
+        pointer-events: none;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: global.$green-color;
+        transition: .1s ease-in-out;
+    }
+
+    &:hover::before {
+        opacity: .6;
+    }
+
+    span {
+        z-index: 10;
+    }
+}

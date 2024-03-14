@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { cadastroTypes, subscribeTypes } from '../types';
+import { User, cadastroTypes, subscribeTypes } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -15,4 +15,6 @@ export class CadastroService {
   getCadastroType = () => localStorage.getItem("cadastro-type");
 
   setCadastroType = (type: cadastroTypes) => localStorage.setItem("cadastro-type", type);
+
+  createUser = (user: User) => this.http.post('nest-api/auth/local/signup', user);
 }

@@ -1,13 +1,15 @@
 <app-cadastros-header></app-cadastros-header>
 <app-main>
     <app-form-cadastro [titlesSwitch]="switchForms">
-        <form-table tableName="professor">
-            <form-input>Professor1!</form-input>
-            <form-input>Professor2!</form-input>
+        <form-table tableName="professor" [form]="professorForm">
+            <form-input [form]="professorForm" controlName="nome_comp">Nome Completo</form-input>
+            <form-input [form]="professorForm" controlName="cpf">CPF</form-input>
+            <form-input [form]="professorForm" controlName="password">Senha</form-input>
         </form-table>
-        <form-table tableName="admin">
-            <form-input>Admin1!</form-input>
-            <form-input>Admin2!</form-input>
+        <form-table tableName="admin" [form]="adminForm">
+            <form-input [form]="adminForm" controlName="nome_comp">Nome Completo</form-input>
+            <form-input [form]="adminForm" controlName="cpf">CPF</form-input>
+            <form-input [form]="adminForm" controlName="password">Senha</form-input>
         </form-table>
     </app-form-cadastro>
 </app-main>
