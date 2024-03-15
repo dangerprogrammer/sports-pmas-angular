@@ -2,8 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
-
-type options = { id: string, text: string }[];
+import { options } from '../../../../types';
 
 @Component({
   selector: 'form-input',
@@ -21,9 +20,10 @@ export class FormInputComponent implements OnInit {
   @Output() inputForm: EventEmitter<any> = new EventEmitter();
   @Input() controlName!: string;
   @Input() type?: any;
+  @Input() multiple: boolean = !1;
   @Input() textarea: boolean = !1;
   @Input() form!: FormGroup;
-  @Input() autocomplete?: string;
+  @Input() autocomplete: string = 'on';
   @Input() options?: options;
   @Input() selectedOption: number = 0;
   radioOption!: string;
@@ -46,5 +46,11 @@ export class FormInputComponent implements OnInit {
       this.radioOption = option.id;
       this.cdr.detectChanges();
     }
+  }
+
+  emitAction(index: number) {
+    const { action } = (this.options as options)[index];
+
+    if (action) action(index);
   }
 }

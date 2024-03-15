@@ -106,9 +106,12 @@
         }
 
         input:checked~.option {
-            pointer-events: none;
             background: global.$green-color;
             color: #eee;
+
+            &:not(.multiple) {
+                pointer-events: none;
+            }
 
             .ionicon.checked {
                 opacity: 1;

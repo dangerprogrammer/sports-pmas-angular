@@ -3,9 +3,9 @@ import { CadastrosHeaderComponent } from '../../../components/cadastros-header/c
 import { MainComponent } from '../../../components/main/main.component';
 import { FormCadastroComponent } from '../../../components/form-cadastro/form-cadastro.component';
 import { FormInputComponent } from '../../../components/form-cadastro/form-table/form-input/form-input.component';
-import { formTitle } from '../../../types';
+import { formTitle, gender, options } from '../../../types';
 import { FormTableComponent } from '../../../components/form-cadastro/form-table/form-table.component';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-funcionario',
@@ -18,6 +18,22 @@ export class FuncionarioComponent {
   constructor(
     private fb: FormBuilder
   ) {}
+
+  genders: gender[] = [
+    { id: 'MASCULINO', text: 'Masculino' },
+    { id: 'FEMININO', text: 'Feminino' },
+    { id: 'OUTRO', text: 'Outro' }
+  ];
+
+  roles: options = [
+    { id: 'ALUNO', text: 'Aluno', action: () => {
+      this.alunoEnable = !this.alunoEnable;
+      // VERIFICAR COMO FAZ PRA ALUNO NÃO SER REQUIRIDO
+      // this.alunoGroup
+    } },
+    { id: 'PROFESSOR', text: 'Professor', action: () => {this.professorEnable = !this.professorEnable} },
+    { id: 'ADMIN', text: 'Admin', action: () => {this.adminEnable = !this.adminEnable} }
+  ];
 
   switchForms: formTitle[] = [
     { id: 'professor', title: 'Professor' },
@@ -61,6 +77,16 @@ export class FuncionarioComponent {
     professor: this.fb.group({}),
     admin: this.fb.group({})
   });
+
+  solicForm = this.customForm.get('solic') as FormGroup;
+
+  alunoGroup = this.customForm.get('aluno') as FormGroup;
+  professorGroup = this.customForm.get('professor') as FormGroup;
+  adminGroup = this.customForm.get('admin') as FormGroup;
+
+  alunoEnable: boolean = !1;
+  professorEnable: boolean = !1;
+  adminEnable: boolean = !1;
   
   protected activeState: string = this.switchForms[0].title;
 }

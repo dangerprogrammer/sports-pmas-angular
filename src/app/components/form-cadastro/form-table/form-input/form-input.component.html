@@ -11,8 +11,8 @@
         </select> -->
         @for (option of options; track $index) {
         <div class="radio-option">
-            <input type="radio" [id]="option.id" [value]="option.id" #options hidden [formControlName]="controlName" [name]="controlName" [(ngModel)]="radioOption" />
-            <label [htmlFor]="option.id" class="option">
+            <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id" [value]="option.id" #options hidden [formControlName]="controlName" [name]="controlName" [(ngModel)]="radioOption" />
+            <label [htmlFor]="option.id" class="option" [class.multiple]="multiple" (click)="emitAction($index)">
                 <div class="option-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                         <circle cx="256" cy="256" r="192" fill="none" stroke="currentColor" stroke-linecap="round"
