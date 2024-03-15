@@ -3,11 +3,8 @@ import { CadastroService } from "../services/cadastro.service";
 import { inject } from "@angular/core";
 
 export const cadChildGuard: CanActivateFn = ({ routeConfig }, _state) => {
-    const { getToken, getCadastroType } = inject(CadastroService);
+    const { token, cadastroType } = inject(CadastroService);
     const routerService = inject(Router);
-
-    const token = getToken();
-    const cadastroType = getCadastroType();
 
     if (!token) {
         if (!cadastroType) {

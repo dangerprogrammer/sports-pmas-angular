@@ -28,7 +28,10 @@
         </div>
         }
         } @else {
-        <input class="input" [formControlName]="controlName" [type]="type" [autocomplete]="autocomplete" />
+        <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type" [autocomplete]="autocomplete" />
         }
     </div>
+    @if (wrongField) {
+        <small class="wrong-desc">Já existe um usuário com este CPF!</small>
+    }
 </li>

@@ -1,20 +1,40 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { User, cadastroTypes, subscribeTypes } from '../types';
+import { cadastroTypes, subscribeTypes } from '../types';
+import { tap } from 'rxjs';
+import { User, token } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CadastroService {
   http = inject(HttpClient);
+  token!: token;
 
-  getToken = () => localStorage.getItem("token");
+  get subscribe() {
+    return localStorage.getItem("subscribe-type") as subscribeTypes;
+  }
 
-  setSubscribe = (type: subscribeTypes) => localStorage.setItem("subscribe-type", type);
+  set subscribe(type: subscribeTypes) {
+    localStorage.setItem("subscribe-type", type);
+  }
 
-  getCadastroType = () => localStorage.getItem("cadastro-type");
+  get cadastroType() {
+    return localStorage.getItem("cadastro-type") as cadastroTypes;
+  }
 
-  setCadastroType = (type: cadastroTypes) => localStorage.setItem("cadastro-type", type);
+  set cadastroType(type: cadastroTypes) {
+    localStorage.setItem("cadastro-type", type);
+  }
 
-  createUser = (user: User) => this.http.post('nest-api/auth/local/signup', user);
+  createUser = (user: User) => {
+    return this.http.post('nest-api/auth/local/signup', user).pipe(tap((response: any) => {
+      this.token = response as token;
+      localStorage.removeItem("cadastro-type");
+      localStorage.setItem('auth', JSON.stringify(this.token));
+      this.subscribe = "login";
+    }))
+  }
+
+  searchUser = (cpf: string) => this.http.get(`nest-api/search/user/${cpf}`);
 }

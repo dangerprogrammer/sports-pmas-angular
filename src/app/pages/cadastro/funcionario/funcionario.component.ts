@@ -21,17 +21,19 @@ export class FuncionarioComponent {
 
   switchForms: formTitle[] = [
     { id: 'professor', title: 'Professor' },
-    { id: 'admin', title: 'Admin' }
+    { id: 'admin', title: 'Admin' },
+    { id: 'custom', title: 'Customizado' }
   ];
 
   professor = this.switchForms[0];
   admin = this.switchForms[1];
+  custom = this.switchForms[2];
 
   professorForm = this.fb.group({
     nome_comp: ['', Validators.required],
     cpf: ['', [Validators.required, Validators.minLength(11)]],
     password: ['', Validators.required],
-    solic: this.fb.group({ role: 'PROFESSOR' }),
+    solic: this.fb.group({ roles: [['PROFESSOR']] }),
     professor: this.fb.group({})
   });
 
@@ -39,7 +41,24 @@ export class FuncionarioComponent {
     nome_comp: ['', Validators.required],
     cpf: ['', [Validators.required, Validators.minLength(11)]],
     password: ['', Validators.required],
-    solic: this.fb.group({ role: 'ADMIN' }),
+    solic: this.fb.group({ roles: [['ADMIN']] }),
+    admin: this.fb.group({})
+  });
+
+  customForm = this.fb.group({
+    nome_comp: ['', Validators.required],
+    cpf: ['', [Validators.required, Validators.minLength(11)]],
+    password: ['', Validators.required],
+    solic: this.fb.group({ roles: [[]] }),
+    aluno: this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      tel: ['', [Validators.required, Validators.minLength(11)]],
+      endereco: ['', Validators.required],
+      bairro: ['', Validators.required],
+      data_nasc: ['', Validators.required],
+      sexo: ['', Validators.required]
+    }),
+    professor: this.fb.group({}),
     admin: this.fb.group({})
   });
   

@@ -29,7 +29,7 @@ export class AlunoComponent {
     nome_comp: ['', Validators.required],
     cpf: ['', [Validators.required, Validators.minLength(11)]],
     password: ['', Validators.required],
-    solic: this.fb.group({ role: 'ALUNO' }),
+    solic: this.fb.group({ roles: [['ALUNO']] }),
     aluno: this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       tel: ['', [Validators.required, Validators.minLength(11)]],

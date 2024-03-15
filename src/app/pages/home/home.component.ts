@@ -21,7 +21,7 @@ export class HomeComponent {
   ) {}
 
   setSubscribe = (sub: subscribeTypes) => () => {
-    this.cadastro.setSubscribe(sub);
+    this.cadastro.subscribe = sub;
     localStorage.removeItem("cadastro-type");
     this.router.navigate([`/${sub}`], { relativeTo: this.route });
   };

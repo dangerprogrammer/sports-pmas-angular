@@ -3,10 +3,8 @@ import { CadastroService } from "../services/cadastro.service";
 import { inject } from "@angular/core";
 
 export const tokenGuard: CanActivateFn = (_route, _state) => {
-    const { getToken } = inject(CadastroService);
+    const { token } = inject(CadastroService);
     const router = inject(Router);
-
-    const token = getToken();
 
     if (token) return !0;
 

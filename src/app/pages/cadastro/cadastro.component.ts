@@ -24,7 +24,7 @@ export class CadastroComponent {
   ) {}
 
   setCadastro = (type: cadastroTypes) => () => {
-    this.cadastro.setCadastroType(type);
+    this.cadastro.cadastroType = type;
     this.router.navigate(['/cadastro', type], { relativeTo: this.route });
   }
 }
