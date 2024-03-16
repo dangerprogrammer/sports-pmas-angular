@@ -5,7 +5,7 @@ import { FormCadastroComponent } from '../../../components/form-cadastro/form-ca
 import { FormInputComponent } from '../../../components/form-cadastro/form-table/form-input/form-input.component';
 import { FormTableComponent } from '../../../components/form-cadastro/form-table/form-table.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { gender } from '../../../types';
+import { genders } from '../../../types';
 
 @Component({
   selector: 'app-aluno',
@@ -19,10 +19,10 @@ export class AlunoComponent {
     private fb: FormBuilder
   ) { }
 
-  genders: gender[] = [
-    { id: 'MASCULINO', text: 'Masculino' },
-    { id: 'FEMININO', text: 'Feminino' },
-    { id: 'OUTRO', text: 'Outro' }
+  genders: genders = [
+    { id: 'MASCULINO', text: 'Masculino', status: !0 },
+    { id: 'FEMININO', text: 'Feminino', status: !0 },
+    { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
 
   form = this.fb.group({

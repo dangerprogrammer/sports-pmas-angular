@@ -4,14 +4,9 @@
     </label>
     <div class="input-content" [class.options-content]="options">
         @if (options) {
-        <!-- <select class="input option select" name="options-list" [formControlName]="controlName" [(ngModel)]="radioOption">
-            @for (option of options; track $index) {
-            <option [value]="option.id" #options>{{option.text}}</option>
-            }
-        </select> -->
         @for (option of options; track $index) {
         <div class="radio-option">
-            <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id" [value]="option.id" #options hidden [formControlName]="controlName" [name]="controlName" [(ngModel)]="radioOption" />
+            <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id" [value]="option.id" #options hidden [formControlName]="controlName" [name]="controlName" />
             <label [htmlFor]="option.id" class="option" [class.multiple]="multiple" (click)="emitAction($index)">
                 <div class="option-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">

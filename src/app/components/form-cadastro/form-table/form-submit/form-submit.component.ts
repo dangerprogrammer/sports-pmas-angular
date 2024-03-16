@@ -17,18 +17,22 @@ export class FormSubmitComponent {
 
   @Input() form!: FormGroup;
 
+  hasRole = (roles: any[], role: string) => roles.find(r => r == role);
+
   submitForm(ev: Event) {
     ev.preventDefault();
 
-    const userPrismaObj = this.form.value;
+    const userPrisma = this.form.value;
 
-    if (userPrismaObj.aluno) userPrismaObj.aluno = {
-      ...userPrismaObj.aluno,
-      data_nasc: new Date(userPrismaObj.aluno.data_nasc).toISOString()
+    if (typeof userPrisma.solic.roles == "string") userPrisma.solic.roles = userPrisma.solic.roles.split(',');
+
+    if (this.hasRole(userPrisma.solic.roles, "ALUNO")) userPrisma.aluno = {
+      ...userPrisma.aluno,
+      data_nasc: new Date(userPrisma.aluno.data_nasc).toISOString()
     };
 
-    const prismaUser = this.cadastro.createUser(userPrismaObj as User);
-    const findedUser = this.cadastro.searchUser(userPrismaObj.cpf);
+    const prismaUser = this.cadastro.createUser(userPrisma as User);
+    const findedUser = this.cadastro.searchUser(userPrisma.cpf);
 
     findedUser.subscribe(user => {
       if (!user) prismaUser.subscribe({

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
 import { MainComponent } from '../../../components/main/main.component';
 import { FormCadastroComponent } from '../../../components/form-cadastro/form-cadastro.component';
 import { FormInputComponent } from '../../../components/form-cadastro/form-table/form-input/form-input.component';
-import { formTitle, gender, options } from '../../../types';
+import { formTitle, genders, options } from '../../../types';
 import { FormTableComponent } from '../../../components/form-cadastro/form-table/form-table.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -14,26 +14,94 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './funcionario.component.html',
   styleUrl: './funcionario.component.scss'
 })
-export class FuncionarioComponent {
+export class FuncionarioComponent implements OnInit {
   constructor(
     private fb: FormBuilder
-  ) {}
+  ) { }
 
-  genders: gender[] = [
-    { id: 'MASCULINO', text: 'Masculino' },
-    { id: 'FEMININO', text: 'Feminino' },
-    { id: 'OUTRO', text: 'Outro' }
+  genders: genders = [
+    { id: 'MASCULINO', text: 'Masculino', status: !0 },
+    { id: 'FEMININO', text: 'Feminino', status: !1 },
+    { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
+
+  ngOnInit(): void {
+    this.switchValidators(this.alunoEnable, this.alunoGroup, {
+      email: [Validators.required, Validators.email],
+      tel: [Validators.required, Validators.minLength(11)],
+      endereco: [Validators.required],
+      bairro: [Validators.required],
+      data_nasc: [Validators.required],
+      sexo: [Validators.required]
+    });
+
+    this.switchValidators(this.professorEnable, this.professorGroup, {});
+
+    this.switchValidators(this.adminEnable, this.adminGroup, {});
+
+    this.updateRoles();
+  }
+
+  alunoEnable: boolean = !0;
+  professorEnable: boolean = !1;
+  adminEnable: boolean = !1;
 
   roles: options = [
-    { id: 'ALUNO', text: 'Aluno', action: () => {
-      this.alunoEnable = !this.alunoEnable;
-      // VERIFICAR COMO FAZ PRA ALUNO NÃO SER REQUIRIDO
-      // this.alunoGroup
-    } },
-    { id: 'PROFESSOR', text: 'Professor', action: () => {this.professorEnable = !this.professorEnable} },
-    { id: 'ADMIN', text: 'Admin', action: () => {this.adminEnable = !this.adminEnable} }
+    {
+      id: 'ALUNO', text: 'Aluno', status: this.alunoEnable, action: () => {
+        this.alunoEnable = !this.alunoEnable;
+        this.findRole('ALUNO').status = this.alunoEnable;
+
+        this.switchValidators(this.alunoEnable, this.alunoGroup, {
+          email: [Validators.required, Validators.email],
+          tel: [Validators.required, Validators.minLength(11)],
+          endereco: [Validators.required],
+          bairro: [Validators.required],
+          data_nasc: [Validators.required],
+          sexo: [Validators.required]
+        });
+
+        this.updateRoles();
+      }
+    },
+    {
+      id: 'PROFESSOR', text: 'Professor', status: this.professorEnable, action: () => {
+        this.professorEnable = !this.professorEnable;
+        this.findRole('PROFESSOR').status = this.professorEnable;
+
+        this.switchValidators(this.professorEnable, this.professorGroup, {});
+        
+        this.updateRoles();
+      }
+    },
+    {
+      id: 'ADMIN', text: 'Admin', status: this.adminEnable, action: () => {
+        this.adminEnable = !this.adminEnable;
+        this.findRole('ADMIN').status = this.adminEnable;
+
+        this.switchValidators(this.adminEnable, this.adminGroup, {});
+        
+        this.updateRoles();
+      }
+    }
   ];
+
+  findRole = (roleId: 'ALUNO' | 'PROFESSOR' | 'ADMIN') => this.roles.find(({ id }) => roleId == id) as any;
+
+  switchValidators(enable: boolean, form: FormGroup, fields: any) {
+    for (const field in fields) {
+      const formField = form.get(field);
+
+      if (enable) formField?.setValidators(fields[field]);
+      else formField?.removeValidators(fields[field]);
+
+      formField?.updateValueAndValidity();
+    }
+  };
+
+  updateRoles() {
+    this.solicForm.get("roles")?.setValue(this.roles.filter(({ status }) => status).map(({ id }) => id));
+  }
 
   switchForms: formTitle[] = [
     { id: 'professor', title: 'Professor' },
@@ -67,12 +135,12 @@ export class FuncionarioComponent {
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [[]] }),
     aluno: this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      tel: ['', [Validators.required, Validators.minLength(11)]],
-      endereco: ['', Validators.required],
-      bairro: ['', Validators.required],
-      data_nasc: ['', Validators.required],
-      sexo: ['', Validators.required]
+      email: [''],
+      tel: [''],
+      endereco: [''],
+      bairro: [''],
+      data_nasc: [''],
+      sexo: ['']
     }),
     professor: this.fb.group({}),
     admin: this.fb.group({})
@@ -83,10 +151,4 @@ export class FuncionarioComponent {
   alunoGroup = this.customForm.get('aluno') as FormGroup;
   professorGroup = this.customForm.get('professor') as FormGroup;
   adminGroup = this.customForm.get('admin') as FormGroup;
-
-  alunoEnable: boolean = !1;
-  professorEnable: boolean = !1;
-  adminEnable: boolean = !1;
-  
-  protected activeState: string = this.switchForms[0].title;
 }

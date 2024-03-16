@@ -1,4 +1,5 @@
-export type gender = {
-    id: "MASCULINO" | "FEMININO" | "OUTRO",
-    text: string
-};
+import { options } from "./cadastro"
+
+export type genders = options & {
+    id: "MASCULINO" | "FEMININO" | "OUTRO"
+}[];
