@@ -1,22 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
 import { MainComponent } from '../../../components/main/main.component';
-import { FormCadastroComponent } from '../../../components/form-cadastro/form-cadastro.component';
-import { FormInputComponent } from '../../../components/form-cadastro/form-table/form-input/form-input.component';
+import { FormComponent } from '../../../components/form/form.component';
+import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
 import { formTitle, genders, options } from '../../../types';
-import { FormTableComponent } from '../../../components/form-cadastro/form-table/form-table.component';
+import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CadastroService } from '../../../services/cadastro.service';
+import { User } from '../../../interfaces';
+import { FormLinkComponent } from '../../../components/form-link/form-link.component';
 
 @Component({
   selector: 'app-funcionario',
   standalone: true,
-  imports: [CadastrosHeaderComponent, MainComponent, FormCadastroComponent, FormInputComponent, FormTableComponent],
+  imports: [
+    CadastrosHeaderComponent,
+    MainComponent,
+    FormComponent,
+    FormInputComponent,
+    FormTableComponent,
+    FormLinkComponent
+  ],
   templateUrl: './funcionario.component.html',
   styleUrl: './funcionario.component.scss'
 })
 export class FuncionarioComponent implements OnInit {
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cadastro: CadastroService
   ) { }
 
   genders: genders = [
@@ -24,6 +35,26 @@ export class FuncionarioComponent implements OnInit {
     { id: 'FEMININO', text: 'Feminino', status: !1 },
     { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
+
+  logTeste(){
+    console.log(this.cadastro);
+  }
+
+  submitFunction = (res: any, form: FormGroup) => {
+    const prismaUser = this.cadastro.createUser(res as User);
+    const findedUser = this.cadastro.searchUser(res.cpf);
+
+    findedUser.subscribe(user => {
+      if (!user) prismaUser.subscribe({
+        error(err) {
+          console.log(err);
+        }, complete() {
+          form.reset();
+        }
+      });
+      else console.table(user);
+    });
+  };
 
   ngOnInit(): void {
     this.switchValidators(this.alunoEnable, this.alunoGroup, {
@@ -70,7 +101,7 @@ export class FuncionarioComponent implements OnInit {
         this.findRole('PROFESSOR').status = this.professorEnable;
 
         this.switchValidators(this.professorEnable, this.professorGroup, {});
-        
+
         this.updateRoles();
       }
     },
@@ -80,7 +111,7 @@ export class FuncionarioComponent implements OnInit {
         this.findRole('ADMIN').status = this.adminEnable;
 
         this.switchValidators(this.adminEnable, this.adminGroup, {});
-        
+
         this.updateRoles();
       }
     }

@@ -11,4 +11,6 @@ import { FormGroup } from '@angular/forms';
 })
 export class FormTableComponent {
   @Input() form!: FormGroup;
+  @Input() submitText: string = "Cadastrar";
+  @Input() submitEvent?: any;
 }

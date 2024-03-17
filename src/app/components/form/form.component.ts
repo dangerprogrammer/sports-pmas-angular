@@ -1,15 +1,15 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, ViewChildren } from '@angular/core';
 import { formTitle } from '../../types';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-cadastro',
+  selector: 'app-form',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './form-cadastro.component.html',
-  styleUrl: './form-cadastro.component.scss'
+  templateUrl: './form.component.html',
+  styleUrl: './form.component.scss'
 })
-export class FormCadastroComponent implements AfterViewInit {
+export class FormComponent implements AfterViewInit {
   @Input() titleForm?: string;
   @Input() titlesSwitch?: formTitle[];
   @ViewChildren('title') titles!: ElementRef[];

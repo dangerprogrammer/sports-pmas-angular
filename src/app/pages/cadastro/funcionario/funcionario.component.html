@@ -1,17 +1,23 @@
 <app-cadastros-header></app-cadastros-header>
 <app-main>
-    <app-form-cadastro [titlesSwitch]="switchForms">
-        <form-table tableName="professor" [form]="professorForm">
+    <app-form [titlesSwitch]="switchForms">
+        <form-table tableName="professor" [form]="professorForm" submitText="Cadastrar" [submitEvent]="submitFunction">
             <form-input [form]="professorForm" controlName="nome_comp">Nome Completo</form-input>
-            <form-input [form]="professorForm" controlName="cpf">CPF</form-input>
+            <form-input [form]="professorForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="professorForm" controlName="password">Senha</form-input>
+            <form-link link="/login">
+                <strong>Já possui uma conta? Faça login!</strong>
+            </form-link>
         </form-table>
-        <form-table tableName="admin" [form]="adminForm">
+        <form-table tableName="admin" [form]="adminForm" [submitEvent]="submitFunction">
             <form-input [form]="adminForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="adminForm" controlName="cpf">CPF</form-input>
             <form-input [form]="adminForm" controlName="password">Senha</form-input>
+            <form-link link="/login">
+                <strong>Já possui uma conta? Faça login!</strong>
+            </form-link>
         </form-table>
-        <form-table tableName="custom" [form]="customForm">
+        <form-table tableName="custom" [form]="customForm" [submitEvent]="submitFunction">
             <form-input [form]="customForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="customForm" controlName="cpf">CPF</form-input>
             <form-input [form]="customForm" controlName="password">Senha</form-input>
@@ -24,6 +30,9 @@
                 <form-input [form]="alunoGroup" controlName="data_nasc" type="date">Nascimento</form-input>
                 <form-input [form]="alunoGroup" controlName="sexo" [options]="genders">Gênero</form-input>
             }
+            <form-link link="/login">
+                <strong>Já possui uma conta? Faça login!</strong>
+            </form-link>
         </form-table>
-    </app-form-cadastro>
+    </app-form>
 </app-main>

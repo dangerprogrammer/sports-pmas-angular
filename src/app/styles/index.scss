@@ -1,6 +1,14 @@
 @use './button.scss' as button;
 @use './form-table.scss';
+@use '../../styles.scss' as global;
 
 form-table {
     @extend %form-table;
+}
+
+form-link {
+    position: relative;
+    translate: 0 .5em;
+    color: global.$green-color;
+    text-align: center;
 }

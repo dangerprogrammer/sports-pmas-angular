@@ -1,3 +1,14 @@
 <app-header>
     <app-back-button link="/">Voltar</app-back-button>
 </app-header>
+<app-main>
+    <app-form titleForm="Faça seu login">
+        <form-table [form]="form" [submitEvent]="submitFunction" submitText="Login">
+            <form-input [form]="form" controlName="cpf">CPF</form-input>
+            <form-input [form]="form" controlName="password" autocomplete="new-password">Senha</form-input>
+            <form-link link="/cadastro">
+                <strong>Não possui uma conta? Cadastre-se já!</strong>
+            </form-link>
+        </form-table>
+    </app-form>
+</app-main>

@@ -22,6 +22,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() type?: any;
   @Input() multiple: boolean = !1;
   @Input() textarea: boolean = !1;
+  @Input() readCPF: boolean = !1;
   @Input() form!: FormGroup;
   @Input() autocomplete: string = 'on';
   @Input() options?: options;
@@ -33,7 +34,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     const reader = this.form.get(this.controlName);
 
-    if (this.controlName == 'cpf') reader?.valueChanges.subscribe((cpf: string) => {
+    if (this.controlName == 'cpf' && this.readCPF) reader?.valueChanges.subscribe((cpf: string) => {
       const searchUser = this.cadastro.searchUser(cpf);
 
       if (reader.valid) searchUser.subscribe(user => this.wrongField = !!user);

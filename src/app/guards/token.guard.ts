@@ -8,6 +8,6 @@ export const tokenGuard: CanActivateFn = (_route, _state) => {
 
     if (token) return !0;
 
-    router.navigate(['/cadastro']);
+    router.navigate(['/login']);
     return !1;
 }

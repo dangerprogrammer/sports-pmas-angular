@@ -9,7 +9,6 @@ import { User, token } from '../interfaces';
 })
 export class CadastroService {
   http = inject(HttpClient);
-  token!: token;
 
   get subscribe() {
     return localStorage.getItem("subscribe-type") as subscribeTypes;
@@ -27,14 +26,27 @@ export class CadastroService {
     localStorage.setItem("cadastro-type", type);
   }
 
-  createUser = (user: User) => {
-    return this.http.post('nest-api/auth/local/signup', user).pipe(tap((response: any) => {
-      this.token = response as token;
-      localStorage.removeItem("cadastro-type");
-      localStorage.setItem('auth', JSON.stringify(this.token));
-      this.subscribe = "login";
-    }))
+  get token() {
+    return localStorage.getItem("auth");
   }
+
+  set token(auth: any) {
+    localStorage.setItem("auth", auth);
+  }
+
+  createUser = (user: User) => this.http.post('nest-api/auth/local/signup', user).pipe(tap((response: any) => {
+    this.token = JSON.stringify(response as token);
+    this.subscribe = "login";
+
+    localStorage.removeItem("cadastro-type");
+  }))
+
+  loginUser = (user: User) => this.http.post('nest-api/auth/local/signin', user).pipe(tap((response: any) => {
+    this.token = JSON.stringify(response as token);
+
+    localStorage.removeItem("cadastro-type");
+    localStorage.removeItem("subscribe-type");
+  }));
 
   searchUser = (cpf: string) => this.http.get(`nest-api/search/user/${cpf}`);
 }

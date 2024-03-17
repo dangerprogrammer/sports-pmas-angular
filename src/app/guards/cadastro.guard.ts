@@ -5,7 +5,6 @@ import { inject } from "@angular/core";
 export const cadastroGuard: CanActivateFn = (_route, _state) => {
     const { token, cadastroType } = inject(CadastroService);
     const router = inject(Router);
-    const activeRoute = inject(ActivatedRoute);
 
     if (!token) {
         if (cadastroType) {
@@ -16,6 +15,6 @@ export const cadastroGuard: CanActivateFn = (_route, _state) => {
         return !0;
     };
 
-    router.navigate(['/']);
+    router.navigate(['/dashboard']);
     return !1;
 }
