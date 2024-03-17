@@ -49,4 +49,15 @@ export class CadastroService {
   }));
 
   searchUser = (cpf: string) => this.http.get(`nest-api/search/user/${cpf}`);
+
+  searchUserByToken() {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${(JSON.parse(this.token) as token).access_token}`,
+      host: 'localhost:3000'
+    });
+
+    console.log(headers);
+
+    return this.http.get('nest-api/search/token', { headers });
+  };
 }

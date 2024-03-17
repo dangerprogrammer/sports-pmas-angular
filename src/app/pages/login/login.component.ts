@@ -47,6 +47,7 @@ export class LoginComponent {
         error(err) {
           console.log(err);
         }, complete() {
+          console.log(that.cadastro.token);
           that.router.navigate(['/dashboard']);
         },
       });
