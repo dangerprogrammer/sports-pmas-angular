@@ -1,2 +1,10 @@
 <app-header></app-header>
-<p>dashboard works!</p>
+@if (userRoles.includes("ADMIN")) {
+<admin-dashboard [user]="user"></admin-dashboard>
+}
+@if (userRoles.includes("PROFESSOR")) {
+<professor-dashboard [user]="user"></professor-dashboard>
+}
+@if (userRoles.includes("ALUNO")) {
+<aluno-dashboard [user]="user"></aluno-dashboard>
+}

@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../../services/cadastro.service';
 import { User } from '../../../interfaces';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-funcionario',
@@ -27,7 +28,8 @@ import { FormLinkComponent } from '../../../components/form-link/form-link.compo
 export class FuncionarioComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService
+    private cadastro: CadastroService,
+    private router: Router
   ) { }
 
   genders: genders = [
@@ -41,19 +43,8 @@ export class FuncionarioComponent implements OnInit {
   }
 
   submitFunction = (res: any, form: FormGroup) => {
-    const prismaUser = this.cadastro.createUser(res as User);
-    const findedUser = this.cadastro.searchUser(res.cpf);
-
-    findedUser.subscribe(user => {
-      if (!user) prismaUser.subscribe({
-        error(err) {
-          console.log(err);
-        }, complete() {
-          form.reset();
-        }
-      });
-      else console.table(user);
-    });
+    form.reset();
+    this.router.navigate(["/login"]);
   };
 
   ngOnInit(): void {

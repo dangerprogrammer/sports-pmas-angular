@@ -1,0 +1,5 @@
+@if (solicUsers.length) {
+    @for (solicUser of solicUsers; track $index) {
+        <solic-button [refresh]="updateSolics" [adminUser]="user" [solicUser]="solicUser"/>
+    }
+}

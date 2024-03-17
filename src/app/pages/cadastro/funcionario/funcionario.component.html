@@ -11,7 +11,7 @@
         </form-table>
         <form-table tableName="admin" [form]="adminForm" [submitEvent]="submitFunction">
             <form-input [form]="adminForm" controlName="nome_comp">Nome Completo</form-input>
-            <form-input [form]="adminForm" controlName="cpf">CPF</form-input>
+            <form-input [form]="adminForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="adminForm" controlName="password">Senha</form-input>
             <form-link link="/login">
                 <strong>Já possui uma conta? Faça login!</strong>
@@ -19,7 +19,7 @@
         </form-table>
         <form-table tableName="custom" [form]="customForm" [submitEvent]="submitFunction">
             <form-input [form]="customForm" controlName="nome_comp">Nome Completo</form-input>
-            <form-input [form]="customForm" controlName="cpf">CPF</form-input>
+            <form-input [form]="customForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="customForm" controlName="password">Senha</form-input>
             <form-input [form]="solicForm" controlName="roles" [options]="roles" [multiple]="true">Cargos Desejados</form-input>
             @if (alunoEnable) {

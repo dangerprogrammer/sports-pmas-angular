@@ -9,6 +9,7 @@ import { genders } from '../../../types';
 import { CadastroService } from '../../../services/cadastro.service';
 import { User } from '../../../interfaces';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-aluno',
@@ -28,7 +29,7 @@ import { FormLinkComponent } from '../../../components/form-link/form-link.compo
 export class AlunoComponent {
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService
+    private router: Router
   ) { }
 
   genders: genders = [
@@ -38,19 +39,8 @@ export class AlunoComponent {
   ];
 
   submitFunction = (res: any, form: FormGroup) => {
-    const prismaUser = this.cadastro.createUser(res as User);
-    const findedUser = this.cadastro.searchUser(res.cpf);
-
-    findedUser.subscribe(user => {
-      if (!user) prismaUser.subscribe({
-        error: (err) => {
-          console.log(err);
-        }, complete: () => {
-          form.reset();
-        }
-      });
-      else console.table(user);
-    });
+    form.reset();
+    this.router.navigate(["/login"]);
   };
 
   form = this.fb.group({
