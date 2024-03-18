@@ -1,7 +1,7 @@
 const PROXY_CONFIG = [
     {
         context: ['/nest-api'],
-        target: 'https://949b-189-57-151-123.ngrok-free.app',
+        target: 'http://localhost:3000/',
         secure: false,
         logLevel: 'debug',
         pathRewrite: { '^/nest-api': '' }

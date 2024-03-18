@@ -31,45 +31,45 @@ export class CadastroService {
     localStorage.setItem("auth", auth);
   }
 
-  createUser = (user: User) => this.http.post('/nest-api/auth/local/signup', user).pipe(tap((response: any) => {
+  createUser = (user: User) => this.http.post('nest-api/auth/local/signup', user).pipe(tap((response: any) => {
     this.token = JSON.stringify(response as token);
     this.subscribe = "login";
 
     localStorage.removeItem("cadastro-type");
   }));
 
-  loginUser = (user: User) => this.http.post('/nest-api/auth/local/signin', user).pipe(tap((response: any) => {
+  loginUser = (user: User) => this.http.post('nest-api/auth/local/signin', user).pipe(tap((response: any) => {
     this.token = JSON.stringify(response as token);
 
     localStorage.removeItem("cadastro-type");
     localStorage.removeItem("subscribe-type");
   }));
 
-  searchUser = (cpf: string) => this.http.get(`/nest-api/search/user/${cpf}`);
+  searchUser = (cpf: string) => this.http.get(`https://f3e7-189-57-151-123.ngrok-free.app/search/user/${cpf}`);
 
-  searchUserById = (id: number) => this.http.get(`/nest-api/search/user/id/${id}`);
+  searchUserById = (id: number) => this.http.get(`nest-api/search/user/id/${id}`);
 
-  searchByAdmin = (id: number) => this.http.get(`/nest-api/search/admin/${id}`);
+  searchByAdmin = (id: number) => this.http.get(`nest-api/search/admin/${id}`);
 
   acceptUser = (data: { cpf: string, accepted: boolean }) => {
     const { access_token } = JSON.parse(this.token) as token;
     const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
 
-    return this.http.post('/nest-api/auth/user', data, { headers });
+    return this.http.post('nest-api/auth/user', data, { headers });
   };
 
   searchUserByToken() {
     const { access_token } = JSON.parse(this.token) as token;
     const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
 
-    return this.http.get('/nest-api/search/token', { headers });
+    return this.http.get('nest-api/search/token', { headers });
   };
 
   refreshToken() {
     const { refresh_token } = JSON.parse(this.token) as token;
     const headers = new HttpHeaders({ Authorization: `bearer ${refresh_token}` });
 
-    return this.http.post('/nest-api/auth/refresh', {}, { headers }).pipe(tap((response: any) => {
+    return this.http.post('nest-api/auth/refresh', {}, { headers }).pipe(tap((response: any) => {
       this.token = JSON.stringify(response as token);
     }));
   }
