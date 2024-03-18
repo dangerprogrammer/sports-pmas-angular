@@ -45,7 +45,7 @@ export class CadastroService {
     localStorage.removeItem("subscribe-type");
   }));
 
-  searchUser = (cpf: string) => this.http.get(`https://f3e7-189-57-151-123.ngrok-free.app/search/user/${cpf}`);
+  searchUser = (cpf: string) => this.http.get(`nest-api/search/user/${cpf}`);
 
   searchUserById = (id: number) => this.http.get(`nest-api/search/user/id/${id}`);
 
