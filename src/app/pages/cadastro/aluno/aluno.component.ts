@@ -29,6 +29,7 @@ import { Router } from '@angular/router';
 export class AlunoComponent {
   constructor(
     private fb: FormBuilder,
+    private cadastro: CadastroService,
     private router: Router
   ) { }
 
@@ -39,8 +40,20 @@ export class AlunoComponent {
   ];
 
   submitFunction = (res: any, form: FormGroup) => {
-    form.reset();
-    this.router.navigate(["/login"]);
+    const prismaUser = this.cadastro.createUser(res as User);
+    const findedUser = this.cadastro.searchUser(res.cpf);
+
+    findedUser.subscribe(user => {
+      if (!user) prismaUser.subscribe({
+        error: (err) => {
+          console.log(err);
+        }, complete: () => {
+          form.reset();
+          this.router.navigate(["/dashboard"]);
+        }
+      });
+      else console.table(user);
+    });
   };
 
   form = this.fb.group({

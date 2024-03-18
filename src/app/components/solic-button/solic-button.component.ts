@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PrismaUser } from '../../types';
 import { CadastroService } from '../../services/cadastro.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'solic-button',
@@ -12,8 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SolicButtonComponent {
   constructor(
-    private cadastro: CadastroService,
-    private router: Router
+    private cadastro: CadastroService
   ) {}
 
   @Input() solicUser!: PrismaUser;

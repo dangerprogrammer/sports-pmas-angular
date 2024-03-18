@@ -38,13 +38,22 @@ export class FuncionarioComponent implements OnInit {
     { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
 
-  logTeste(){
-    console.log(this.cadastro);
-  }
-
   submitFunction = (res: any, form: FormGroup) => {
-    form.reset();
-    this.router.navigate(["/login"]);
+    const that = this;
+    const prismaUser = this.cadastro.createUser(res as User);
+    const findedUser = this.cadastro.searchUser(res.cpf);
+
+    findedUser.subscribe(user => {
+      if (!user) prismaUser.subscribe({
+        error(err) {
+          console.log(err);
+        }, complete() {
+          form.reset();
+          that.router.navigate(["/dashboard"]);
+        }
+      });
+      else console.table(user);
+    });
   };
 
   ngOnInit(): void {

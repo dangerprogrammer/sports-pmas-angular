@@ -1,0 +1,11 @@
+@use '../../../../styles.scss' as global;
+
+.no-solics {
+    color: global.$green-color;
+    flex-grow: 1;
+    display: flex;
+    font-size: 1.5em;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+}

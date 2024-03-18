@@ -1,0 +1,5 @@
+<ul class="solics">
+    @for (solicUser of solics; track $index) {
+        <solic-button [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser"/>
+    }
+</ul>

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-header-button',
+  selector: 'header-button',
   standalone: true,
   imports: [],
   templateUrl: './header-button.component.html',

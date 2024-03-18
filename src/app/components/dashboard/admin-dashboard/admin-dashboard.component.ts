@@ -2,12 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CadastroService } from '../../../services/cadastro.service';
 import { PrismaSolic, PrismaUser } from '../../../types';
 import { Observable } from 'rxjs';
-import { SolicButtonComponent } from '../../solic-button/solic-button.component';
+import { SolicsListComponent } from '../../solics-list/solics-list.component';
 
 @Component({
   selector: 'admin-dashboard',
   standalone: true,
-  imports: [SolicButtonComponent],
+  imports: [SolicsListComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss'
 })

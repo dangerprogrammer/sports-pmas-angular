@@ -1,0 +1,42 @@
+.solic {
+    background: white;
+    padding: .5em 2em;
+    padding-right: .75em;
+    border-radius: .5em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 1.2em;
+    box-shadow: 0 .2rem .5em #0163;
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+
+        .button {
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            font-size: 2em;
+            transition: .2s ease-in-out color;
+
+            &.accept {
+                color: green;
+
+                &:hover {
+                    color: #0b0;
+                }
+            }
+
+            &.cancel {
+                color: #c00;
+
+                &:hover {
+                    color: #e00;
+                }
+            }
+        }
+    }
+}
