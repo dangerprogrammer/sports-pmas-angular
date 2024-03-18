@@ -1,7 +1,7 @@
 .solic {
     background: white;
-    padding: .5em 2em;
-    padding-right: .75em;
+    padding: .25em min(2vw, 2em);
+    padding-right: min(2vw, .5em);
     border-radius: .5em;
     display: flex;
     flex-direction: row;
@@ -11,32 +11,56 @@
     font-size: 1.2em;
     box-shadow: 0 .2rem .5em #0163;
 
-    .buttons {
+    .tools {
         display: flex;
         flex-direction: row;
+        align-items: center;
+        gap: min(2vw, 1em);
 
-        .button {
-            background: transparent;
-            cursor: pointer;
+        .buttons {
             display: flex;
-            font-size: 2em;
-            transition: .2s ease-in-out color;
+            flex-direction: row;
 
-            &.accept {
-                color: green;
+            .button {
+                background: transparent;
+                cursor: pointer;
+                display: flex;
+                font-size: 2em;
+                transition: .2s ease-in-out color;
 
-                &:hover {
-                    color: #0b0;
+                &.accept {
+                    color: green;
+
+                    &:hover {
+                        color: #0b0;
+                    }
                 }
-            }
 
-            &.cancel {
-                color: #c00;
+                &.cancel {
+                    color: #c00;
 
-                &:hover {
-                    color: #e00;
+                    &:hover {
+                        color: #e00;
+                    }
                 }
             }
         }
+
+        .show-more {
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            height: 1.5em;
+            width: 1.5em;
+            justify-content: center;
+            font-size: 1.25em;
+        }
+    }
+}
+
+@media screen and (max-width: 36rem) {
+    .cpf {
+        display: none;
     }
 }
