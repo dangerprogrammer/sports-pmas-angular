@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 })
 export class HeaderButtonComponent {
   @Input() click?: Function;
+  @Input() iconSide: 'left' | 'right' = 'left';
 }

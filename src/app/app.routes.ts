@@ -9,13 +9,14 @@ import { FuncionarioComponent } from './pages/cadastro/funcionario/funcionario.c
 import { LoginComponent } from './pages/login/login.component';
 import { loginGuard } from './guards/login.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
     {
-        path: '', component: HomeComponent, canActivate: [loginGuard],
+        path: '', component: HomeComponent, canActivate: [loginGuard], title: 'Home'
     },
     {
-        path: 'cadastro', component: CadastroComponent,
+        path: 'cadastro', component: CadastroComponent, title: 'Cadastro',
         canActivate: [cadastroGuard, loginGuard]
     },
     {
@@ -25,11 +26,15 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'login', component: LoginComponent,
+        path: 'login', component: LoginComponent, title: 'Login',
         canActivate: [loginGuard]
     },
     {
-        path: 'dashboard', component: DashboardComponent,
+        path: 'dashboard', component: DashboardComponent, title: 'Dashboard',
+        canActivate: [tokenGuard]
+    },
+    {
+        path: 'profile', component: ProfileComponent,
         canActivate: [tokenGuard]
     }
 ];

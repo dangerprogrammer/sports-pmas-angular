@@ -1,0 +1,60 @@
+@use '../../../../styles.scss' as global;
+
+.sidebar {
+    pointer-events: auto;
+    height: 100%;
+
+    &.hide {
+        pointer-events: none;
+
+        .main-sidebar {
+            opacity: .5;
+            translate: -100% 0;
+        }
+
+        .shadow {
+            opacity: 0;
+        }
+    }
+
+    .main-sidebar {
+        background: global.$green-color;
+        color: #eee;
+        height: 100%;
+        font-size: .9em;
+        transition: .1s ease-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: .5em 1em;
+
+        section {
+            display: flex;
+            flex-direction: column;
+
+            &.full-content {
+                flex-grow: 1;
+            }
+        }
+
+        .divider {
+            background: #eee;
+            height: .1em;
+            border-radius: .5em;
+            opacity: .5;
+            pointer-events: none;
+            margin-block: .5em;
+        }
+    }
+
+    .shadow {
+        transition: .1s ease-out;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        position: absolute;
+        background: #0004;
+        height: 100%;
+        width: 100vw;
+    }
+}

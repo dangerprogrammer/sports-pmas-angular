@@ -3,6 +3,9 @@
 </app-header>
 <app-main>
     <app-form titleForm="Faça seu login">
+        @if (hasError) {
+        <span class="erro-msg">{{errorMsg}}</span>
+        }
         <form-table [form]="form" [submitEvent]="submitFunction" submitText="Login">
             <form-input [form]="form" controlName="cpf">CPF</form-input>
             <form-input [form]="form" controlName="password" autocomplete="new-password">Senha</form-input>

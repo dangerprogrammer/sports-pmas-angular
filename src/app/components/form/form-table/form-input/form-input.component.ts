@@ -27,7 +27,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() autocomplete: string = 'on';
   @Input() options?: options;
   @Input() selectedOption: number = 0;
-  wrongField: boolean = !1;
+  @Input() wrongField: boolean = !1;
+  @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
 
   @ViewChildren('options') viewOptions?: QueryList<ElementRef>;
 

@@ -12,3 +12,9 @@ form-link {
     color: global.$green-color;
     text-align: center;
 }
+
+app-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

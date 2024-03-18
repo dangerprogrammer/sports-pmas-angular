@@ -1,3 +1,26 @@
-header-button .ionicon {
-    font-size: 1.5em;
+@use '../../../styles.scss' as global;
+
+app-main > * {
+    background: red !important;
+}
+
+.cadastro-icon {
+    font-size: 2.5em;
+    color: #777;
+    padding: .75em;
+    flex-shrink: 0;
+}
+
+.cadastro-content {
+    flex-grow: 1;
+    text-align: start;
+
+    .cadastro-title {
+        color: global.$green-color;
+    }
+}
+
+app-main-button {
+    display: flex;
+    justify-content: center;
 }

@@ -3,10 +3,10 @@
 
     &.cadastro {
         display: flex;
-        flex-direction: row;
+        flex-direction: row-reverse;
     }
 
-    &:not(.cadastro) {
+    &:not(.cadastro, .dashboard) {
         --inline-padding: 1rem;
         padding: 1rem var(--inline-padding);
         display: grid;
@@ -14,5 +14,12 @@
         max-width: 64rem;
         margin-inline: auto;
         gap: .45rem 1rem;
+    }
+
+    &.dashboard {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
     }
 }

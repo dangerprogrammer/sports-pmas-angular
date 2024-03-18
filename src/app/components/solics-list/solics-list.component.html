@@ -1,6 +1,6 @@
+<h1 class="title">Lista de solicitações</h1>
 <ul class="solics">
-    <h1 class="title">Lista de solicitações</h1>
     @for (solicUser of solics; track $index) {
-        <solic-button [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser"/>
+    <solic-button [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
     }
 </ul>

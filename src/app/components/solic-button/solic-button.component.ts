@@ -24,8 +24,7 @@ export class SolicButtonComponent {
       accepted: accept
     });
 
-    acceptPrisma.subscribe(data => {
-      console.log(data);
+    acceptPrisma.subscribe(_data => {
       if (this.refresh) this.refresh();
     });
   }

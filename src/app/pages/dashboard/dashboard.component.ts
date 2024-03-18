@@ -8,6 +8,10 @@ import { ProfessorDashboardComponent } from '../../components/dashboard/professo
 import { PrismaUser } from '../../types';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { Router } from '@angular/router';
+import { MainComponent } from '../../components/main/main.component';
+import { DashboardSidebarComponent } from '../../components/dashboard/dashboard-sidebar/dashboard-sidebar.component';
+import { DashboardsListComponent } from '../../components/dashboard/dashboards-list/dashboards-list.component';
+import { CreatorContentComponent } from '../../components/creator-content/creator-content.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -16,7 +20,11 @@ import { Router } from '@angular/router';
     AlunoDashboardComponent,
     ProfessorDashboardComponent,
     AdminDashboardComponent,
-    HeaderButtonComponent
+    HeaderButtonComponent,
+    MainComponent,
+    DashboardSidebarComponent,
+    DashboardsListComponent,
+    CreatorContentComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -26,6 +34,8 @@ export class DashboardComponent implements OnInit {
     private cadastro: CadastroService,
     private router: Router
   ) { }
+
+  showSidebar: boolean = !0;
 
   ngOnInit(): void {
     const userByToken = this.cadastro.searchUserByToken();
@@ -41,6 +51,14 @@ export class DashboardComponent implements OnInit {
   logoutButton = () => {
     localStorage.removeItem("auth");
     this.router.navigate(["/login"]);
+  }
+
+  goProfile = () => {
+    this.router.navigate(["/profile"]);
+  };
+
+  toggleSidebar = () => {
+    this.showSidebar = !this.showSidebar;
   }
 
   userRoles: string[] = [];

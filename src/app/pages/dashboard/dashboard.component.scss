@@ -1,14 +1,19 @@
 @use '../../../styles.scss' as global;
 
-header-button .ionicon {
-    font-size: 1.5em;
+app-header {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
 }
 
 admin-dashboard, professor-dashboard, aluno-dashboard {
     flex-grow: 1;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     padding: .5em;
+    width: 100%;
+    height: 100%;
     color: global.$green-color;
     background: #f5f5f5;
 }
@@ -30,6 +35,36 @@ admin-dashboard, professor-dashboard, aluno-dashboard {
 .loader {
     font-size: 2em;
     letter-spacing: .1em;
+}
+
+dashboard-sidebar {
+    pointer-events: none;
+    position: absolute;
+    height: 100%;
+    z-index: 100;
+
+    .sidebar-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        header-button {
+            width: 100%;
+        }
+    }
+}
+
+creator-content {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+}
+
+dashboards-list {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (min-width: calc(64rem - 1px)) {
