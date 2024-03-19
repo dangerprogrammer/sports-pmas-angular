@@ -38,14 +38,19 @@ export class DashboardComponent implements OnInit {
   showSidebar: boolean = !0;
 
   ngOnInit(): void {
+    const that = this;
     const userByToken = this.cadastro.searchUserByToken();
     const refresh = this.cadastro.refreshToken();
 
-    refresh.subscribe((_token: token) => userByToken.subscribe(user => {
-      this.user = user as PrismaUser;
-      this.loaded = !0;
-      this.userRoles = this.user.roles;
-    }));
+    refresh.subscribe({
+      error: that.logoutButton, complete() {
+        userByToken.subscribe(user => {
+          that.user = user as PrismaUser;
+          that.loaded = !0;
+          that.userRoles = that.user.roles;
+        });
+      }
+    });
   }
 
   logoutButton = () => {

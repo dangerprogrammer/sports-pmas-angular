@@ -11,18 +11,31 @@ interface Aluno {
     sexo: "MASCULINO" | "FEMININO" | "OUTRO";
 }
 
-interface Professor {}
+interface Professor {
+    email: string;
+    tel: string;
+}
 
-interface Admin {}
+interface Admin {
+    email: string;
+    tel: string;
+}
 
 export interface User {
     nome_comp: string;
     cpf: string;
     password: string;
+    tel: string;
+    email: string;
 
     solic: Solic;
 
     aluno?: Aluno;
     professor?: Professor;
     admin?: Admin;
+};
+
+export interface signinUser {
+    cpf: string;
+    password: string;
 };

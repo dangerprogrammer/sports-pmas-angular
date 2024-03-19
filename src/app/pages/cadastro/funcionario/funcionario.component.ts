@@ -84,8 +84,6 @@ export class FuncionarioComponent implements OnInit {
         this.findRole('ALUNO').status = this.alunoEnable;
 
         this.switchValidators(this.alunoEnable, this.alunoGroup, {
-          email: [Validators.required, Validators.email],
-          tel: [Validators.required, Validators.minLength(11)],
           endereco: [Validators.required],
           bairro: [Validators.required],
           data_nasc: [Validators.required],
@@ -147,6 +145,8 @@ export class FuncionarioComponent implements OnInit {
   professorForm = this.fb.group({
     nome_comp: ['', Validators.required],
     cpf: ['', [Validators.required, Validators.minLength(11)]],
+    email: ['', [Validators.required, Validators.email]],
+    tel: ['', [Validators.required, Validators.minLength(11)]],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [['PROFESSOR']] }),
     professor: this.fb.group({})
@@ -155,6 +155,8 @@ export class FuncionarioComponent implements OnInit {
   adminForm = this.fb.group({
     nome_comp: ['', Validators.required],
     cpf: ['', [Validators.required, Validators.minLength(11)]],
+    email: ['', [Validators.required, Validators.email]],
+    tel: ['', [Validators.required, Validators.minLength(11)]],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [['ADMIN']] }),
     admin: this.fb.group({})
@@ -163,11 +165,11 @@ export class FuncionarioComponent implements OnInit {
   customForm = this.fb.group({
     nome_comp: ['', Validators.required],
     cpf: ['', [Validators.required, Validators.minLength(11)]],
+    email: ['', [Validators.required, Validators.email]],
+    tel: ['', [Validators.required, Validators.minLength(11)]],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [[]] }),
     aluno: this.fb.group({
-      email: [''],
-      tel: [''],
       endereco: [''],
       bairro: [''],
       data_nasc: [''],

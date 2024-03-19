@@ -57,8 +57,7 @@ export class LoginComponent {
         return;
       };
 
-      const { nome_comp } = user;
-      const login = this.cadastro.loginUser({ ...res, nome_comp } as User);
+      const login = this.cadastro.loginUser(res as User);
 
       this.hasError = !1;
       login.subscribe({

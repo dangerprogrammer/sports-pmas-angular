@@ -47,6 +47,10 @@ export class CadastroService {
 
   searchUser = (cpf: string) => this.http.get(`nest-api/search/user/${cpf}`);
 
+  createSolic = (data:
+    { roles: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[], cpf: string }
+  ) => this.http.patch('nest-api/auth/create/solic', data);
+
   searchUserById = (id: number) => this.http.get(`nest-api/search/user/id/${id}`);
 
   searchByAdmin = (id: number) => this.http.get(`nest-api/search/admin/${id}`);

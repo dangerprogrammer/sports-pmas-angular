@@ -1,0 +1,102 @@
+@use '../../../styles.scss' as global;
+
+.notif {
+    max-width: 24rem;
+    background: white;
+    user-select: none;
+    box-shadow: 0 .5rem 1em #0164;
+    translate: 110%;
+
+    &:hover {
+        .close-button {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+
+    .close-button {
+        cursor: pointer;
+        background: transparent;
+        color: #c00;
+        pointer-events: none;
+        opacity: .5;
+        font-size: 1.5em;
+        transition: .2s opacity;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: .1em;
+    }
+
+    &.spawn {
+        animation: spawn-notif var(--spawn-duration) ease forwards;
+    }
+
+    &.hide {
+        // pointer-events: none;
+        animation: unspawn-notif var(--unspawn-duration) forwards;
+    }
+
+    .notif-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: .5em;
+
+        .header-notif {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .content {
+            padding: .5em;
+        }
+    }
+
+    .progress-duration {
+        background: global.$green-color;
+        height: .25em;
+        width: 100%;
+        scale: 0 1;
+        transform-origin: right;
+        animation: spawn-progress-bar var(--duration) var(--spawn-duration) linear forwards;
+    }
+
+    &.clickable {
+        cursor: pointer;
+        transition: .15s scale;
+
+        &:active {
+            scale: .95;
+        }
+    }
+}
+
+@keyframes spawn-progress-bar {
+    to {
+        scale: 1;
+    }
+}
+
+@keyframes spawn-notif {
+    from {
+        translate: 110%;
+    }
+
+    to {
+        translate: 0;
+    }
+}
+
+@keyframes unspawn-notif {
+    0% {
+        translate: 0;
+    }
+
+    100% {
+        translate: 11%;
+        opacity: .5;
+    }
+}
