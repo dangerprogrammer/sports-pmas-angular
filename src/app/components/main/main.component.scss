@@ -8,9 +8,7 @@
 
     &:not(.cadastro, .dashboard) {
         --inline-padding: 1rem;
-        padding: 1rem var(--inline-padding);
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(24rem, calc(100vw - (var(--inline-padding) * 2))), 1fr));
         max-width: 64rem;
         margin-inline: auto;
         gap: .45rem 1rem;
@@ -21,5 +19,23 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+    }
+}
+
+@media screen and (min-width: 32rem) {
+    .main-container {
+        &:not(.cadastro, .dashboard) {
+            padding: 1rem var(--inline-padding);
+            grid-template-columns: repeat(auto-fit, minmax(min(24rem, calc(100vw - (var(--inline-padding) * 2))), 1fr));
+        }
+    }
+}
+
+@media screen and (max-width: calc(32rem - 1px)) {
+    .main-container {
+        &:not(.cadastro, .dashboard) {
+            padding: 0;
+            grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100vw), 1fr));
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
 import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';
@@ -7,9 +7,11 @@ import { formTitle, genders, options } from '../../../types';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../../services/cadastro.service';
-import { User } from '../../../interfaces';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
-import { Router } from '@angular/router';
+import { NotificationsListComponent } from '../../../components/notifications-list/notifications-list.component';
+import { NotificationService } from '../../../services/notification.service';
+import { cadastroSubmit } from '../cadastro-submit';
+import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
 
 @Component({
   selector: 'app-funcionario',
@@ -20,17 +22,22 @@ import { Router } from '@angular/router';
     FormComponent,
     FormInputComponent,
     FormTableComponent,
-    FormLinkComponent
+    FormLinkComponent,
+    NotificationsListComponent,
+    HorariosListComponent
   ],
   templateUrl: './funcionario.component.html',
   styleUrl: './funcionario.component.scss'
 })
-export class FuncionarioComponent implements OnInit {
+export class FuncionarioComponent implements OnInit, AfterViewInit {
+  notification!: NotificationService;
+
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService,
-    private router: Router
+    private cadastro: CadastroService
   ) { }
+
+  @ViewChild('notifications', { read: ViewContainerRef }) notifications!: ViewContainerRef;
 
   genders: genders = [
     { id: 'MASCULINO', text: 'Masculino', status: !0 },
@@ -38,23 +45,9 @@ export class FuncionarioComponent implements OnInit {
     { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
 
-  submitFunction = (res: any, form: FormGroup) => {
-    const that = this;
-    const prismaUser = this.cadastro.createUser(res as User);
-    const findedUser = this.cadastro.searchUser(res.cpf);
+  submitTexts: string[] = ['Cadastrar', 'Cadastrar', 'Cadastrar'];
 
-    findedUser.subscribe(user => {
-      if (!user) prismaUser.subscribe({
-        error(err) {
-          console.log(err);
-        }, complete() {
-          form.reset();
-          that.router.navigate(["/dashboard"]);
-        }
-      });
-      else console.table(user);
-    });
-  };
+  submitFunction = (res: any, form: FormGroup) => cadastroSubmit(res, form, this);
 
   ngOnInit(): void {
     this.switchValidators(this.alunoEnable, this.alunoGroup, {
@@ -71,49 +64,27 @@ export class FuncionarioComponent implements OnInit {
     this.switchValidators(this.adminEnable, this.adminGroup, {});
 
     this.updateRoles();
+
+    [this.professorForm, this.adminForm, this.customForm].forEach(this.verifyCPFFrom);
+  }
+
+  verifyCPFFrom = (form: FormGroup, indexForm: number) => {
+    const cpf = form.get('cpf');
+
+    cpf?.valueChanges.subscribe((data: string) => {
+      const searchUser = this.cadastro.searchUser(data as string);
+
+      if (data) searchUser.subscribe(user => this.switchForms[indexForm].submitText = user ? 'Solicitar' : 'Cadastrar');
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.notification = new NotificationService(this.notifications);
   }
 
   alunoEnable: boolean = !0;
   professorEnable: boolean = !1;
   adminEnable: boolean = !1;
-
-  roles: options = [
-    {
-      id: 'ALUNO', text: 'Aluno', status: this.alunoEnable, action: () => {
-        this.alunoEnable = !this.alunoEnable;
-        this.findRole('ALUNO').status = this.alunoEnable;
-
-        this.switchValidators(this.alunoEnable, this.alunoGroup, {
-          endereco: [Validators.required],
-          bairro: [Validators.required],
-          data_nasc: [Validators.required],
-          sexo: [Validators.required]
-        });
-
-        this.updateRoles();
-      }
-    },
-    {
-      id: 'PROFESSOR', text: 'Professor', status: this.professorEnable, action: () => {
-        this.professorEnable = !this.professorEnable;
-        this.findRole('PROFESSOR').status = this.professorEnable;
-
-        this.switchValidators(this.professorEnable, this.professorGroup, {});
-
-        this.updateRoles();
-      }
-    },
-    {
-      id: 'ADMIN', text: 'Admin', status: this.adminEnable, action: () => {
-        this.adminEnable = !this.adminEnable;
-        this.findRole('ADMIN').status = this.adminEnable;
-
-        this.switchValidators(this.adminEnable, this.adminGroup, {});
-
-        this.updateRoles();
-      }
-    }
-  ];
 
   findRole = (roleId: 'ALUNO' | 'PROFESSOR' | 'ADMIN') => this.roles.find(({ id }) => roleId == id) as any;
 
@@ -133,9 +104,9 @@ export class FuncionarioComponent implements OnInit {
   }
 
   switchForms: formTitle[] = [
-    { id: 'professor', title: 'Professor' },
-    { id: 'admin', title: 'Admin' },
-    { id: 'custom', title: 'Customizado' }
+    { id: 'professor', title: 'Professor', submitText: 'Cadastrar' },
+    { id: 'admin', title: 'Admin', submitText: 'Cadastrar' },
+    { id: 'custom', title: 'Customizado', submitText: 'Cadastrar' }
   ];
 
   professor = this.switchForms[0];
@@ -184,4 +155,42 @@ export class FuncionarioComponent implements OnInit {
   alunoGroup = this.customForm.get('aluno') as FormGroup;
   professorGroup = this.customForm.get('professor') as FormGroup;
   adminGroup = this.customForm.get('admin') as FormGroup;
+
+  roles: options = [
+    {
+      id: 'ALUNO', text: 'Aluno', submitText: 'Cadastrar', form: this.alunoGroup, status: this.alunoEnable, action: () => {
+        this.alunoEnable = !this.alunoEnable;
+        this.findRole('ALUNO').status = this.alunoEnable;
+
+        this.switchValidators(this.alunoEnable, this.alunoGroup, {
+          endereco: [Validators.required],
+          bairro: [Validators.required],
+          data_nasc: [Validators.required],
+          sexo: [Validators.required]
+        });
+
+        this.updateRoles();
+      }
+    },
+    {
+      id: 'PROFESSOR', text: 'Professor', submitText: 'Cadastrar', form: this.professorGroup, status: this.professorEnable, action: () => {
+        this.professorEnable = !this.professorEnable;
+        this.findRole('PROFESSOR').status = this.professorEnable;
+
+        this.switchValidators(this.professorEnable, this.professorGroup, {});
+
+        this.updateRoles();
+      }
+    },
+    {
+      id: 'ADMIN', text: 'Admin', submitText: 'Cadastrar', form: this.adminGroup, status: this.adminEnable, action: () => {
+        this.adminEnable = !this.adminEnable;
+        this.findRole('ADMIN').status = this.adminEnable;
+
+        this.switchValidators(this.adminEnable, this.adminGroup, {});
+
+        this.updateRoles();
+      }
+    }
+  ];
 }

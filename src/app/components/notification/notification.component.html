@@ -1,12 +1,12 @@
-<article class="notif" [class.spawn]="spawn" [class.hide]="hide" [style]="{
+<article class="notif" [class.spawn]="spawn" [class.hide]="hide" [class.error]="error" [class.endless]="noDuration" [style]="{
     '--spawn-duration': spawnDuration + 'ms',
     '--unspawn-duration': unspawnDuration + 'ms',
     '--duration': duration + 's'
     }" [class.clickable]="actionClick" (click)="actionClick && (actionClick)()">
     <span class="notif-content">
         <section class="header-notif">
-            <small>{{index}}</small>
-            <button class="close-button" (click)="deleteNotif({ index, message: true })">
+            <small [class.hide]="!(showIndex || headerText)" [class.error]="error && headerText">{{headerText || index}}</small>
+            <button class="close-button" (click)="deleteNotif(0, index, !0)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                     <path
                         d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />

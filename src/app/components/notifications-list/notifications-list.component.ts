@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
 @Component({
   selector: 'notifications-list',
@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './notifications-list.component.html',
   styleUrl: './notifications-list.component.scss'
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class NotificationsListComponent {
-
 }

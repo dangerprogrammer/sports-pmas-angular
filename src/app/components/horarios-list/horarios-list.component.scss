@@ -1,0 +1,13 @@
+.horarios-input {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: .2rem;
+
+    .horarios-content {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+        gap: .5em;
+    }
+}

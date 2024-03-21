@@ -33,7 +33,7 @@
     }
 
     &.hide {
-        // pointer-events: none;
+        pointer-events: none;
         animation: unspawn-notif var(--unspawn-duration) forwards;
     }
 
@@ -48,6 +48,15 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+
+            .hide {
+                pointer-events: none;
+                visibility: hidden;
+            }
+
+            .error {
+                color: red;
+            }
         }
 
         .content {
@@ -55,13 +64,32 @@
         }
     }
 
-    .progress-duration {
+    &:not(.error, .endless) {
+        .progress-duration {
+            background: global.$green-color;
+            scale: 0 1;
+            animation: spawn-progress-bar var(--duration) var(--spawn-duration) linear forwards;
+        }
+    }
+
+    &.error {
+        animation: spawn-error calc(var(--spawn-duration) * 1.5) calc(var(--spawn-duration) * 1.3) 2 forwards,
+            spawn-notif var(--spawn-duration) ease forwards;
+
+        .progress-duration {
+            background: red;
+            scale: 1;
+        }
+    }
+
+    &.endless .progress-duration {
         background: global.$green-color;
+    }
+
+    .progress-duration {
         height: .25em;
         width: 100%;
-        scale: 0 1;
         transform-origin: right;
-        animation: spawn-progress-bar var(--duration) var(--spawn-duration) linear forwards;
     }
 
     &.clickable {
@@ -71,6 +99,18 @@
         &:active {
             scale: .95;
         }
+    }
+}
+
+@keyframes spawn-error {
+
+    0%,
+    100% {
+        background: white;
+    }
+
+    50% {
+        background: #f99;
     }
 }
 
@@ -96,7 +136,7 @@
     }
 
     100% {
-        translate: 11%;
-        opacity: .5;
+        translate: 110%;
+        opacity: 0;
     }
 }

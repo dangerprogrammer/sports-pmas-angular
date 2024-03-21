@@ -28,6 +28,7 @@ notifications-list {
     flex-direction: column;
     gap: .5em;
     overflow: hidden;
+    z-index: 1000;
 }
 
 app-main {
@@ -38,6 +39,10 @@ app-main {
 
 header-button .ionicon {
     font-size: 1.5em;
+}
+
+horario-input {
+    background: red;
 }
 
 .ionicon {

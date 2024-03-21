@@ -9,30 +9,30 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class NotificationComponent implements OnInit {
   @Input() index: number = 0;
-  @Input() duration: number = 1e3;
+  @Input() duration: number = 10;
+  @Input() noDuration: boolean = !1;
   @Output() delete = new EventEmitter<any>();
   @Input() actionClick?: any;
   @Input() text?: string;
+  @Input() error: boolean = !1;
+  @Input() hide: boolean = !1;
+  @Input() showIndex: boolean = !1;
+  @Input() spawnDuration: number = 300;
+  @Input() headerText?: string;
 
   spawn: boolean = !1;
-  hide: boolean = !1;
-  deleteTimeout: any;
 
-  spawnDuration: number = 300;
   unspawnDuration: number = this.spawnDuration * 1.6;
 
   ngOnInit(): void {
     this.spawn = !0;
-    if (!this.text) this.text = `Notificação ${this.index}`;
+    if (!this.text) this.text = `Notificação ${this.index + 1}`;
 
     setTimeout(() => this.hide = !0, (this.duration + .2) * 1e3 + this.spawnDuration);
-    this.deleteTimeout = this.deleteNotif({
-      timeout: (this.duration + .2) * 1e3 + this.spawnDuration + this.unspawnDuration,
-      index: this.index
-    });
+    if (!this.noDuration) this.deleteNotif((this.duration + .2) * 1e3 + this.spawnDuration + this.unspawnDuration, this.index);
   }
 
-  deleteNotif({ timeout, index, message }: any = { timeout: 0, index: this.index }) {
-    this.delete.emit({ timeout, index, message });
+  deleteNotif(delay: number = 0, index: number = 0, clear: boolean = !1) {
+    this.delete.emit({ delay, index, clear });
   }
 }

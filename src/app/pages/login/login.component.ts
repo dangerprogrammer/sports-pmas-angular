@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { BackButtonComponent } from '../../components/back-button/back-button.component';
 import { MainComponent } from '../../components/main/main.component';
@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cadastro: CadastroService,
@@ -46,8 +46,11 @@ export class LoginComponent {
     return null;
   }
 
+  ngOnInit(): void {
+    this.form.patchValue(this.cadastro.loginData);
+  }
+
   submitFunction = (res: any, _form: FormGroup) => {
-    const that = this;
     const findedUser = this.cadastro.searchUser(res.cpf);
 
     this.hasError = !1;
@@ -61,10 +64,12 @@ export class LoginComponent {
 
       this.hasError = !1;
       login.subscribe({
-        error() {
-          that.hasError = !0;
-        }, complete() {
-          that.router.navigate(['/dashboard']);
+        error: () => {
+          this.hasError = !0;
+        }, complete: () => {
+          this.cadastro.removeFromStorage("login-data");
+
+          this.router.navigate(['/dashboard']);
         },
       });
     });

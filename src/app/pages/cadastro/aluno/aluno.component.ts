@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
 import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';
@@ -7,13 +7,12 @@ import { FormTableComponent } from '../../../components/form/form-table/form-tab
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { genders } from '../../../types';
 import { CadastroService } from '../../../services/cadastro.service';
-import { User } from '../../../interfaces';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { NgComponentOutlet } from '@angular/common';
 import { NotificationsListComponent } from '../../../components/notifications-list/notifications-list.component';
 import { NotificationService } from '../../../services/notification.service';
+import { cadastroSubmit } from '../cadastro-submit';
+import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
 
 @Component({
   selector: 'app-aluno',
@@ -27,7 +26,8 @@ import { NotificationService } from '../../../services/notification.service';
     FormTableComponent,
     FormLinkComponent,
     NgComponentOutlet,
-    NotificationsListComponent
+    NotificationsListComponent,
+    HorariosListComponent
   ],
   templateUrl: './aluno.component.html',
   styleUrl: './aluno.component.scss'
@@ -37,9 +37,7 @@ export class AlunoComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService,
-    private cdr: ChangeDetectorRef,
-    private router: Router
+    private cadastro: CadastroService
   ) { }
 
   @ViewChild('notifications', { read: ViewContainerRef }) notifications!: ViewContainerRef;
@@ -66,56 +64,9 @@ export class AlunoComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.notification = new NotificationService(this.notifications);
-
-    this.notification.addNotification();
-    this.cdr.detectChanges();
-
-    for (let i = 0; i < 10; i++) {
-      setTimeout(() => {
-      this.notification.addNotification();
-      this.cdr.detectChanges();
-      }, 2e3 * i);
-    };
   }
 
-  submitFunction = (res: any, form: FormGroup) => {
-    const that = this;
-    const prismaUser = this.cadastro.createUser(res as User);
-    const findedUser = this.cadastro.searchUser(res.cpf);
-
-    (findedUser as Observable<User>).subscribe(user => {
-      if (!user) prismaUser.subscribe({
-        error: (err) => {
-          console.log(err);
-        }, complete: () => {
-          form.reset();
-          this.notification.addNotification({
-            text: 'Cadastro realizado com sucesso!'
-          });
-
-          setTimeout(() => this.router.navigate(["/login"]), 3e3);
-        }
-      });
-      else {
-        const { cpf } = res, { roles } = res.solic;
-        const createSolic = this.cadastro.createSolic({ roles, cpf });
-
-        createSolic.subscribe({
-          error() {
-            console.log("deu ruim!")
-            that.notification.addNotification({
-              text: 'Solicitação criada com sucesso!'
-            });
-          },
-          complete: () => {
-            that.notification.addNotification({
-              text: 'Solicitação criada com sucesso!'
-            });
-          }
-        });
-      };
-    });
-  };
+  submitFunction = (res: any, form: FormGroup) => cadastroSubmit(res, form, this);
 
   form = this.fb.group({
     nome_comp: ['', Validators.required],
@@ -129,7 +80,8 @@ export class AlunoComponent implements OnInit, AfterViewInit {
       bairro: ['', Validators.required],
       data_nasc: ['', Validators.required],
       sexo: ['', Validators.required]
-    })
+    }),
+    inscricoes: [[], ]
   });
 
   alunoGroup = this.form.get('aluno') as FormGroup;

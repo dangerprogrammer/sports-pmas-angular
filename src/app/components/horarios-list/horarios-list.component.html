@@ -1,0 +1,6 @@
+<li class="horarios-input" [formGroup]="form">
+    @if (horariosList.length) {<label class="title">Lista de Horários</label>}
+    <div class="horarios-content" [hidden]="!horariosList.length">
+        <ng-container #horarios></ng-container>
+    </div>
+</li>

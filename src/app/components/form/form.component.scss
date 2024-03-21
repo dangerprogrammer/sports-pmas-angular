@@ -2,9 +2,8 @@
 
 .form-cadastro {
     background: white;
-    border-radius: .5em;
-    box-shadow: 0 .5rem 1em #0163;
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     padding: 1em;
@@ -101,6 +100,24 @@
     .form-inputs {
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
         width: 100%;
+    }
+}
+
+@media screen and (min-width: 32rem) {
+    .form-cadastro {
+        border-radius: .5em;
+        box-shadow: 0 .5rem 1em #0163;
+    }
+}
+
+@media screen and (max-width: calc(32rem - 1px)) {
+    .form-cadastro {
+        height: 100%;
+
+        .list-titles .title {
+            font-size: .95em;
+        }
     }
 }

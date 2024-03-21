@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) { }
 
-  showSidebar: boolean = !0;
+  showSidebar: boolean = !1;
 
   ngOnInit(): void {
     const that = this;

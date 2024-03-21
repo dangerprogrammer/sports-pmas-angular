@@ -1,27 +1,30 @@
 <app-cadastros-header></app-cadastros-header>
 <app-main>
     <app-form [titlesSwitch]="switchForms">
-        <form-table tableName="professor" [form]="professorForm" submitText="Cadastrar" [submitEvent]="submitFunction">
+        <form-table tableName="professor" [form]="professorForm" [submitText]="professor.submitText" [submitEvent]="submitFunction">
+            <form-link link="/login">
+                <strong>Já possui uma conta? Faça login!</strong>
+            </form-link>
             <form-input [form]="professorForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="professorForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="professorForm" controlName="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="professorForm" controlName="tel">Celular</form-input>
             <form-input [form]="professorForm" controlName="password">Senha</form-input>
+        </form-table>
+        <form-table tableName="admin" [form]="adminForm" [submitText]="admin.submitText" [submitEvent]="submitFunction">
             <form-link link="/login">
                 <strong>Já possui uma conta? Faça login!</strong>
             </form-link>
-        </form-table>
-        <form-table tableName="admin" [form]="adminForm" [submitEvent]="submitFunction">
             <form-input [form]="adminForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="adminForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="adminForm" controlName="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="adminForm" controlName="tel">Celular</form-input>
             <form-input [form]="adminForm" controlName="password">Senha</form-input>
+        </form-table>
+        <form-table tableName="custom" [form]="customForm" [submitText]="custom.submitText" [submitEvent]="submitFunction">
             <form-link link="/login">
                 <strong>Já possui uma conta? Faça login!</strong>
             </form-link>
-        </form-table>
-        <form-table tableName="custom" [form]="customForm" [submitEvent]="submitFunction">
             <form-input [form]="customForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="customForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="customForm" controlName="email" autocomplete="email">E-mail</form-input>
@@ -33,10 +36,11 @@
                 <form-input [form]="alunoGroup" controlName="endereco">Endereço</form-input>
                 <form-input [form]="alunoGroup" controlName="data_nasc" type="date">Nascimento</form-input>
                 <form-input [form]="alunoGroup" controlName="sexo" [options]="genders">Gênero</form-input>
+                <horarios-list [form]="alunoGroup" controlName="inscricoes"></horarios-list>
             }
-            <form-link link="/login">
-                <strong>Já possui uma conta? Faça login!</strong>
-            </form-link>
         </form-table>
     </app-form>
+    <notifications-list>
+        <ng-container #notifications></ng-container>
+    </notifications-list>
 </app-main>
