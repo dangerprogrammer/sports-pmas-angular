@@ -13,6 +13,7 @@ import { NotificationsListComponent } from '../../../components/notifications-li
 import { NotificationService } from '../../../services/notification.service';
 import { cadastroSubmit } from '../cadastro-submit';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-aluno',
@@ -37,7 +38,8 @@ export class AlunoComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService
+    private cadastro: CadastroService,
+    private router: Router
   ) { }
 
   @ViewChild('notifications', { read: ViewContainerRef }) notifications!: ViewContainerRef;
@@ -81,7 +83,7 @@ export class AlunoComponent implements OnInit, AfterViewInit {
       data_nasc: ['', Validators.required],
       sexo: ['', Validators.required]
     }),
-    inscricoes: [[], Validators.required]
+    // inscricoes: [[], ]
   });
 
   alunoGroup = this.form.get('aluno') as FormGroup;
