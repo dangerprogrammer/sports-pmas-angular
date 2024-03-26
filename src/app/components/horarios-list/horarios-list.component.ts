@@ -1,7 +1,9 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HorarioInputComponent } from './horario-input/horario-input.component';
 import { CadastroService } from '../../services/cadastro.service';
+import { Observable } from 'rxjs';
+import { horario, modalidade } from '../../types';
+import { HorarioHeaderComponent } from './horario-header/horario-header.component';
 
 @Component({
   selector: 'horarios-list',
@@ -10,7 +12,7 @@ import { CadastroService } from '../../services/cadastro.service';
   templateUrl: './horarios-list.component.html',
   styleUrl: './horarios-list.component.scss'
 })
-export class HorariosListComponent implements OnInit, AfterViewInit {
+export class HorariosListComponent implements OnInit {
   constructor(
     private cadastro: CadastroService,
     private cdr: ChangeDetectorRef
@@ -23,24 +25,28 @@ export class HorariosListComponent implements OnInit, AfterViewInit {
 
   horariosList: any[] = [];
   hideAdd: boolean = !1;
+  modalidades: modalidade[] = [];
 
-  addHorario = (ev?: Event) => {
-    ev?.preventDefault();
+  addHorario = (modName: string, horarios: horario[] = []) => {
+    this.horariosList.push({ component: HorarioHeaderComponent });
+    
+    const headerRef = this.horarios.createComponent(HorarioHeaderComponent);
 
-    this.horariosList.push({ component: HorarioInputComponent });
-    this.horarios.createComponent(HorarioInputComponent);
-
-    // if (this.horariosList.length == 3) this.hideAdd = !0;
+    headerRef.setInput('title', modName);
+    headerRef.setInput('horarios', horarios);
   };
 
   ngOnInit(): void {
-    console.log(this.cadastro);
-  }
+    const prismaModalidades = this.cadastro.searchModalidades();
 
-  ngAfterViewInit(): void {
-    for (let i = 0; i < 5; i++) {
-      this.addHorario();
-      this.cdr.detectChanges();
-    };
+    (prismaModalidades as Observable<modalidade[]>).subscribe(modalidades => {
+      this.modalidades = modalidades;
+
+      for (const modalidade of modalidades) {
+        const prismaHorarios = this.cadastro.searchHorarios(modalidade.name);
+
+        (prismaHorarios as Observable<horario[]>).subscribe(horarios => this.addHorario(modalidade.name, horarios));
+      };
+    });
   }
 }

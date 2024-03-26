@@ -81,7 +81,7 @@ export class AlunoComponent implements OnInit, AfterViewInit {
       data_nasc: ['', Validators.required],
       sexo: ['', Validators.required]
     }),
-    inscricoes: [[], ]
+    inscricoes: [[], Validators.required]
   });
 
   alunoGroup = this.form.get('aluno') as FormGroup;

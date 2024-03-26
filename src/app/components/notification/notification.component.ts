@@ -29,10 +29,10 @@ export class NotificationComponent implements OnInit {
     if (!this.text) this.text = `Notificação ${this.index + 1}`;
 
     setTimeout(() => this.hide = !0, (this.duration + .2) * 1e3 + this.spawnDuration);
-    if (!this.noDuration) this.deleteNotif((this.duration + .2) * 1e3 + this.spawnDuration + this.unspawnDuration, this.index);
+    if (!this.noDuration) this.deleteNotif((this.duration + .2) * 1e3 + this.spawnDuration + this.unspawnDuration);
   }
 
-  deleteNotif(delay: number = 0, index: number = 0, clear: boolean = !1) {
-    this.delete.emit({ delay, index, clear });
+  deleteNotif(delay: number = 0, clear: boolean = !1) {
+    this.delete.emit({ delay, clear });
   }
 }

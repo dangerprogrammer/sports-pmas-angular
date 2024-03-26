@@ -71,6 +71,10 @@ export class CadastroService {
     return this.http.post('nest-api/auth/user', data, { headers });
   };
 
+  searchModalidades = () => this.http.get('nest-api/search/modalidades');
+
+  searchHorarios = (modName: string) => this.http.get(`nest-api/search/horarios/${modName}`);
+
   searchUserByToken() {
     const { access_token } = this.token;
     const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
@@ -82,7 +86,7 @@ export class CadastroService {
     const { refresh_token } = this.token;
     const headers = new HttpHeaders({ Authorization: `bearer ${refresh_token}` });
 
-    return this.http.post('nest-api/auth/refresh', {}, { headers }).pipe(tap((response: any) => {
+    return this.http.post('nest-api/auth/refresh', undefined, { headers }).pipe(tap((response: any) => {
       this.token = response;
     }));
   }
