@@ -1,3 +1,5 @@
+import { horario, modalidade } from "../types";
+
 interface Solic {
     role: 'ALUNO' | 'PROFESSOR' | 'ADMIN';
 }
@@ -27,6 +29,10 @@ export interface User {
     password: string;
     tel: string;
     email: string;
+    inscricoes: {
+        horario: horario;
+        modalidade: modalidade;
+    }[];
 
     solic: Solic;
 

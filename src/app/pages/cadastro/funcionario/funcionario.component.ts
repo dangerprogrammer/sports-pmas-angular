@@ -10,7 +10,7 @@ import { CadastroService } from '../../../services/cadastro.service';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
 import { NotificationsListComponent } from '../../../components/notifications-list/notifications-list.component';
 import { NotificationService } from '../../../services/notification.service';
-import { cadastroSubmit } from '../cadastro-submit';
+import { CadastroSubmit } from '../../../tools';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
 
 @Component({
@@ -29,13 +29,13 @@ import { HorariosListComponent } from '../../../components/horarios-list/horario
   templateUrl: './funcionario.component.html',
   styleUrl: './funcionario.component.scss'
 })
-export class FuncionarioComponent implements OnInit, AfterViewInit {
-  notification!: NotificationService;
-
+export class FuncionarioComponent extends CadastroSubmit implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService
-  ) { }
+    private service: CadastroService
+  ) {
+    super()
+  }
 
   @ViewChild('notifications', { read: ViewContainerRef }) notifications!: ViewContainerRef;
 
@@ -46,8 +46,6 @@ export class FuncionarioComponent implements OnInit, AfterViewInit {
   ];
 
   submitTexts: string[] = ['Cadastrar', 'Cadastrar', 'Cadastrar'];
-
-  submitFunction = (res: any, form: FormGroup) => cadastroSubmit(res, form, this);
 
   ngOnInit(): void {
     this.switchValidators(this.alunoEnable, this.alunoGroup, {
@@ -72,7 +70,7 @@ export class FuncionarioComponent implements OnInit, AfterViewInit {
     const cpf = form.get('cpf');
 
     cpf?.valueChanges.subscribe((data: string) => {
-      const searchUser = this.cadastro.searchUser(data as string);
+      const searchUser = this.service.searchUser(data as string);
 
       if (data) searchUser.subscribe(user => this.switchForms[indexForm].submitText = user ? 'Solicitar' : 'Cadastrar');
     });

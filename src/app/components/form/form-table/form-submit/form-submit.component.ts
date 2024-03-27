@@ -19,11 +19,13 @@ export class FormSubmitComponent {
 
     const userPrisma = this.form.value;
 
-    if (userPrisma.solic && typeof userPrisma.solic.roles == "string") userPrisma.solic.roles = userPrisma.solic.roles.split(',');
+    if (userPrisma.solic) {
+      if (typeof userPrisma.solic.roles == "string") userPrisma.solic.roles = userPrisma.solic.roles.split(',');
 
-    if (userPrisma.solic && this.hasRole(userPrisma.solic.roles, "ALUNO")) userPrisma.aluno = {
-      ...userPrisma.aluno,
-      data_nasc: new Date(userPrisma.aluno.data_nasc).toISOString()
+      if (this.hasRole(userPrisma.solic.roles, "ALUNO")) userPrisma.aluno = {
+        ...userPrisma.aluno,
+        data_nasc: new Date(userPrisma.aluno.data_nasc).toISOString()
+      };
     };
 
     if (this.submitEvent) return this.submitEvent(userPrisma, this.form);

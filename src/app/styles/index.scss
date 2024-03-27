@@ -1,6 +1,7 @@
 @use './button.scss' as button;
 @use './form-table.scss';
 @use '../../styles.scss' as global;
+@use './option.scss' as option;
 
 form-table {
     @extend %form-table;

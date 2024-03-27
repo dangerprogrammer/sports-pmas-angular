@@ -19,8 +19,14 @@ app-root > *:not(router-outlet, notifications-list) {
     min-height: 100vh;
 }
 
+app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
 notifications-list {
-    position: absolute;
+    position: fixed;
     padding: 1em;
     bottom: 0;
     right: 0;
@@ -42,7 +48,7 @@ header-button .ionicon {
 }
 
 horario-input {
-    background: red;
+    display: flex;
 }
 
 .ionicon {

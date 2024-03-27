@@ -1,6 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
-import { horario } from '../../../types';
+import { horario, modalidade } from '../../../types';
 import { HorarioInputComponent } from '../horario-input/horario-input.component';
+import { StringTools } from '../../../tools';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'horario-header',
@@ -9,13 +11,16 @@ import { HorarioInputComponent } from '../horario-input/horario-input.component'
   templateUrl: './horario-header.component.html',
   styleUrl: './horario-header.component.scss'
 })
-export class HorarioHeaderComponent implements AfterViewInit {
+export class HorarioHeaderComponent extends StringTools implements AfterViewInit {
   constructor(
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    super();
+  }
 
-  @Input() title!: string;
+  @Input() modalidade!: modalidade;
   @Input() horarios!: horario[];
+  @Input() form!: FormGroup;
 
   @ViewChild('horarios', { read: ViewContainerRef }) horariosContainer!: ViewContainerRef;
 
@@ -24,6 +29,9 @@ export class HorarioHeaderComponent implements AfterViewInit {
       const horarioRef = this.horariosContainer.createComponent(HorarioInputComponent);
 
       horarioRef.setInput('horario', horario);
+      horarioRef.setInput('horarios', this.horarios);
+      horarioRef.setInput('modalidade', this.modalidade);
+      horarioRef.setInput('form', this.form);
       this.cdr.detectChanges();
     });
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
 import { Observable } from 'rxjs';
@@ -14,8 +14,7 @@ import { HorarioHeaderComponent } from './horario-header/horario-header.componen
 })
 export class HorariosListComponent implements OnInit {
   constructor(
-    private cadastro: CadastroService,
-    private cdr: ChangeDetectorRef
+    private cadastro: CadastroService
   ) { }
 
   @Input() controlName!: string;
@@ -27,13 +26,14 @@ export class HorariosListComponent implements OnInit {
   hideAdd: boolean = !1;
   modalidades: modalidade[] = [];
 
-  addHorario = (modName: string, horarios: horario[] = []) => {
+  addHorario = (modalidade: modalidade, horarios: horario[] = []) => {
     this.horariosList.push({ component: HorarioHeaderComponent });
     
     const headerRef = this.horarios.createComponent(HorarioHeaderComponent);
 
-    headerRef.setInput('title', modName);
+    headerRef.setInput('modalidade', modalidade);
     headerRef.setInput('horarios', horarios);
+    headerRef.setInput('form', this.form);
   };
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class HorariosListComponent implements OnInit {
       for (const modalidade of modalidades) {
         const prismaHorarios = this.cadastro.searchHorarios(modalidade.name);
 
-        (prismaHorarios as Observable<horario[]>).subscribe(horarios => this.addHorario(modalidade.name, horarios));
+        (prismaHorarios as Observable<horario[]>).subscribe(horarios => this.addHorario(modalidade, horarios));
       };
     });
   }

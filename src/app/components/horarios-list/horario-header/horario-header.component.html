@@ -1,6 +1,10 @@
-<header>
-    <h2>{{title}}</h2>
-    <li>
+<header class="horario-header">
+    <h2 class="title">
+        <span>{{capitalize(modalidade.name)}}</span>
+        <div class="hash"></div>
+        <p>({{modalidade.available}} Vagas restantes)</p>
+    </h2>
+    <li class="list-horarios">
         <ng-container #horarios></ng-container>
     </li>
 </header>

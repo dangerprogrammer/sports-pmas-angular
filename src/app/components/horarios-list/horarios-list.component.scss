@@ -1,13 +1,18 @@
+@use '../../../styles.scss' as global;
+
 .horarios-input {
     display: flex;
     flex-direction: column;
-    align-items: start;
-    gap: .2rem;
+    gap: .5em;
 
-    .horarios-content {
-        display: grid;
-        width: 100%;
-        grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
-        gap: .5em;
+    .title {
+        font-size: 1.2em;
+        color: global.$green-color;
+    }
+
+    .horarios-list {
+        padding: 1em;
+        border: .15em solid #ddd;
+        border-radius: .5em;
     }
 }

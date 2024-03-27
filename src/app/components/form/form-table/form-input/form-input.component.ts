@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
@@ -21,6 +21,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() controlName!: string;
   @Input() type?: any;
   @Input() multiple: boolean = !1;
+  @Input() leastOne: boolean = !1;
   @Input() textarea: boolean = !1;
   @Input() readCPF: boolean = !1;
   @Input() form!: FormGroup;
@@ -44,11 +45,11 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.options) {
-      const htmlOptions = this.viewOptions?.map(({ nativeElement }) => nativeElement) as any[];
+      const htmlOptions = this.viewOptions?.map(({ nativeElement }) => nativeElement) as HTMLInputElement[];
 
       this.options.forEach((option, ind) => {
         if (option.status) {
-          const hasActive = htmlOptions.find(opt => opt.checked);
+          const hasActive = htmlOptions.filter(opt => opt.checked).length;
           const checked = !hasActive || this.multiple;
 
           htmlOptions[ind].checked = checked;
@@ -56,21 +57,39 @@ export class FormInputComponent implements OnInit, AfterViewInit {
         };
       });
 
-      if (this.multiple) {
-        const ids = htmlOptions.filter(({ checked }) => checked).map(({ id }) => id);
+      this.options.forEach((option, ind) => {
+        if (option.status) {
+          const lengthActive = htmlOptions.filter(opt => opt.checked).length;
+          const label = htmlOptions[ind].parentElement?.lastChild;
 
-        this.form.get(this.controlName)?.setValue(ids);
-      } else {
-        const { id: optionID } = htmlOptions.find(({ checked }) => checked);
+          if (lengthActive <= 1) (label as HTMLLabelElement).classList.remove('multiple');
+        };
+      });
 
-        this.form.get(this.controlName)?.setValue(optionID);
-        this.cdr.detectChanges();
-      };
+      let controlValue;
+
+      controlValue = this.multiple ?
+        htmlOptions.filter(({ checked }) => checked).map(({ id }) => id) :
+        htmlOptions.find(({ checked }) => checked);
+
+      this.form.get(this.controlName)?.setValue(controlValue);
+      this.cdr.detectChanges();
     }
   }
 
-  emitAction(index: number) {
-    const { action } = (this.options as options)[index];
+  emitAction(ev: Event, index: number) {
+    const element = ev.target as HTMLLabelElement,
+      inputsHTML = element.parentElement?.parentElement?.children as any,
+      inputs = [...inputsHTML].map(({ firstChild }) => firstChild),
+      labels = [...inputsHTML].map(({ lastChild }) => lastChild),
+      inputsChecked = inputs.map(({ checked }, ind) => ind == index ? !checked : checked),
+      hasCheckeds = inputsChecked.filter(checked => checked).length,
+      { action } = (this.options as options)[index];
+
+    if (this.multiple) labels.forEach(label => label.classList.add('multiple'));
+
+    if (hasCheckeds == 1) labels[inputsChecked.findIndex(checked => checked)].classList.remove('multiple');
+    if (!hasCheckeds) return ev.preventDefault();
 
     if (action) action(index);
   }

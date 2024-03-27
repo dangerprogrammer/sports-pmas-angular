@@ -42,7 +42,7 @@ export class CadastroService {
     keys.forEach(key => localStorage.removeItem(key));
   }
 
-  createUser = (user: User) => this.http.post('nest-api/auth/local/signup', user).pipe(tap((response: any) => {
+  createUser = (user: User) => this.http.post('nest-api/auth/local/signup', user).pipe(tap(() => {
     this.subscribe = "login";
 
     this.removeFromStorage("cadastro-type");

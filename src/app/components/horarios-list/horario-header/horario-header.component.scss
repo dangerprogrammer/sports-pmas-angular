@@ -1,0 +1,37 @@
+@use '../../../../styles.scss' as global;
+
+.horario-header {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: .5em;
+
+    .title {
+        font-size: 1em;
+        color: global.$green-color;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .hash {
+            height: .1em;
+            width: .5em;
+            margin-inline: .5em;
+            background: #ccc;
+        }
+
+        p {
+            user-select: none;
+            color: #666;
+            font-weight: 400;
+            font-size: .9em;
+        }
+    }
+
+    .list-horarios {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: .5em;
+    }
+}

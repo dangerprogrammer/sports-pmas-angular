@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
 import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';
@@ -11,9 +11,8 @@ import { FormLinkComponent } from '../../../components/form-link/form-link.compo
 import { NgComponentOutlet } from '@angular/common';
 import { NotificationsListComponent } from '../../../components/notifications-list/notifications-list.component';
 import { NotificationService } from '../../../services/notification.service';
-import { cadastroSubmit } from '../cadastro-submit';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
-import { Router } from '@angular/router';
+import { CadastroSubmit } from '../../../tools';
 
 @Component({
   selector: 'app-aluno',
@@ -33,14 +32,13 @@ import { Router } from '@angular/router';
   templateUrl: './aluno.component.html',
   styleUrl: './aluno.component.scss'
 })
-export class AlunoComponent implements OnInit, AfterViewInit {
-  notification!: NotificationService;
-
+export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService,
-    private router: Router
-  ) { }
+    private service: CadastroService
+  ) {
+    super();
+  }
 
   @ViewChild('notifications', { read: ViewContainerRef }) notifications!: ViewContainerRef;
 
@@ -58,7 +56,7 @@ export class AlunoComponent implements OnInit, AfterViewInit {
     const cpf = this.form.get('cpf');
 
     cpf?.valueChanges.subscribe(data => {
-      const searchUser = this.cadastro.searchUser(data as string);
+      const searchUser = this.service.searchUser(data as string);
 
       searchUser.subscribe(user => this.submitText = user ? 'Solicitar' : 'Cadastrar');
     });
@@ -67,8 +65,6 @@ export class AlunoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.notification = new NotificationService(this.notifications);
   }
-
-  submitFunction = (res: any, form: FormGroup) => cadastroSubmit(res, form, this);
 
   form = this.fb.group({
     nome_comp: ['', Validators.required],
@@ -83,7 +79,7 @@ export class AlunoComponent implements OnInit, AfterViewInit {
       data_nasc: ['', Validators.required],
       sexo: ['', Validators.required]
     }),
-    // inscricoes: [[], ]
+    inscricoes: [[], Validators.required]
   });
 
   alunoGroup = this.form.get('aluno') as FormGroup;

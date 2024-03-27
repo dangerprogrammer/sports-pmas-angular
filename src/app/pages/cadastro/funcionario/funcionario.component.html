@@ -30,7 +30,7 @@
             <form-input [form]="customForm" controlName="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="customForm" controlName="tel">Celular</form-input>
             <form-input [form]="customForm" controlName="password">Senha</form-input>
-            <form-input [form]="solicForm" controlName="roles" [options]="roles" [multiple]="true">Cargos Desejados</form-input>
+            <form-input [form]="solicForm" controlName="roles" [options]="roles" [multiple]="true" [leastOne]="true">Cargos Desejados</form-input>
             @if (alunoEnable) {
                 <form-input [form]="alunoGroup" controlName="bairro">Bairro</form-input>
                 <form-input [form]="alunoGroup" controlName="endereco">Endereço</form-input>

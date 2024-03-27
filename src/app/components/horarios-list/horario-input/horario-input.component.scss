@@ -1,0 +1,9 @@
+@use '../../../styles';
+
+.option {
+    @extend %option;
+
+    &.fullfield {
+        opacity: .5;
+    }
+}
