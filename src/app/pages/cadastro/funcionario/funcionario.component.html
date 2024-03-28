@@ -40,7 +40,7 @@
                 <form-input [form]="alunoGroup" controlName="endereco">Endereço</form-input>
                 <form-input [form]="alunoGroup" controlName="data_nasc" type="date">Nascimento</form-input>
                 <form-input [form]="alunoGroup" controlName="sexo" [options]="genders">Gênero</form-input>
-                <horarios-list [form]="alunoGroup" controlName="inscricoes"></horarios-list>
+                <horarios-list [form]="customForm" controlName="inscricoes"></horarios-list>
             </ng-container>
         </form-table>
     </app-form>

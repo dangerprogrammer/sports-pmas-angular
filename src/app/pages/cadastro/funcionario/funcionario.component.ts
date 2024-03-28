@@ -147,7 +147,8 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
       sexo: ['']
     }),
     professor: this.fb.group({}),
-    admin: this.fb.group({})
+    admin: this.fb.group({}),
+    inscricoes: [[], Validators.required]
   });
 
   solicForm = this.customForm.get('solic') as FormGroup;
