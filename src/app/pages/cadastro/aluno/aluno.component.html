@@ -1,7 +1,11 @@
 <app-cadastros-header></app-cadastros-header>
 <app-main>
-    <app-form titleForm="Cadastro do Aluno">
-        <form-table [form]="form" [submitEvent]="submitFunction" [submitText]="submitText">
+    <app-form titleForm="Cadastro do Aluno" [isFreeze]="isFreeze">
+        <form-table
+        [form]="form"
+        [submitEvent]="submitFunction"
+        [submitText]="submitText"
+        (freezeForm)="onFreezeForm($event)">
             <form-link link="/login">
                 <strong>Já possui uma conta? Faça login!</strong>
             </form-link>

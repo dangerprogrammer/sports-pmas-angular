@@ -1,4 +1,4 @@
-<form class="form-cadastro">
+<form class="form-cadastro" [class.freeze]="isFreeze" [class.login]="loginForm">
     @if (titleForm) {
     <h1 class="form-title">
         <span>{{titleForm}}</span>

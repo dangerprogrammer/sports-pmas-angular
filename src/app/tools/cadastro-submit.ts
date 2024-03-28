@@ -11,6 +11,11 @@ export class CadastroSubmit {
   private router = inject(Router);
 
   notification!: NotificationService;
+  isFreeze: boolean = !1;
+
+  onFreezeForm(freeze: boolean) {
+    this.isFreeze = freeze;
+  }
 
   submitFunction = (res: any, form: FormGroup) => {
     const prismaUser = this.cadastro.createUser(res as User);
@@ -29,10 +34,12 @@ export class CadastroSubmit {
           form.reset();
           this.notification.addNotification({
             text: 'Cadastro realizado com sucesso!\nRedirecionando para login...',
-            duration: 5
+            duration: 3
           });
 
-          setTimeout(() => this.router.navigate(["/login"]), 6e3);
+          const { cpf, password } = res;
+          this.cadastro.loginData = { cpf, password };
+          setTimeout(() => this.router.navigate(["/login"]), 3.5e3);
         }
       });
       else {

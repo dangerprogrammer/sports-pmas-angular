@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { cadastroTypes, loginData, subscribeTypes } from '../types';
+import { cadastroTypes, loginData, modalidade, subscribeTypes } from '../types';
 import { tap } from 'rxjs';
 import { User, token } from '../interfaces';
 
@@ -73,7 +73,7 @@ export class CadastroService {
 
   searchModalidades = () => this.http.get('nest-api/search/modalidades');
 
-  searchHorarios = (modName: string) => this.http.get(`nest-api/search/horarios/${modName}`);
+  searchHorarios = ({ name }: modalidade) => this.http.get(`nest-api/search/horarios/${name}`);
 
   searchUserByToken() {
     const { access_token } = this.token;

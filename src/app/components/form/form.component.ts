@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChildren } from '@angular/core';
 import { formTitle } from '../../types';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -12,6 +12,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class FormComponent implements AfterViewInit {
   @Input() titleForm?: string;
   @Input() titlesSwitch?: formTitle[];
+  @Input() isFreeze: boolean = !1;
+  @Input() loginForm: boolean = !1;
+  
   @ViewChildren('title') titles!: ElementRef[];
 
   constructor(

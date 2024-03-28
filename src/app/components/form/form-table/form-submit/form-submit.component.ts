@@ -11,6 +11,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class FormSubmitComponent {
   @Input() form!: FormGroup;
   @Input() submitEvent?: any;
+  @Input() freezeFormFunc!: any;
 
   hasRole = (roles: any[], role: string) => roles.find(r => r == role);
 
@@ -28,6 +29,9 @@ export class FormSubmitComponent {
       };
     };
 
-    if (this.submitEvent) return this.submitEvent(userPrisma, this.form);
+    if (this.submitEvent) {
+      this.freezeFormFunc(!0);
+      return this.submitEvent(userPrisma, this.form);
+    };
   }
 }

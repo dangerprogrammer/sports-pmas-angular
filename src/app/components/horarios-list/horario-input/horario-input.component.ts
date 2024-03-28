@@ -36,7 +36,6 @@ export class HorarioInputComponent {
 
     const inscricoes = this.form.get('inscricoes') as FormGroup;
 
-    return console.log(...optionsChecked);
     inscricoes.setValue(optionsChecked);
   }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { CadastrosHeaderComponent } from '../../../components/cadastros-header/cadastros-header.component';
 import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';

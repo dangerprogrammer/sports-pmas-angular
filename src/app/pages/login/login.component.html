@@ -2,13 +2,15 @@
     <app-back-button link="/">Voltar</app-back-button>
 </app-header>
 <app-main>
-    <app-form titleForm="Faça seu login">
+    <app-form titleForm="Faça seu login" [loginForm]="true">
         @if (hasError) {
         <span class="erro-msg">{{errorMsg}}</span>
         }
         <form-table [form]="form" [submitEvent]="submitFunction" submitText="Login">
-            <form-input [form]="form" controlName="cpf">CPF</form-input>
-            <form-input [form]="form" controlName="password" autocomplete="new-password">Senha</form-input>
+            <div class="col">
+                <form-input [form]="form" controlName="cpf">CPF</form-input>
+                <form-input [form]="form" controlName="password" autocomplete="new-password">Senha</form-input>
+            </div>
             <form-link link="/cadastro">
                 <strong>Não possui uma conta? Cadastre-se já!</strong>
             </form-link>

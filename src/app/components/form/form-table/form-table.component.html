@@ -1,2 +1,11 @@
-<ng-content></ng-content>
-<form-submit [form]="form" [submitEvent]="submitEvent">{{submitText}}</form-submit>
+<section class="content">
+    <ng-content select="form-link"></ng-content>
+    @if (hasFormInput()) {
+    <ul class="grid">
+        <ng-content select="form-input"></ng-content>
+    </ul>
+    }
+    <ng-content select="horarios-list"></ng-content>
+    <ng-content></ng-content>
+</section>
+<form-submit [form]="form" [submitEvent]="submitEvent" [freezeFormFunc]="freezeFormFunc">{{submitText}}</form-submit>

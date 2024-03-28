@@ -1,5 +1,14 @@
+@use '../../../styles';
+
 form-submit {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1em;
 }

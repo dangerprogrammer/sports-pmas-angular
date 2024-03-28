@@ -43,9 +43,11 @@ export class HorariosListComponent implements OnInit {
       this.modalidades = modalidades;
 
       for (const modalidade of modalidades) {
-        const prismaHorarios = this.cadastro.searchHorarios(modalidade.name);
+        const prismaHorarios = this.cadastro.searchHorarios(modalidade);
 
-        (prismaHorarios as Observable<horario[]>).subscribe(horarios => this.addHorario(modalidade, horarios));
+        (prismaHorarios as Observable<horario[]>).subscribe(horarios => {
+          if (horarios.length) this.addHorario(modalidade, horarios);
+        });
       };
     });
   }

@@ -70,7 +70,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
       controlValue = this.multiple ?
         htmlOptions.filter(({ checked }) => checked).map(({ id }) => id) :
-        htmlOptions.find(({ checked }) => checked);
+        htmlOptions.find(({ checked }) => checked)?.id;
 
       this.form.get(this.controlName)?.setValue(controlValue);
       this.cdr.detectChanges();

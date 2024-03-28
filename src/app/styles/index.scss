@@ -24,3 +24,15 @@ app-cadastros-header {
     top: 0;
     z-index: 100;
 }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(24rem, calc(100vw - 2em)), 1fr));
+    gap: 1em;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}

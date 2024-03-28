@@ -15,4 +15,14 @@
         border: .15em solid #ddd;
         border-radius: .5em;
     }
+
+    .desc {
+        text-align: center;
+        font-size: 1.1em;
+        letter-spacing: .05em;
+        color: global.$green-color;
+        font-weight: 500;
+        pointer-events: none;
+        user-select: none;
+    }
 }

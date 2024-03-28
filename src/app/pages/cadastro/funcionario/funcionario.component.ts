@@ -12,6 +12,7 @@ import { NotificationsListComponent } from '../../../components/notifications-li
 import { NotificationService } from '../../../services/notification.service';
 import { CadastroSubmit } from '../../../tools';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-funcionario',
@@ -24,7 +25,8 @@ import { HorariosListComponent } from '../../../components/horarios-list/horario
     FormTableComponent,
     FormLinkComponent,
     NotificationsListComponent,
-    HorariosListComponent
+    HorariosListComponent,
+    NgIf
   ],
   templateUrl: './funcionario.component.html',
   styleUrl: './funcionario.component.scss'
