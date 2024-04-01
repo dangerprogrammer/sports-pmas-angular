@@ -12,6 +12,9 @@ import { MainComponent } from '../../components/main/main.component';
 import { DashboardSidebarComponent } from '../../components/dashboard/dashboard-sidebar/dashboard-sidebar.component';
 import { DashboardsListComponent } from '../../components/dashboard/dashboards-list/dashboards-list.component';
 import { CreatorContentComponent } from '../../components/creator-content/creator-content.component';
+import { LogoutButtonComponent } from '../../components/header/logout-button/logout-button.component';
+import { HeaderButtonListComponent } from '../../components/header/header-button-list/header-button-list.component';
+import { ButtonListMainComponent } from '../../components/header/button-list-main/button-list-main.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -24,7 +27,10 @@ import { CreatorContentComponent } from '../../components/creator-content/creato
     MainComponent,
     DashboardSidebarComponent,
     DashboardsListComponent,
-    CreatorContentComponent
+    CreatorContentComponent,
+    LogoutButtonComponent,
+    HeaderButtonListComponent,
+    ButtonListMainComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -35,22 +41,27 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) { }
 
-  showSidebar: boolean = !1;
+  showSidebar: boolean = !0;
 
   ngOnInit(): void {
-    const that = this;
     const userByToken = this.cadastro.searchUserByToken();
     const refresh = this.cadastro.refreshToken();
 
     refresh.subscribe({
-      error: that.logoutButton, complete() {
+      error: this.logoutButton, complete: () => {
         userByToken.subscribe(user => {
-          that.user = user as PrismaUser;
-          that.loaded = !0;
-          that.userRoles = that.user.roles;
+          this.user = user as PrismaUser;
+          this.loaded = !0;
+          this.userRoles = this.user.roles;
         });
       }
     });
+  }
+
+  toggleDashboards: boolean = !0;
+
+  onToggleDashboards(toggle?: boolean) {
+    this.toggleDashboards = toggle == undefined ? !this.toggleDashboards : toggle;
   }
 
   logoutButton = () => {
@@ -58,15 +69,15 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(["/login"]);
   }
 
-  goProfile = () => {
-    this.router.navigate(["/profile"]);
-  };
+  goProfile = () => this.router.navigate(["/profile"]);
+
+  goModalidades = () => this.router.navigate(["/modalidades"]);
 
   toggleSidebar = () => {
     this.showSidebar = !this.showSidebar;
   }
 
-  userRoles: string[] = [];
+  userRoles: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[] = [];
   loaded: boolean = !1;
   user!: PrismaUser;
 }

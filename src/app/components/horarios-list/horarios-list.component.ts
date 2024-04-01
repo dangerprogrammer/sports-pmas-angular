@@ -39,13 +39,13 @@ export class HorariosListComponent implements OnInit {
   ngOnInit(): void {
     const prismaModalidades = this.cadastro.searchModalidades();
 
-    (prismaModalidades as Observable<modalidade[]>).subscribe(modalidades => {
+    prismaModalidades.subscribe(modalidades => {
       this.modalidades = modalidades;
 
       for (const modalidade of modalidades) {
         const prismaHorarios = this.cadastro.searchHorarios(modalidade);
 
-        (prismaHorarios as Observable<horario[]>).subscribe(horarios => {
+        prismaHorarios.subscribe(horarios => {
           if (horarios.length) this.addHorario(modalidade, horarios);
         });
       };

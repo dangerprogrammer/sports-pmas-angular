@@ -10,4 +10,21 @@
     &.right {
         padding-right: .5em;
     }
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: .4em;
+    }
+
+    .right-content {
+        position: relative;
+        translate: .5em;
+        transition: rotate .2s ease-in-out;
+
+        &.showing {
+            rotate: .25turn;
+        }
+    }
 }

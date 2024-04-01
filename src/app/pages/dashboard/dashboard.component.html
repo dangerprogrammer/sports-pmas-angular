@@ -6,7 +6,7 @@
         </svg>
         <span>Menu</span>
     </header-button>
-    <header-button [click]="logoutButton" [iconSide]="'right'">
+    <header-button [click]="logoutButton" iconSide="right">
         <span>Fazer Logout</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
             <path
@@ -30,26 +30,52 @@
                 </svg>
                 <span>Conta</span>
             </header-button>
-            <header-button [click]="logoutButton">
-                <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                    <path
-                        d="M160 256a16 16 0 0116-16h144V136c0-32-33.79-56-64-56H104a56.06 56.06 0 00-56 56v240a56.06 56.06 0 0056 56h160a56.06 56.06 0 0056-56V272H176a16 16 0 01-16-16zM459.31 244.69l-80-80a16 16 0 00-22.62 22.62L409.37 240H320v32h89.37l-52.68 52.69a16 16 0 1022.62 22.62l80-80a16 16 0 000-22.62z" />
-                </svg>
-                <span>Fazer Logout</span>
-            </header-button>
+            <header-button-list [showing]="toggleDashboards">
+                <button-list-main (outputClick)="onToggleDashboards($event)" [showing]="toggleDashboards"
+                    title="Dashboards">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                        <path
+                            d="M204 240H68a36 36 0 01-36-36V68a36 36 0 0136-36h136a36 36 0 0136 36v136a36 36 0 01-36 36zM444 240H308a36 36 0 01-36-36V68a36 36 0 0136-36h136a36 36 0 0136 36v136a36 36 0 01-36 36zM204 480H68a36 36 0 01-36-36V308a36 36 0 0136-36h136a36 36 0 0136 36v136a36 36 0 01-36 36zM444 480H308a36 36 0 01-36-36V308a36 36 0 0136-36h136a36 36 0 0136 36v136a36 36 0 01-36 36z" />
+                    </svg>
+                </button-list-main>
+                @if (userRoles.includes('ADMIN')) {
+                <header-button>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                        <path
+                            d="M479.07 111.35a16 16 0 00-13.15-14.75C379.89 81.18 343.69 69.12 266 34.16c-7.76-2.89-12.57-2.84-20 0-77.69 35-113.89 47-199.92 62.44a16 16 0 00-13.15 14.75c-3.85 61.1 4.34 118 24.36 169.15a348.86 348.86 0 0071.43 112.41c44.67 47.43 94.2 75.12 119.74 85.6a20 20 0 0015.11 0c27-10.92 74.69-37.82 119.71-85.62a348.86 348.86 0 0071.43-112.39c20.02-51.14 28.21-108.05 24.36-169.15z" />
+                    </svg>
+                    <span>Admin</span>
+                </header-button>
+                }
+                @if (userRoles.includes('PROFESSOR')) {
+                <header-button>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                        <path
+                            d="M479.07 111.35a16 16 0 00-13.15-14.75C379.89 81.18 343.69 69.12 266 34.16c-7.76-2.89-12.57-2.84-20 0-77.69 35-113.89 47-199.92 62.44a16 16 0 00-13.15 14.75c-3.85 61.1 4.34 118 24.36 169.15a348.86 348.86 0 0071.43 112.41c44.67 47.43 94.2 75.12 119.74 85.6a20 20 0 0015.11 0c27-10.92 74.69-37.82 119.71-85.62a348.86 348.86 0 0071.43-112.39c20.02-51.14 28.21-108.05 24.36-169.15z" />
+                    </svg>
+                    <span>Professor</span>
+                </header-button>
+                }
+                @if (userRoles.includes('ALUNO')) {
+                <header-button>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                        <path
+                            d="M479.07 111.35a16 16 0 00-13.15-14.75C379.89 81.18 343.69 69.12 266 34.16c-7.76-2.89-12.57-2.84-20 0-77.69 35-113.89 47-199.92 62.44a16 16 0 00-13.15 14.75c-3.85 61.1 4.34 118 24.36 169.15a348.86 348.86 0 0071.43 112.41c44.67 47.43 94.2 75.12 119.74 85.6a20 20 0 0015.11 0c27-10.92 74.69-37.82 119.71-85.62a348.86 348.86 0 0071.43-112.39c20.02-51.14 28.21-108.05 24.36-169.15z" />
+                    </svg>
+                    <span>Aluno</span>
+                </header-button>
+                }
+            </header-button-list>
+            @if (userRoles.includes('ADMIN') || userRoles.includes('PROFESSOR')) {
+                <header-button [click]="goModalidades">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="136" y="136" width="240" height="240" rx="56" ry="56"/><path d="M336 96V32a16 16 0 00-16-16H192a16 16 0 00-16 16v64a80.09 80.09 0 00-80 80v160a80.09 80.09 0 0080 80v64a16 16 0 0016 16h128a16 16 0 0016-16v-64a80.09 80.09 0 0080-80V176a80.09 80.09 0 00-80-80zm56 224a72.08 72.08 0 01-72 72H192a72.08 72.08 0 01-72-72V192a72.08 72.08 0 0172-72h128a72.08 72.08 0 0172 72z"/></svg>
+                    <span>Modalidades</span>
+                </header-button>
+            }
+            <logout-button [click]="logoutButton"></logout-button>
         </main>
     </dashboard-sidebar>
-    <dashboards-list [dashboards]="userRoles">
-        @if (userRoles.includes("ADMIN")) {
-        <admin-dashboard [user]="user"></admin-dashboard>
-        }
-        @if (userRoles.includes("PROFESSOR")) {
-        <professor-dashboard [user]="user"></professor-dashboard>
-        }
-        @if (userRoles.includes("ALUNO")) {
-        <aluno-dashboard [user]="user"></aluno-dashboard>
-        }
-    </dashboards-list>
+    <dashboards-list [dashboards]="userRoles" [user]="user"></dashboards-list>
     }
     } @else {
     <div class="loader">Loading...</div>

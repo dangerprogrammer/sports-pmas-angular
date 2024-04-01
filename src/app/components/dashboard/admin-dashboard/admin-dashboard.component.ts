@@ -26,16 +26,13 @@ export class AdminDashboardComponent implements OnInit {
   updateSolics = () => {
     const solics = this.cadastro.searchByAdmin(this.user.id);
 
-    solics.subscribe(res => {
-      const listSolics = res as PrismaSolic[];
+    solics.subscribe(listSolics => {
       this.solicUsers = [];
 
       listSolics.forEach(solic => {
         const userSolic = this.cadastro.searchUserById(solic.userId);
 
-        (userSolic as Observable<PrismaUser>).subscribe(solicUser => 
-          this.solicUsers.push(solicUser)
-        );
+        userSolic.subscribe(solicUser => this.solicUsers.push(solicUser));
       });
     });
   }

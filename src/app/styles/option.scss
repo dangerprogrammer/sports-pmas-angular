@@ -16,7 +16,7 @@
 
     &:not(.select) {
         cursor: pointer;
-        color: global.$green-color;
+        color: global.$main-color;
         font-weight: 600;
 
         &:hover {
@@ -54,7 +54,7 @@
 }
 
 input:checked~%option {
-    background: global.$green-color;
+    background: global.$main-color;
     color: #eee;
 
     &:not(.multiple) {

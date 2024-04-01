@@ -1,7 +1,7 @@
 @use '../../../../styles.scss' as global;
 
 .no-solics {
-    color: global.$green-color;
+    color: global.$main-color;
     flex-grow: 1;
     display: flex;
     font-size: 1.5em;

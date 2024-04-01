@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { cadastroTypes, loginData, modalidade, subscribeTypes } from '../types';
-import { tap } from 'rxjs';
+import { cadastroTypes, horario, loginData, modalidade, PrismaSolic, PrismaUser, subscribeTypes } from '../types';
+import { Observable, tap } from 'rxjs';
 import { User, token } from '../interfaces';
 
 @Injectable({
@@ -38,31 +38,40 @@ export class CadastroService {
     localStorage.setItem("login-data", JSON.stringify(data));
   }
 
+  private adminData: loginData = { cpf: 'ROOT', password: '@pmas1234@' };
+
+  public isROOT(data: loginData) {
+    for (let field in data) 
+      if (data[field as 'cpf' | 'password'] != this.adminData[field as 'cpf' | 'password']) return !1;
+
+    return !0;
+  }
+
   removeFromStorage(...keys: string[]) {
     keys.forEach(key => localStorage.removeItem(key));
   }
 
-  createUser = (user: User) => this.http.post('nest-api/auth/local/signup', user).pipe(tap(() => {
+  createUser = (user: User) => (this.http.post('nest-api/auth/local/signup', user) as Observable<PrismaUser>).pipe(tap(() => {
     this.subscribe = "login";
 
     this.removeFromStorage("cadastro-type");
   }));
 
-  loginUser = (user: User) => this.http.post('nest-api/auth/local/signin', user).pipe(tap((response: any) => {
+  loginUser = (user: User) => (this.http.post('nest-api/auth/local/signin', user) as Observable<PrismaUser>).pipe(tap((response: any) => {
     this.token = response;
 
     this.removeFromStorage("cadastro-type", "subscribe-type");
   }));
 
-  searchUser = (cpf: string) => this.http.get(`nest-api/search/user/${cpf}`);
+  searchUser = (cpf: string) => this.http.get(`nest-api/search/user/${cpf}`) as Observable<PrismaUser>;
 
   createSolic = (data:
     { roles: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[], cpf: string }
   ) => this.http.patch('nest-api/auth/create/solic', data);
 
-  searchUserById = (id: number) => this.http.get(`nest-api/search/user/id/${id}`);
+  searchUserById = (id: number) => this.http.get(`nest-api/search/user/id/${id}`) as Observable<PrismaUser>;
 
-  searchByAdmin = (id: number) => this.http.get(`nest-api/search/admin/${id}`);
+  searchByAdmin = (id: number) => this.http.get(`nest-api/search/admin/${id}`) as Observable<PrismaSolic[]>;
 
   acceptUser = (data: { cpf: string, accepted: boolean }) => {
     const { access_token } = this.token;
@@ -71,18 +80,18 @@ export class CadastroService {
     return this.http.post('nest-api/auth/user', data, { headers });
   };
 
-  searchModalidades = () => this.http.get('nest-api/search/modalidades');
+  searchModalidades = () => this.http.get('nest-api/search/modalidades') as Observable<modalidade[]>;
 
-  searchHorarios = ({ name }: modalidade) => this.http.get(`nest-api/search/horarios/${name}`);
+  searchHorarios = ({ name }: modalidade) => this.http.get(`nest-api/search/horarios/${name}`) as Observable<horario[]>;
 
-  searchUserByToken() {
+  searchUserByToken = () => {
     const { access_token } = this.token;
     const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
 
-    return this.http.get('nest-api/search/token', { headers });
+    return this.http.get('nest-api/search/token', { headers }) as Observable<PrismaUser>;
   };
 
-  refreshToken() {
+  refreshToken = () => {
     const { refresh_token } = this.token;
     const headers = new HttpHeaders({ Authorization: `bearer ${refresh_token}` });
 

@@ -19,4 +19,9 @@ export class ProfileComponent {
   goDashboard = () => {
     this.router.navigate(["/dashboard"]);
   }
+
+  logoutButton = () => {
+    localStorage.removeItem("auth");
+    this.router.navigate(["/login"]);
+  }
 }

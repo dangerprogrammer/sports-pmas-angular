@@ -15,7 +15,7 @@
 
     &:not(:has(.wrong)) {
         .input-title {
-            color: global.$green-color;
+            color: global.$main-color;
         }
     }
 

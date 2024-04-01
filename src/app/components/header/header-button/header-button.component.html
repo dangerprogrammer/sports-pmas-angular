@@ -1,3 +1,8 @@
 <button (click)="click && click()" class="header-button" [class.left]="iconSide == 'left'" [class.right]="iconSide == 'right'">
-    <ng-content></ng-content>
+    <span class="content">
+        <ng-content></ng-content>
+    </span>
+    <div class="right-content" [class.showing]="showing">
+        <ng-content select="[rightIcon]"></ng-content>
+    </div>
 </button>

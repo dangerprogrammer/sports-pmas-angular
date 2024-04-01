@@ -1,0 +1,9 @@
+.list-items {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1em;
+
+    &.hidden {
+        display: none;
+    }
+}

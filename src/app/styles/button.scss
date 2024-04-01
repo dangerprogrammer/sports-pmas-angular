@@ -16,4 +16,8 @@
     &:hover {
         background: #eee2;
     }
+
+    * {
+        pointer-events: none;
+    }
 }

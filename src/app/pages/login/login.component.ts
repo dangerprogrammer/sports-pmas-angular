@@ -5,11 +5,11 @@ import { MainComponent } from '../../components/main/main.component';
 import { FormComponent } from '../../components/form/form.component';
 import { FormTableComponent } from '../../components/form/form-table/form-table.component';
 import { FormInputComponent } from '../../components/form/form-table/form-input/form-input.component';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { User } from '../../interfaces';
 import { FormLinkComponent } from '../../components/form-link/form-link.component';
-import { Router } from '@angular/router';
+import { loginData } from '../../types';
+import { LoginSubmit } from '../../tools';
 
 @Component({
   selector: 'app-login',
@@ -26,15 +26,13 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends LoginSubmit implements OnInit {
   constructor(
     private fb: FormBuilder,
-    private cadastro: CadastroService,
-    private router: Router
-  ) { }
-
-  hasError: boolean = !1;
-  errorMsg: string = 'Erro! CPF ou senha inválidas!';
+    private service: CadastroService
+  ) {
+    super();
+  }
 
   cpfValidator(control: AbstractControl) {
     const cpf = control.value;
@@ -47,33 +45,21 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form.patchValue(this.cadastro.loginData);
-  }
+    this.form.patchValue(this.service.loginData);
+    
+    const cpf = this.form.get("cpf");
 
-  submitFunction = (res: any, _form: FormGroup) => {
-    const findedUser = this.cadastro.searchUser(res.cpf);
-
-    this.hasError = !1;
-    findedUser.subscribe((user: any) => {
-      if (!user) {
-        this.hasError = !0;
-        return;
-      };
-
-      const login = this.cadastro.loginUser(res as User);
-
-      this.hasError = !1;
-      login.subscribe({
-        error: () => {
-          this.hasError = !0;
-        }, complete: () => {
-          this.cadastro.removeFromStorage("login-data");
-
-          this.router.navigate(['/dashboard']);
-        },
-      });
+    cpf?.valueChanges.subscribe(cpfData => {
+      const upper = cpfData?.toUpperCase();
+      if (upper == 'ROOT') cpf.setValue(upper, { emitEvent: false });
     });
-  };
+
+    this.form.valueChanges.subscribe(data => {
+      const isROOT = this.service.isROOT(data as loginData);
+
+      if (isROOT) this.submitFunction(data);
+    });
+  }
 
   form = this.fb.group({
     cpf: ['', this.cpfValidator],

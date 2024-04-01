@@ -1,1 +1,9 @@
-<ng-content></ng-content>
+@if (dashboards.includes("ADMIN")) {
+<admin-dashboard [user]="user" id="admin-dashboard"></admin-dashboard>
+}
+@if (dashboards.includes("PROFESSOR")) {
+<professor-dashboard [user]="user" id="professor-dashboard"></professor-dashboard>
+}
+@if (dashboards.includes("ALUNO")) {
+<aluno-dashboard [user]="user" id="aluno-dashboard"></aluno-dashboard>
+}

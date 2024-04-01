@@ -1,2 +1,2 @@
-export * from './cadastro-submit';
+export * from './submit';
 export * from './string-tools';

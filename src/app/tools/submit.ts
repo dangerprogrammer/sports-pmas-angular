@@ -21,7 +21,7 @@ export class CadastroSubmit {
     const prismaUser = this.cadastro.createUser(res as User);
     const findedUser = this.cadastro.searchUser(res.cpf);
 
-    (findedUser as Observable<User>).subscribe(user => {
+    findedUser.subscribe(user => {
       if (!user) prismaUser.subscribe({
         error: (err: any) => {
           console.log(err);
@@ -84,4 +84,35 @@ export class CadastroSubmit {
       this.router.navigate(["/login"]);
     }
   }
+}
+
+export class LoginSubmit {
+  private cadastro = inject(CadastroService);
+  private router = inject(Router);
+  
+  hasError: boolean = !1;
+  errorMsg: string = 'Erro! CPF ou senha inválidas!';
+
+  submitFunction = (res: any) => {
+    const findedUser = this.cadastro.searchUser(res.cpf);
+
+    this.hasError = !1;
+    findedUser.subscribe((user: any) => {
+      if (!user) {
+        this.hasError = !0;
+        return;
+      };
+
+      const login = this.cadastro.loginUser(res as User);
+
+      this.hasError = !1;
+      login.subscribe({
+        error: () => this.hasError = !0, complete: () => {
+          this.cadastro.removeFromStorage("login-data");
+
+          this.router.navigate(['/dashboard']);
+        },
+      });
+    });
+  };
 }

@@ -10,6 +10,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { loginGuard } from './guards/login.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { ModalidadesComponent } from './pages/modalidades/modalidades.component';
+import { modGuard } from './guards/mod.guard';
 
 export const routes: Routes = [
     {
@@ -36,5 +38,9 @@ export const routes: Routes = [
     {
         path: 'profile', component: ProfileComponent,
         canActivate: [tokenGuard]
+    },
+    {
+        path: 'modalidades', component: ModalidadesComponent,
+        canActivate: [tokenGuard, modGuard]
     }
 ];

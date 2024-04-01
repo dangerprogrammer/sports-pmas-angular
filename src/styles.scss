@@ -6,7 +6,7 @@
     box-sizing: border-box;
 }
 
-$green-color: #055;
+$main-color: #0c3247;
 $header-height: 3rem;
 
 html {
@@ -45,6 +45,11 @@ app-main {
 
 header-button .ionicon {
     font-size: 1.5em;
+}
+
+header-button-list {
+    display: flex;
+    flex-direction: column;
 }
 
 horario-input {

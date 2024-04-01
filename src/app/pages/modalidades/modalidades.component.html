@@ -15,5 +15,9 @@
     </header-button>
 </app-header>
 <app-main>
-    <p>profile works!</p>
+    <li class="horarios-list" [hidden]="!horariosList.length">
+        <ng-container #horarios></ng-container>
+    </li>
+    <!-- FAZER UM OUTPUT AQUI!! -->
+    <create-modalidade></create-modalidade>
 </app-main>
