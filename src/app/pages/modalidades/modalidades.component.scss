@@ -1,0 +1,15 @@
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    .modalidades-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    create-modalidade {
+        margin-inline: auto;
+    }
+}

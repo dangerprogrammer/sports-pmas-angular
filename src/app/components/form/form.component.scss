@@ -36,8 +36,15 @@
         span {
             position: relative;
             z-index: 10;
-            padding: 0 3vw;
+            padding-inline: 3vw;
             background: white;
+
+            &.small {
+                font-size: .7em;
+                padding-inline: .5em;
+                font-weight: 500;
+                color: #aaa;
+            }
         }
     }
 

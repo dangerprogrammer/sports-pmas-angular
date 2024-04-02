@@ -1,6 +1,5 @@
 import { ComponentRef, Injectable, viewChild, ViewChild, ViewContainerRef } from "@angular/core";
 import { NotificationComponent } from "../components/notification/notification.component";
-import { NotificationsListComponent } from "../components/notifications-list/notifications-list.component";
 
 @Injectable({
     providedIn: 'root'

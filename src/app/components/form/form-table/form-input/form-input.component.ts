@@ -3,11 +3,12 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
 import { options } from '../../../../types';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'form-input',
   standalone: true,
-  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe],
+  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, NgIf],
   templateUrl: './form-input.component.html',
   styleUrl: './form-input.component.scss'
 })
@@ -24,7 +25,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() leastOne: boolean = !1;
   @Input() textarea: boolean = !1;
   @Input() readCPF: boolean = !1;
-  @Input() form!: FormGroup;
+  @Input() form?: FormGroup;
   @Input() autocomplete: string = 'on';
   @Input() options?: options;
   @Input() selectedOption: number = 0;
@@ -34,6 +35,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @ViewChildren('options') viewOptions?: QueryList<ElementRef>;
 
   ngOnInit(): void {
+    if (!this.form) return;
+
     const reader = this.form.get(this.controlName);
 
     if (this.controlName == 'cpf' && this.readCPF) reader?.valueChanges.subscribe((cpf: string) => {
@@ -71,6 +74,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
       controlValue = this.multiple ?
         htmlOptions.filter(({ checked }) => checked).map(({ id }) => id) :
         htmlOptions.find(({ checked }) => checked)?.id;
+
+      if (!this.form) return;
 
       this.form.get(this.controlName)?.setValue(controlValue);
       this.cdr.detectChanges();

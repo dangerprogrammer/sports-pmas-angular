@@ -1,7 +1,7 @@
 .list-items {
     display: flex;
     flex-direction: column;
-    padding-left: 1em;
+    border-left: .2em solid #eee3;
 
     &.hidden {
         display: none;

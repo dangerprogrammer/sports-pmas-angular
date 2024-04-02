@@ -1,0 +1,31 @@
+@use '../../../styles.scss' as global;
+
+.create-mod {
+    position: relative;
+    cursor: pointer;
+    background: black;
+    color: #eee;
+    font-weight: 600;
+    font-size: 1em;
+    letter-spacing: .05em;
+    padding: .5em 1em;
+    border-radius: .5em;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        inset: 0;
+        position: absolute;
+        background: global.$main-color;
+        transition: 0.1s ease-in-out;
+    }
+
+    &:hover::before {
+        opacity: .6;
+    }
+
+    span {
+        position: relative;
+        z-index: 10;
+    }
+}

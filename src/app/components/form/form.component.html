@@ -1,7 +1,7 @@
 <form class="form-cadastro" [class.freeze]="isFreeze" [class.login]="loginForm">
     @if (titleForm) {
     <h1 class="form-title">
-        <span>{{titleForm}}</span>
+        <span [class.small]="titleSmall">{{titleForm}}</span>
     </h1>
     }
     @if (titlesSwitch) {
@@ -13,11 +13,12 @@
     }
     <ul class="form-inputs">
         @if (filterType == 'admin') {
-            <ng-content select="[tableName='admin']"></ng-content>
+        <ng-content select="[tableName='admin']"></ng-content>
         } @else if (filterType == 'professor') {
-            <ng-content select="[tableName='professor']"></ng-content>
+        <ng-content select="[tableName='professor']"></ng-content>
         } @else {
-            <ng-content></ng-content>
+        <ng-content></ng-content>
         }
+        <ng-container *ngIf="createMod" #inputs></ng-container>
     </ul>
 </form>

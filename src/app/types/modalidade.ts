@@ -1,6 +1,8 @@
 export type modalidade = {
-    name: string;
+    name: modName;
     endereco: string;
     bairro: string;
     available: number;
 };
+
+export type modName = 'HIDRO' | 'NATACAO';

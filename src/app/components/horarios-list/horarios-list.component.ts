@@ -28,7 +28,7 @@ export class HorariosListComponent implements OnInit {
 
   addHorario = (modalidade: modalidade, horarios: horario[] = []) => {
     this.horariosList.push({ component: HorarioHeaderComponent });
-    
+
     const headerRef = this.horarios.createComponent(HorarioHeaderComponent);
 
     headerRef.setInput('modalidade', modalidade);

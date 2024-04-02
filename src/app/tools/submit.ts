@@ -2,9 +2,10 @@ import { FormGroup } from "@angular/forms";
 import { Observable } from "rxjs";
 import { User } from "../interfaces";
 import { NotificationService } from "../services/notification.service";
-import { inject } from "@angular/core";
+import { ComponentRef, inject } from "@angular/core";
 import { CadastroService } from "../services/cadastro.service";
 import { Router } from "@angular/router";
+import { FormComponent } from "../components/form/form.component";
 
 export class CadastroSubmit {
   private cadastro = inject(CadastroService);
@@ -115,4 +116,21 @@ export class LoginSubmit {
       });
     });
   };
+}
+
+export class ModSubmit {
+  submitExistingMod = () => {};
+
+  submitNewMod = () => {
+    console.log("Opa!");
+  }
+
+  isFreeze: boolean = !1;
+  formRef!: ComponentRef<FormComponent>;
+
+  onFreezeForm = (freeze: boolean) => {
+    this.isFreeze = freeze;
+    
+    this.formRef.setInput('isFreeze', this.isFreeze);
+  }
 }

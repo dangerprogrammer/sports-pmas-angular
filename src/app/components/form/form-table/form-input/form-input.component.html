@@ -1,4 +1,4 @@
-<li class="form-input" [formGroup]="form">
+<li class="form-input" *ngIf="form" [formGroup]="form">
     <label class="input-title">
         <ng-content></ng-content>
     </label>

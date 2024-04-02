@@ -15,9 +15,15 @@
     </header-button>
 </app-header>
 <app-main>
-    <li class="horarios-list" [hidden]="!horariosList.length">
-        <ng-container #horarios></ng-container>
-    </li>
-    <!-- FAZER UM OUTPUT AQUI!! -->
-    <create-modalidade></create-modalidade>
+    <main class="column">
+        <li class="modalidades-list" [hidden]="!modalidadesList.length">
+            <ng-container #modalidades></ng-container>
+        </li>
+        <create-modalidade
+        [modalidades]="modalidadesList"
+        [availableNames]="availableNames"
+        (createMod)="onCreateMod($event)"
+        [hidden]="!enableCreateMod"
+        />
+    </main>
 </app-main>
