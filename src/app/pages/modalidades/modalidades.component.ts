@@ -3,7 +3,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { MainComponent } from '../../components/main/main.component';
 import { Router } from '@angular/router';
-import { horario, modalidade, modName } from '../../types';
+import { horario, modalidade, modName, options } from '../../types';
 import { CadastroService } from '../../services/cadastro.service';
 import { CreateHorarioComponent } from '../../components/create-horario/create-horario.component';
 import { CreateModalidadeComponent } from '../../components/create-modalidade/create-modalidade.component';
@@ -26,7 +26,7 @@ import { ModSubmit } from '../../tools';
 })
 export class ModalidadesComponent extends ModSubmit implements OnInit {
   constructor(
-    private cadastro: CadastroService,
+    private service: CadastroService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -36,21 +36,20 @@ export class ModalidadesComponent extends ModSubmit implements OnInit {
   @ViewChild('modalidades', { read: ViewContainerRef }) modalidades!: ViewContainerRef;
 
   horariosList: any[] = [];
-  modalidadesList: modalidade[] = [];
-  availableNames: modName[] = ['HIDRO', 'NATACAO'];
 
   ngOnInit(): void {
-    const prismaModalidades = this.cadastro.searchModalidades();
+    const prismaModalidades = this.service.searchModalidades();
 
     prismaModalidades.subscribe(modalidades => {
       this.modalidadesList = modalidades;
+      this.modalidadesView = this.modalidades;
 
       const some = this.availableNames.find(name => !modalidades.find(({ name: modName }) => modName == name));
 
       this.enableCreateMod = !!some;
 
       for (const modalidade of modalidades) {
-        const prismaHorarios = this.cadastro.searchHorarios(modalidade);
+        const prismaHorarios = this.service.searchHorarios(modalidade);
 
         prismaHorarios.subscribe(horarios => {
           if (horarios.length) this.addExistingMod(modalidade, horarios);
@@ -59,24 +58,42 @@ export class ModalidadesComponent extends ModSubmit implements OnInit {
     });
   }
 
-  enableCreateMod: boolean = !0;
-
   addExistingMod = (modalidade: modalidade, horarios: horario[]) => {
     const formRef = this.modalidades.createComponent(FormComponent);
 
     this.formRef = formRef;
 
     const form = this.fb.group({
-      name: [modalidade.name, Validators.required]
+      name: [modalidade.name, Validators.required],
+      horarios: [horarios, Validators.required]
     });
+
+    this.form = form;
+
     const { value: oldValue } = form;
+    const availableOptions = this.availableNames.filter(name =>
+      !this.modalidadesList.find(({ name: modName }) => modName == name) || modalidade.name == name
+    );
+    const optionsName: options = availableOptions.map(option => {
+      return { id: option, text: option, status: option == modalidade.name, action() {
+        form.get("name")?.setValue(option, { emitEvent: false });
+      } }
+    });
+    const optionsHorario: options = horarios.map(({ id, time }) => {
+      return { id, text: `${time}`, status: !1 }
+    });
+    console.log(horarios);
 
     formRef.setInput('titleForm', modalidade.name);
     formRef.setInput('createMod', {
       form,
+      formInputsList: [
+        { controlName: 'name', inputText: 'Modalidades', options: optionsName },
+        { controlName: 'horarios', inputText: 'Horarios', builderOptions: optionsHorario }
+      ],
       oldValue,
       autoGenerateForms: !0,
-      submitEvent: this.submitExistingMod,
+      submitEvent: (res: any) => this.submitExistingMod(modalidade.name, res),
       submitText: 'Salvar'
     });
     formRef.setInput('isFreeze', this.isFreeze);
@@ -94,12 +111,14 @@ export class ModalidadesComponent extends ModSubmit implements OnInit {
     formRef.setInput('titleSmall', !0);
     formRef.setInput('createMod', {
       form,
+      formInputsList: [
+        { controlName: 'name', inputText: 'Modalidades' }
+      ],
+      autoGenerateForms: !0,
       submitEvent: this.submitNewMod,
     });
     formRef.setInput('isFreeze', this.isFreeze);
     formRef.setInput('freezeForm', this.onFreezeForm);
-
-    // console.log(modNames);
 
     this.enableCreateMod = !1;
   }

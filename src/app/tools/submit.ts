@@ -2,10 +2,11 @@ import { FormGroup } from "@angular/forms";
 import { Observable } from "rxjs";
 import { User } from "../interfaces";
 import { NotificationService } from "../services/notification.service";
-import { ComponentRef, inject } from "@angular/core";
+import { ComponentRef, inject, ViewContainerRef } from "@angular/core";
 import { CadastroService } from "../services/cadastro.service";
 import { Router } from "@angular/router";
 import { FormComponent } from "../components/form/form.component";
+import { modalidade, modName, options } from "../types";
 
 export class CadastroSubmit {
   private cadastro = inject(CadastroService);
@@ -90,7 +91,7 @@ export class CadastroSubmit {
 export class LoginSubmit {
   private cadastro = inject(CadastroService);
   private router = inject(Router);
-  
+
   hasError: boolean = !1;
   errorMsg: string = 'Erro! CPF ou senha inválidas!';
 
@@ -119,7 +120,65 @@ export class LoginSubmit {
 }
 
 export class ModSubmit {
-  submitExistingMod = () => {};
+  private cadastro = inject(CadastroService);
+
+  enableCreateMod: boolean = !0;
+  modalidadesList: modalidade[] = [];
+  modalidadesView!: ViewContainerRef;
+  availableNames: modName[] = ['HIDRO', 'NATACAO'];
+
+  submitExistingMod = (name: string, update: Partial<modalidade>) => {
+    const updateMod = this.cadastro.updateModalidade(name, update);
+    const prismaModalidades = this.cadastro.searchModalidades();
+
+    updateMod.subscribe(modalidade => {
+      prismaModalidades.subscribe(modalidades => {
+        this.modalidadesList = modalidades;
+
+        this.onFreezeForm(!1);
+        this.form.setErrors({ 'equal': !0 });
+
+        this.form.patchValue({
+          name: modalidade.name
+        });
+
+        const { value: oldValue } = this.form;
+        const availableOptions = this.availableNames.filter(name =>
+          !this.modalidadesList.find(({ name: modName }) => modName == name) || modalidade.name == name
+        );
+        const options: options = availableOptions.map(option => {
+          return {
+            id: option, text: option, status: option == modalidade.name, action: () => {
+              this.form.get("name")?.setValue(option, { emitEvent: !1 });
+            }
+          }
+        });
+
+        const some = this.availableNames.find(name => !modalidades.find(({ name: modName }) => modName == name));
+
+        this.enableCreateMod = !!some;
+
+        this.modalidadesView.clear();
+        const formRef = this.modalidadesView.createComponent(FormComponent);
+
+        this.formRef = formRef;
+
+        this.formRef.setInput('titleForm', modalidade.name);
+        this.formRef.setInput('createMod', {
+          form: this.form,
+          formInputsList: [
+            { controlName: 'name', inputText: 'Modalidades', options }
+          ],
+          oldValue,
+          autoGenerateForms: !0,
+          submitEvent: (res: any, form: FormGroup) => this.submitExistingMod(modalidade.name, res),
+          submitText: 'Salvar'
+        });
+        this.formRef.setInput('isFreeze', this.isFreeze);
+        this.formRef.changeDetectorRef.detectChanges();
+      });
+    });
+  };
 
   submitNewMod = () => {
     console.log("Opa!");
@@ -127,10 +186,11 @@ export class ModSubmit {
 
   isFreeze: boolean = !1;
   formRef!: ComponentRef<FormComponent>;
+  form!: FormGroup;
 
   onFreezeForm = (freeze: boolean) => {
     this.isFreeze = freeze;
-    
+
     this.formRef.setInput('isFreeze', this.isFreeze);
   }
 }

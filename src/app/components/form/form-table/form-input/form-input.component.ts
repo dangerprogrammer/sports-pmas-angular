@@ -3,12 +3,12 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
 import { options } from '../../../../types';
-import { NgIf } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'form-input',
   standalone: true,
-  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, NgIf],
+  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, JsonPipe],
   templateUrl: './form-input.component.html',
   styleUrl: './form-input.component.scss'
 })
@@ -25,18 +25,21 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() leastOne: boolean = !1;
   @Input() textarea: boolean = !1;
   @Input() readCPF: boolean = !1;
-  @Input() form?: FormGroup;
+  @Input() form!: FormGroup;
   @Input() autocomplete: string = 'on';
   @Input() options?: options;
   @Input() selectedOption: number = 0;
   @Input() wrongField: boolean = !1;
+  @Input() inputText?: string;
+  @Input() view: boolean = !1;
+  @Input() builderOptions?: options;
   @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
+
+  htmlOptions?: HTMLInputElement[];
 
   @ViewChildren('options') viewOptions?: QueryList<ElementRef>;
 
   ngOnInit(): void {
-    if (!this.form) return;
-
     const reader = this.form.get(this.controlName);
 
     if (this.controlName == 'cpf' && this.readCPF) reader?.valueChanges.subscribe((cpf: string) => {
@@ -47,39 +50,38 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.options) {
-      const htmlOptions = this.viewOptions?.map(({ nativeElement }) => nativeElement) as HTMLInputElement[];
+    setTimeout(() => {
+      if (this.options) {
+        const htmlOptions = this.viewOptions?.map(({ nativeElement }) => nativeElement) as HTMLInputElement[];
 
-      this.options.forEach((option, ind) => {
-        if (option.status) {
-          const hasActive = htmlOptions.filter(opt => opt.checked).length;
-          const checked = !hasActive || this.multiple;
+        this.htmlOptions = htmlOptions;
+        this.options.forEach((option, ind) => {
+          if (option.status) {
+            const hasActive = htmlOptions.filter(opt => opt.checked).length;
+            const checked = !hasActive || this.multiple;
 
-          htmlOptions[ind].checked = checked;
-          this.cdr.detectChanges();
-        };
-      });
+            htmlOptions[ind].checked = checked;
+            this.cdr.detectChanges();
+          };
+        });
 
-      this.options.forEach((option, ind) => {
-        if (option.status) {
-          const lengthActive = htmlOptions.filter(opt => opt.checked).length;
-          const label = htmlOptions[ind].parentElement?.lastChild;
+        this.options.forEach((option, ind) => {
+          if (option.status) {
+            const lengthActive = htmlOptions.filter(opt => opt.checked).length;
+            const label = htmlOptions[ind].parentElement?.lastChild;
 
-          if (lengthActive <= 1) (label as HTMLLabelElement).classList.remove('multiple');
-        };
-      });
+            if (lengthActive <= 1) (label as HTMLLabelElement).classList.remove('multiple');
+          };
+        });
 
-      let controlValue;
+        let controlValue = this.multiple ?
+          htmlOptions.filter(({ checked }) => checked).map(({ id }) => id) :
+          htmlOptions.find(({ checked }) => checked)?.id;
 
-      controlValue = this.multiple ?
-        htmlOptions.filter(({ checked }) => checked).map(({ id }) => id) :
-        htmlOptions.find(({ checked }) => checked)?.id;
-
-      if (!this.form) return;
-
-      this.form.get(this.controlName)?.setValue(controlValue);
-      this.cdr.detectChanges();
-    }
+        this.form.get(this.controlName)?.setValue(controlValue);
+        this.cdr.detectChanges();
+      }
+    }, 0);
   }
 
   emitAction(ev: Event, index: number) {

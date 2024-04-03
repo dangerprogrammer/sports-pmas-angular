@@ -5,15 +5,17 @@ export type cadastroTypes = "aluno" | "funcionario";
 export type subscribeTypes = "cadastro" | "login";
 
 export type options = ({
-    id: string,
+    id: string | number,
     text: string,
     form: FormGroup,
     submitText?: string,
     status?: boolean,
-    action?: any
+    action?: Function
 } | {
-    id: string,
+    id: string | number,
     text: string,
     status?: boolean,
-    action?: any
+    action?: Function
 })[];
+
+export type role = "ALUNO" | "PROFESSOR" | "ADMIN";

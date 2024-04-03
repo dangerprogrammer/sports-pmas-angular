@@ -3,9 +3,9 @@
     @if (hasFormInput() || autoGenerateForms) {
     <ul class="grid">
         <ng-content select="form-input"></ng-content>
+        <ng-container #inputs></ng-container>
     </ul>
     }
-    <ng-container #inputs></ng-container>
     <ng-content select="horarios-list"></ng-content>
     <ng-content></ng-content>
 </section>

@@ -10,7 +10,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class FormSubmitComponent {
   @Input() form!: FormGroup;
-  @Input() submitEvent?: any;
+  @Input() submitEvent?: Function;
   @Input() freezeFormFunc!: any;
 
   hasRole = (roles: any[], role: string) => roles.find(r => r == role);

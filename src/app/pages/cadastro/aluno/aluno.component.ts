@@ -46,7 +46,7 @@ export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewI
 
   genders: genders = [
     { id: 'MASCULINO', text: 'Masculino', status: !0 },
-    { id: 'FEMININO', text: 'Feminino', status: !0 },
+    { id: 'FEMININO', text: 'Feminino', status: !1 },
     { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
 

@@ -1,13 +1,16 @@
-<li class="form-input" *ngIf="form" [formGroup]="form">
+<li class="form-input" [formGroup]="form">
     <label class="input-title">
         <ng-content></ng-content>
+        {{inputText}}
     </label>
     <div class="input-content" [class.options-content]="options">
         @if (options) {
         @for (option of options; track $index) {
         <div class="radio-option">
-            <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id" [value]="option.id" #options hidden [formControlName]="controlName" [name]="controlName" />
-            <label [htmlFor]="option.id" class="option" [class.multiple]="multiple" (click)="emitAction($event, $index)">
+            <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id" [value]="option.id" #options hidden
+                [formControlName]="controlName" [name]="controlName" />
+            <label [htmlFor]="option.id" class="option" [class.multiple]="multiple"
+                (click)="emitAction($event, $index)">
                 <div class="option-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                         <circle cx="256" cy="256" r="192" fill="none" stroke="currentColor" stroke-linecap="round"
@@ -22,11 +25,16 @@
             </label>
         </div>
         }
+        } @else if (builderOptions) {
+        @for (option of builderOptions; track $index) {
+        <div>{{option | json}}</div>
+        }
         } @else {
-        <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type" [autocomplete]="autocomplete" />
+        <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"
+            [autocomplete]="autocomplete" />
         }
     </div>
     @if (wrongField) {
-        <small class="wrong-desc">{{wrongMsg}}</small>
+    <small class="wrong-desc">{{wrongMsg}}</small>
     }
 </li>

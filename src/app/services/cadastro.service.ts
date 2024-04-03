@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { cadastroTypes, horario, loginData, modalidade, PrismaSolic, PrismaUser, subscribeTypes } from '../types';
+import { cadastroTypes, horario, loginData, modalidade, PrismaModalidade, PrismaSolic, PrismaUser, role, subscribeTypes } from '../types';
 import { tap } from 'rxjs';
 import { User, token } from '../interfaces';
 
@@ -41,7 +41,7 @@ export class CadastroService {
   private adminData: loginData = { cpf: 'ROOT', password: '@pmas1234@' };
 
   public isROOT(data: loginData) {
-    for (let field in data) 
+    for (let field in data)
       if (data[field as 'cpf' | 'password'] != this.adminData[field as 'cpf' | 'password']) return !1;
 
     return !0;
@@ -65,9 +65,21 @@ export class CadastroService {
 
   searchUser = (cpf: string) => this.http.get<PrismaUser>(`nest-api/search/user/${cpf}`);
 
-  createSolic = (data:
-    { roles: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[], cpf: string }
-  ) => this.http.patch('nest-api/auth/create/solic', data);
+  createSolic = (data: { roles: role[], cpf: string }) => this.http.patch('nest-api/auth/create/solic', data);
+
+  createModalidade = (modalidade: modalidade) => {
+    const { access_token } = this.token;
+    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+    
+    return this.http.post<modalidade>('nest-api/auth/create/modalidade', modalidade, { headers });
+  }
+
+  updateModalidade = (name: string, update: Partial<modalidade>) => {
+    const { access_token } = this.token;
+    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+
+    return this.http.patch<PrismaModalidade>('nest-api/auth/update/modalidade', { name, update }, { headers });
+  }
 
   searchUserById = (id: number) => this.http.get<PrismaUser>(`nest-api/search/user/id/${id}`);
 

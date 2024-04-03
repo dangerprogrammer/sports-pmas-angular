@@ -51,7 +51,7 @@ export class LoginComponent extends LoginSubmit implements OnInit {
 
     cpf?.valueChanges.subscribe(cpfData => {
       const upper = cpfData?.toUpperCase();
-      if (upper == 'ROOT') cpf.setValue(upper, { emitEvent: false });
+      if (upper == 'ROOT') cpf.setValue(upper, { emitEvent: !1 });
     });
 
     this.form.valueChanges.subscribe(data => {

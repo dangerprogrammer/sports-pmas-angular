@@ -1,3 +1,9 @@
+@use './app/styles/form-table.scss';
+
+form-table {
+    @extend %form-table !optional;
+}
+
 * {
     margin: 0;
     padding: 0;

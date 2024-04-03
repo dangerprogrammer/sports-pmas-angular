@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
-import { horario, modalidade } from '../../../types';
+import { horario, PrismaModalidade } from '../../../types';
 import { HorarioInputComponent } from '../horario-input/horario-input.component';
 import { StringTools } from '../../../tools';
 import { FormGroup } from '@angular/forms';
@@ -18,7 +18,7 @@ export class HorarioHeaderComponent extends StringTools implements AfterViewInit
     super();
   }
 
-  @Input() modalidade!: modalidade;
+  @Input() modalidade!: PrismaModalidade;
   @Input() horarios!: horario[];
   @Input() form?: FormGroup;
 
