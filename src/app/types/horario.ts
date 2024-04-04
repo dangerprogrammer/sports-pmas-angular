@@ -1,5 +1,5 @@
 export type horario = {
     id: number;
     time: Date;
-    periodo: string;
+    periodo: 'MANHA' | 'TARDE' | 'NOITE';
 };

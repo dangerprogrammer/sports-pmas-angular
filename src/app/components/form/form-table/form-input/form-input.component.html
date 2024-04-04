@@ -26,8 +26,12 @@
         </div>
         }
         } @else if (builderOptions) {
+        @if (builderOptions.length) {
         @for (option of builderOptions; track $index) {
         <div>{{option | json}}</div>
+        }
+        }@else {
+        <span>Nenhum horário existente</span>
         }
         } @else {
         <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"

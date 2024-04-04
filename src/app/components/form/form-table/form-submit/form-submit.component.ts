@@ -18,20 +18,20 @@ export class FormSubmitComponent {
   submitForm(ev: Event) {
     ev.preventDefault();
 
-    const userPrisma = this.form.value;
+    const prismaRes = this.form.value;
 
-    if (userPrisma.solic) {
-      if (typeof userPrisma.solic.roles == "string") userPrisma.solic.roles = userPrisma.solic.roles.split(',');
+    if (prismaRes.solic) {
+      if (typeof prismaRes.solic.roles == "string") prismaRes.solic.roles = prismaRes.solic.roles.split(',');
 
-      if (this.hasRole(userPrisma.solic.roles, "ALUNO")) userPrisma.aluno = {
-        ...userPrisma.aluno,
-        data_nasc: new Date(userPrisma.aluno.data_nasc).toISOString()
+      if (this.hasRole(prismaRes.solic.roles, "ALUNO")) prismaRes.aluno = {
+        ...prismaRes.aluno,
+        data_nasc: new Date(prismaRes.aluno.data_nasc).toISOString()
       };
     };
 
     if (this.submitEvent) {
       this.freezeFormFunc(!0);
-      return this.submitEvent(userPrisma, this.form);
+      return this.submitEvent(prismaRes, this.form);
     };
   }
 }

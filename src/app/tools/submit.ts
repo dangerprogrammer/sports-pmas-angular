@@ -1,12 +1,11 @@
-import { FormGroup } from "@angular/forms";
-import { Observable } from "rxjs";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { User } from "../interfaces";
 import { NotificationService } from "../services/notification.service";
 import { ComponentRef, inject, ViewContainerRef } from "@angular/core";
 import { CadastroService } from "../services/cadastro.service";
 import { Router } from "@angular/router";
 import { FormComponent } from "../components/form/form.component";
-import { modalidade, modName, options } from "../types";
+import { horario, modalidade, modName, options, PrismaModalidade } from "../types";
 
 export class CadastroSubmit {
   private cadastro = inject(CadastroService);
@@ -121,76 +120,118 @@ export class LoginSubmit {
 
 export class ModSubmit {
   private cadastro = inject(CadastroService);
+  private fb = inject(FormBuilder);
 
   enableCreateMod: boolean = !0;
-  modalidadesList: modalidade[] = [];
+  modalidadesList: PrismaModalidade[] = [];
   modalidadesView!: ViewContainerRef;
   availableNames: modName[] = ['HIDRO', 'NATACAO'];
 
-  submitExistingMod = (name: string, update: Partial<modalidade>) => {
+  submitExistingMod = (name: string, update: Partial<modalidade>, { form, formRef }: { form: FormGroup, formRef: ComponentRef<FormComponent> }) => {
     const updateMod = this.cadastro.updateModalidade(name, update);
     const prismaModalidades = this.cadastro.searchModalidades();
 
-    updateMod.subscribe(modalidade => {
+    updateMod.subscribe(() => {
       prismaModalidades.subscribe(modalidades => {
         this.modalidadesList = modalidades;
 
-        this.onFreezeForm(!1);
-        this.form.setErrors({ 'equal': !0 });
+        formRef.setInput('isFreeze', !1);
+        form.setErrors({ 'equal': !0 });
 
-        this.form.patchValue({
-          name: modalidade.name
-        });
-
-        const { value: oldValue } = this.form;
-        const availableOptions = this.availableNames.filter(name =>
-          !this.modalidadesList.find(({ name: modName }) => modName == name) || modalidade.name == name
+        const some = this.availableNames.find(name =>
+          !modalidades.find(({ name: modName }) => modName == name)
         );
-        const options: options = availableOptions.map(option => {
-          return {
-            id: option, text: option, status: option == modalidade.name, action: () => {
-              this.form.get("name")?.setValue(option, { emitEvent: !1 });
-            }
-          }
-        });
-
-        const some = this.availableNames.find(name => !modalidades.find(({ name: modName }) => modName == name));
 
         this.enableCreateMod = !!some;
 
         this.modalidadesView.clear();
-        const formRef = this.modalidadesView.createComponent(FormComponent);
+        for (const modalidade of modalidades) {
+          const prismaHorarios = this.cadastro.searchHorarios(modalidade);
 
-        this.formRef = formRef;
-
-        this.formRef.setInput('titleForm', modalidade.name);
-        this.formRef.setInput('createMod', {
-          form: this.form,
-          formInputsList: [
-            { controlName: 'name', inputText: 'Modalidades', options }
-          ],
-          oldValue,
-          autoGenerateForms: !0,
-          submitEvent: (res: any, form: FormGroup) => this.submitExistingMod(modalidade.name, res),
-          submitText: 'Salvar'
-        });
-        this.formRef.setInput('isFreeze', this.isFreeze);
-        this.formRef.changeDetectorRef.detectChanges();
+          prismaHorarios.subscribe(horarios => this.addExistingMod(modalidade, horarios, { form }));
+        };
       });
     });
   };
+
+  addExistingMod = (modalidade: PrismaModalidade, horarios: horario[], data?: { form?: FormGroup }) => {
+    const formRef = this.modalidadesView.createComponent(FormComponent);
+    const formatHorarios = horarios.map(horario => {
+      const time = new Date(horario.time).toLocaleTimeString();
+
+      return { ...horario, time };
+    });
+
+    let form = this.fb.group({
+      name: [modalidade.name, Validators.required],
+      horarios: [horarios, horarios.length && Validators.required],
+      local: this.fb.group({
+        endereco: ['', Validators.required],
+        bairro: ['', Validators.required]
+      })
+    });
+
+    if (data?.form) {
+      data.form.setErrors(null);
+
+      form = data.form;
+    };
+
+    const { value: oldValue } = form;
+    const availableOptions = this.availableNames.filter(name =>
+      !this.modalidadesList.find(({ name: modName }) => modName == name) || modalidade.name == name
+    );
+    const optionsName: options = availableOptions.map(option => {
+      return {
+        id: option, text: option, status: option == modalidade.name, action() {
+          form.get("name")?.setValue(option, { emitEvent: false });
+        }
+      }
+    }).sort(({ status: a }, { status: b }) => {
+      if (a > b) return -1;
+
+      return 0;
+    });
+    const optionsHorario: options = formatHorarios.map(({ id, time }) => { return { id, text: time } });
+
+    formRef.setInput('titleForm', modalidade.name);
+    formRef.setInput('createMod', {
+      form,
+      formInputsList: [
+        { controlName: 'name', inputText: 'Modalidades', options: optionsName },
+        { controlName: 'horarios', inputText: 'Horarios', builderOptions: optionsHorario }
+      ],
+      oldValue,
+      autoGenerateForms: !0,
+      submitEvent: (update: Partial<modalidade>) => this.submitExistingMod(modalidade.name, update, { form, formRef }),
+      submitText: 'Salvar'
+    });
+    formRef.setInput('freezeForm', (freeze: boolean) => formRef.setInput('isFreeze', freeze));
+  }
 
   submitNewMod = () => {
     console.log("Opa!");
   }
 
-  isFreeze: boolean = !1;
-  formRef!: ComponentRef<FormComponent>;
-  form!: FormGroup;
+  addNewMod = (modNames: modName[]) => {
+    const formRef = this.modalidadesView.createComponent(FormComponent);
 
-  onFreezeForm = (freeze: boolean) => {
-    this.isFreeze = freeze;
+    const form = this.fb.group({
+      name: ['', Validators.required]
+    });
 
-    this.formRef.setInput('isFreeze', this.isFreeze);
+    formRef.setInput('titleForm', 'Escolha uma modalidade!');
+    formRef.setInput('titleSmall', !0);
+    formRef.setInput('createMod', {
+      form,
+      formInputsList: [
+        { controlName: 'name', inputText: 'Modalidades' }
+      ],
+      autoGenerateForms: !0,
+      submitEvent: this.submitNewMod,
+    });
+    formRef.setInput('freezeForm', (freeze: boolean) => formRef.setInput('isFreeze', freeze));
+
+    this.enableCreateMod = !1;
   }
 }

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { Observable } from 'rxjs';
-import { horario, modalidade } from '../../types';
+import { horario, PrismaModalidade } from '../../types';
 import { HorarioHeaderComponent } from './horario-header/horario-header.component';
 
 @Component({
@@ -24,9 +23,9 @@ export class HorariosListComponent implements OnInit {
 
   horariosList: any[] = [];
   hideAdd: boolean = !1;
-  modalidades: modalidade[] = [];
+  modalidades: PrismaModalidade[] = [];
 
-  addHorario = (modalidade: modalidade, horarios: horario[] = []) => {
+  addHorario = (modalidade: PrismaModalidade, horarios: horario[] = []) => {
     this.horariosList.push({ component: HorarioHeaderComponent });
 
     const headerRef = this.horarios.createComponent(HorarioHeaderComponent);

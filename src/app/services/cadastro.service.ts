@@ -92,9 +92,9 @@ export class CadastroService {
     return this.http.post('nest-api/auth/user', data, { headers });
   };
 
-  searchModalidades = () => this.http.get<modalidade[]>('nest-api/search/modalidades');
+  searchModalidades = () => this.http.get<PrismaModalidade[]>('nest-api/search/modalidades');
 
-  searchHorarios = ({ name }: modalidade) => this.http.get<horario[]>(`nest-api/search/horarios/${name}`);
+  searchHorarios = ({ name }: PrismaModalidade) => this.http.get<horario[]>(`nest-api/search/horarios/${name}`);
 
   searchUserByToken = () => {
     const { access_token } = this.token;

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { modalidade, modName } from '../../types';
+import { modName, PrismaModalidade } from '../../types';
 
 @Component({
   selector: 'create-modalidade',
@@ -9,7 +9,7 @@ import { modalidade, modName } from '../../types';
   styleUrl: './create-modalidade.component.scss'
 })
 export class CreateModalidadeComponent {
-  @Input() modalidades!: modalidade[];
+  @Input() modalidades!: PrismaModalidade[];
   @Input() availableNames!: modName[];
   @Output() createMod = new EventEmitter();
 

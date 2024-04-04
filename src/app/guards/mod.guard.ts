@@ -15,7 +15,7 @@ export const modGuard: CanActivateFn = (_route, _state) => {
             complete: () => {
                 searchUserByToken().subscribe(data => {
                     if (data) {
-                        const isMod = data.roles.find(role => role == 'ADMIN' || role == 'PROFESSOR');
+                        const isMod = data.roles.find(role => role == 'ADMIN');
                         
                         if (isMod) return !0;
                     };
