@@ -1,15 +1,27 @@
 .column {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-inline: auto;
+    padding: 1em;
     gap: 2em;
 
     .modalidades-list {
         display: flex;
         flex-direction: column;
+        width: 100%;
+        max-width: 64rem;
         gap: 1em;
     }
 
     create-modalidade {
         margin-inline: auto;
     }
+}
+
+creator-content {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
 }

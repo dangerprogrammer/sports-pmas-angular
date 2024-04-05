@@ -8,6 +8,7 @@ import { CadastroService } from '../../services/cadastro.service';
 import { CreateHorarioComponent } from '../../components/create-horario/create-horario.component';
 import { CreateModalidadeComponent } from '../../components/create-modalidade/create-modalidade.component';
 import { ModSubmit } from '../../tools';
+import { CreatorContentComponent } from '../../components/creator-content/creator-content.component';
 
 @Component({
   selector: 'app-modalidades',
@@ -17,7 +18,8 @@ import { ModSubmit } from '../../tools';
     HeaderButtonComponent,
     MainComponent,
     CreateModalidadeComponent,
-    CreateHorarioComponent
+    CreateHorarioComponent,
+    CreatorContentComponent
   ],
   templateUrl: './modalidades.component.html',
   styleUrl: './modalidades.component.scss'

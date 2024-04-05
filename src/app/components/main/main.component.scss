@@ -6,7 +6,7 @@
         flex-direction: row-reverse;
     }
 
-    &:not(.cadastro, .dashboard) {
+    &:not(.cadastro, .column) {
         --inline-padding: 1rem;
         display: grid;
         max-width: 64rem;
@@ -14,7 +14,7 @@
         gap: .45rem 1rem;
     }
 
-    &.dashboard {
+    &.column {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -24,7 +24,7 @@
 
 @media screen and (min-width: 32rem) {
     .main-container {
-        &:not(.cadastro, .dashboard) {
+        &:not(.cadastro, .column) {
             padding: 1rem var(--inline-padding);
             grid-template-columns: repeat(auto-fit, minmax(min(24rem, calc(100vw - (var(--inline-padding) * 2))), 1fr));
         }
@@ -33,7 +33,7 @@
 
 @media screen and (max-width: calc(32rem - 1px)) {
     .main-container {
-        &:not(.cadastro, .dashboard) {
+        &:not(.cadastro, .column) {
             padding: 0;
             grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100vw), 1fr));
         }

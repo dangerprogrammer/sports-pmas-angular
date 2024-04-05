@@ -14,7 +14,7 @@
         </svg>
     </header-button>
 </app-header>
-<app-main>
+<app-main [column]="!0">
     <main class="column">
         <li class="modalidades-list" [hidden]="!modalidadesList.length">
             <ng-container #modalidades></ng-container>
@@ -26,4 +26,5 @@
         [hidden]="!enableCreateMod"
         />
     </main>
+    <creator-content></creator-content>
 </app-main>

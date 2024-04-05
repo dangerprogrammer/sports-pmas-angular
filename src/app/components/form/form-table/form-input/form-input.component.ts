@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
 import { options } from '../../../../types';
@@ -8,24 +8,26 @@ import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'form-input',
   standalone: true,
-  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, JsonPipe],
+  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, JsonPipe, FormsModule],
   templateUrl: './form-input.component.html',
   styleUrl: './form-input.component.scss'
 })
 export class FormInputComponent implements OnInit, AfterViewInit {
+  defHorarioValue = '0000';
+  horarioValue: any = this.defHorarioValue;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private cadastro: CadastroService
   ) { }
 
-  @Output() inputForm: EventEmitter<any> = new EventEmitter();
+  @Input() form!: FormGroup;
   @Input() controlName!: string;
   @Input() type?: any;
   @Input() multiple: boolean = !1;
   @Input() leastOne: boolean = !1;
   @Input() textarea: boolean = !1;
   @Input() readCPF: boolean = !1;
-  @Input() form!: FormGroup;
   @Input() autocomplete: string = 'on';
   @Input() options?: options;
   @Input() selectedOption: number = 0;
@@ -34,6 +36,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() view: boolean = !1;
   @Input() builderOptions?: options;
   @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
+
+  @Output() inputForm: EventEmitter<any> = new EventEmitter();
 
   htmlOptions?: HTMLInputElement[];
 
@@ -80,8 +84,52 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
         this.form.get(this.controlName)?.setValue(controlValue);
         this.cdr.detectChanges();
-      }
+      };
     }, 0);
+  }
+
+  horarioChange = (value: string) => {
+    let formattedValue: string | string[] = value.split('');
+
+    if (formattedValue.length < 4) formattedValue.splice(formattedValue.length, 0, '0');
+
+    formattedValue = formattedValue.join('');
+
+    const hora = +formattedValue.substring(0, 2);
+    const minuto = +formattedValue.substring(2);
+
+    formattedValue = formattedValue.split('');
+
+    if (hora >= 24 || minuto >= 60 || hora < 5) {
+      this.enableAddHorario = !1;
+
+      return;
+    };
+
+    formattedValue = formattedValue.join('');
+
+    this.horarioValue = formattedValue;
+
+    this.enableAddHorario = formattedValue != this.defHorarioValue;
+  }
+
+  enableAddHorario: boolean = !1;
+
+  addHorario = (ev: Event) => {
+    ev.preventDefault();
+
+    this.enableAddHorario = !1;
+
+    const horarios = this.form.get(this.controlName)?.value;
+    const formatHorario = `${
+      this.horarioValue.substring(0, 2)
+    }:${this.horarioValue.substring(2)}:00`;
+
+    if (this.builderOptions) {
+      // VER COMO COLOCAR O HORARIO NA TELA E O FORM VER QUE NÃO É IGUAL!!
+      this.builderOptions.push({ id: horarios.length, text: formatHorario });
+      this.form.get(this.controlName)?.setValue(this.builderOptions);
+    };
   }
 
   emitAction(ev: Event, index: number) {

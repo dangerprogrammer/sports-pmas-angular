@@ -127,7 +127,7 @@ export class ModSubmit {
   modalidadesView!: ViewContainerRef;
   availableNames: modName[] = ['HIDRO', 'NATACAO'];
 
-  submitExistingMod = (name: string, update: Partial<modalidade>, { form, formRef }: { form: FormGroup, formRef: ComponentRef<FormComponent> }) => {
+  submitExistingMod = (name: string, update: Partial<modalidade>, { form, formRef }: { form: FormGroup, formRef: ComponentRef<any> }) => {
     const updateMod = this.cadastro.updateModalidade(name, update);
     const prismaModalidades = this.cadastro.searchModalidades();
 
@@ -161,13 +161,14 @@ export class ModSubmit {
 
       return { ...horario, time };
     });
+    const optionsHorario: options = formatHorarios.map(({ time }, ind) => { return { id: ind, text: time } });
 
     let form = this.fb.group({
       name: [modalidade.name, Validators.required],
-      horarios: [horarios, horarios.length && Validators.required],
+      horarios: [optionsHorario, horarios.length && Validators.required],
       local: this.fb.group({
-        endereco: ['', Validators.required],
-        bairro: ['', Validators.required]
+        endereco: [modalidade.endereco, Validators.required],
+        bairro: [modalidade.bairro, Validators.required]
       })
     });
 
@@ -178,6 +179,7 @@ export class ModSubmit {
     };
 
     const { value: oldValue } = form;
+    const localForm = form.get("local") as FormGroup;
     const availableOptions = this.availableNames.filter(name =>
       !this.modalidadesList.find(({ name: modName }) => modName == name) || modalidade.name == name
     );
@@ -192,14 +194,15 @@ export class ModSubmit {
 
       return 0;
     });
-    const optionsHorario: options = formatHorarios.map(({ id, time }) => { return { id, text: time } });
 
     formRef.setInput('titleForm', modalidade.name);
     formRef.setInput('createMod', {
       form,
       formInputsList: [
-        { controlName: 'name', inputText: 'Modalidades', options: optionsName },
-        { controlName: 'horarios', inputText: 'Horarios', builderOptions: optionsHorario }
+        { form, controlName: 'name', inputText: 'Modalidades', options: optionsName },
+        { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: optionsHorario },
+        { form: localForm, controlName: 'endereco', inputText: 'Endereco' },
+        { form: localForm, controlName: 'bairro', inputText: 'Bairro' },
       ],
       oldValue,
       autoGenerateForms: !0,

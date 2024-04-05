@@ -14,7 +14,7 @@
         </svg>
     </header-button>
 </app-header>
-<app-main [dashboard]="!(userRoles.length == 0)">
+<app-main [column]="!(userRoles.length == 0)">
     @if (loaded) {
     @if (userRoles.length == 0) {
     <div class="no-roles">

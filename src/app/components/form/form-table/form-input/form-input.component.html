@@ -26,13 +26,24 @@
         </div>
         }
         } @else if (builderOptions) {
-        @if (builderOptions.length) {
-        @for (option of builderOptions; track $index) {
-        <div>{{option | json}}</div>
-        }
-        }@else {
-        <span>Nenhum horário existente</span>
-        }
+        <section class="col">
+            <article class="row">
+                <input class="input-horario" [(ngModel)]="horarioValue" (ngModelChange)="horarioChange($event)"
+                    [ngModelOptions]="{standalone: !0}" [showMaskTyped]="true" mask="00:00" placeHolderCharacter="0">
+                <button (click)="addHorario($event)" class="create-horario" [class.enable]="enableAddHorario">
+                    <span>Criar Horário</span>
+                </button>
+            </article>
+            @if (builderOptions.length) {
+            <ol class="row-wrap">
+                @for (option of builderOptions; track $index) {
+                <div>{{option | json}}</div>
+                }
+            </ol>
+            } @else {
+            <span>Ainda não há horários</span>
+            }
+        </section>
         } @else {
         <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"
             [autocomplete]="autocomplete" />
