@@ -4,7 +4,7 @@ import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';
 import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { genders } from '../../../types';
 import { CadastroService } from '../../../services/cadastro.service';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
@@ -66,12 +66,20 @@ export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewI
     this.notification = new NotificationService(this.notifications);
   }
 
+  validCPFAndTel = (control: AbstractControl) => {
+    const { value } = control;
+
+    if (value.length != 11 || value == '00000000000') return { 'invalid': !0 };
+
+    return null;
+  }
+
   form = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', [Validators.required, Validators.minLength(11)]],
+    cpf: ['', this.validCPFAndTel],
     password: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', [Validators.required, Validators.minLength(11)]],
+    tel: ['', this.validCPFAndTel],
     solic: this.fb.group({ roles: [['ALUNO']] }),
     aluno: this.fb.group({
       endereco: ['', Validators.required],

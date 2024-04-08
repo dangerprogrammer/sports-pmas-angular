@@ -17,6 +17,7 @@ export class FormTableComponent implements AfterViewInit {
   @Input() submitText: string = "Cadastrar";
   @Input() submitEvent?: Function;
   @Input() autoGenerateForms: boolean = !1;
+  @Input() index?: number;
   @Output() freezeForm = new EventEmitter<boolean>();
 
   @ContentChildren(FormInputComponent) formInput!: QueryList<ElementRef>;
@@ -29,6 +30,7 @@ export class FormTableComponent implements AfterViewInit {
           const inputRef = this.formInputs.createComponent(FormInputComponent);
 
           inputRef.setInput('view', !0);
+          inputRef.setInput('index', this.index);
 
           for (let inputField in input) inputRef.setInput(inputField, input[inputField]);
         };

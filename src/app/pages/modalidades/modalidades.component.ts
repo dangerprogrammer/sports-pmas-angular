@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { MainComponent } from '../../components/main/main.component';
@@ -24,7 +24,7 @@ import { CreatorContentComponent } from '../../components/creator-content/creato
   templateUrl: './modalidades.component.html',
   styleUrl: './modalidades.component.scss'
 })
-export class ModalidadesComponent extends ModSubmit implements OnInit {
+export class ModalidadesComponent extends ModSubmit implements AfterViewInit {
   constructor(
     private service: CadastroService,
     private router: Router
@@ -36,22 +36,13 @@ export class ModalidadesComponent extends ModSubmit implements OnInit {
 
   horariosList: any[] = [];
 
-  ngOnInit(): void {
-    const prismaModalidades = this.service.searchModalidades();
+  ngAfterViewInit(): void {
+    this.modalidadesView = this.modalidades;
+    
+    setTimeout(() => {
+      const prismaModalidades = this.service.searchModalidades();
 
-    prismaModalidades.subscribe(modalidades => {
-      this.modalidadesList = modalidades;
-      this.modalidadesView = this.modalidades;
-
-      const some = this.availableNames.find(name => !modalidades.find(({ name: modName }) => modName == name));
-
-      this.enableCreateMod = !!some;
-
-      for (const modalidade of modalidades) {
-        const prismaHorarios = this.service.searchHorarios(modalidade);
-
-        prismaHorarios.subscribe(horarios => this.addExistingMod(modalidade, horarios));
-      };
+      prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades));
     });
   }
 

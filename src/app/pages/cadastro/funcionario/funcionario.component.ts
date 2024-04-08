@@ -5,7 +5,7 @@ import { FormComponent } from '../../../components/form/form.component';
 import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
 import { formTitle, genders, option } from '../../../types';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../../services/cadastro.service';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
 import { NotificationsListComponent } from '../../../components/notifications-list/notifications-list.component';
@@ -113,11 +113,19 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
   admin = this.switchForms[1];
   custom = this.switchForms[2];
 
+  validCPFAndTel = (control: AbstractControl) => {
+    const { value } = control;
+
+    if (value.length != 11 || value == '00000000000') return { 'invalid': !0 };
+
+    return null;
+  }
+
   professorForm = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', [Validators.required, Validators.minLength(11)]],
+    cpf: ['', this.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', [Validators.required, Validators.minLength(11)]],
+    tel: ['', this.validCPFAndTel],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [['PROFESSOR']] }),
     professor: this.fb.group({})
@@ -125,9 +133,9 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
 
   adminForm = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', [Validators.required, Validators.minLength(11)]],
+    cpf: ['', this.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', [Validators.required, Validators.minLength(11)]],
+    tel: ['', this.validCPFAndTel],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [['ADMIN']] }),
     admin: this.fb.group({})
@@ -135,9 +143,9 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
 
   customForm = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', [Validators.required, Validators.minLength(11)]],
+    cpf: ['', this.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', [Validators.required, Validators.minLength(11)]],
+    tel: ['', this.validCPFAndTel],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [[]] }),
     aluno: this.fb.group({

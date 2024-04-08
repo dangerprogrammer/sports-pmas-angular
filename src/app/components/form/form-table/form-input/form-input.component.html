@@ -7,9 +7,9 @@
         @if (options) {
         @for (option of options; track $index) {
         <div class="radio-option">
-            <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id" [value]="option.id" #options hidden
-                [formControlName]="controlName" [name]="controlName" />
-            <label [htmlFor]="option.id" class="option" [class.multiple]="multiple"
+            <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id+'-'+index" [value]="option.id" #options
+                hidden [formControlName]="controlName" [name]="controlName+'-'+index" />
+            <label [htmlFor]="option.id+'-'+index" class="option" [class.multiple]="multiple"
                 (click)="emitAction($event, $index)">
                 <div class="option-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
@@ -32,6 +32,18 @@
                     [ngModelOptions]="{standalone: !0}" [showMaskTyped]="true" mask="00:00" placeHolderCharacter="0">
                 <button #horarioSubscribe class="create-horario" [class.enable]="enableAddHorario">
                     <span>{{horarioSubText}}</span>
+                    <ng-container *ngIf="horarioIcon == 'add'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="32" d="M256 112v288M400 256H112" />
+                        </svg>
+                    </ng-container>
+                    <ng-container *ngIf="horarioIcon == 'checkmark'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="32" d="M416 128L192 384l-96-96" />
+                        </svg>
+                    </ng-container>
                 </button>
             </article>
             @if (builderOptions.length) {
@@ -61,8 +73,15 @@
             }
         </section>
         } @else {
+        @if (controlName == 'cpf') {
+        <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"
+            [autocomplete]="autocomplete" [showMaskTyped]="true" mask="000.000.000-00" placeHolderCharacter="0" />
+        } @else if (controlName == 'tel') {
+            <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" type="tel" id="tel" name="tel" required pattern="[0-9]{2} [0-9]{5}-[0-9]{4}" placeholder="11 99999-9999">
+        } @else {
         <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"
             [autocomplete]="autocomplete" />
+        }
         }
     </div>
     @if (wrongField) {

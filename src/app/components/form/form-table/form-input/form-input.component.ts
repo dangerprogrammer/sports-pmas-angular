@@ -3,11 +3,12 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
 import { option } from '../../../../types';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'form-input',
   standalone: true,
-  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, FormsModule],
+  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, FormsModule, NgIf],
   templateUrl: './form-input.component.html',
   styleUrl: './form-input.component.scss'
 })
@@ -34,12 +35,14 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() inputText?: string;
   @Input() view: boolean = !1;
   @Input() builderOptions?: option[];
+  @Input() index: number = 0;
   @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
 
   @Output() inputForm: EventEmitter<any> = new EventEmitter();
 
   htmlOptions?: HTMLInputElement[];
   horarioSubText: string = 'Loading';
+  horarioIcon: 'add' | 'checkmark' = 'add';
 
   @ViewChildren('options') viewOptions?: QueryList<ElementRef>;
   @ViewChild('horarioSubscribe') horarioSubscribe?: ElementRef;
@@ -81,7 +84,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
         let controlValue = this.multiple ?
           htmlOptions.filter(({ checked }) => checked).map(({ id }) => id) :
-          htmlOptions.find(({ checked }) => checked)?.id;
+          htmlOptions.find(({ checked }) => checked)?.id.split('-')[0];
 
         this.form.get(this.controlName)?.setValue(controlValue);
         this.cdr.detectChanges();
@@ -91,8 +94,10 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
       if (button) {
         this.horarioSubText = 'Criar Horário';
+        this.horarioIcon = 'add';
 
         (button as HTMLButtonElement).onclick = this.addHorario;
+        this.cdr.detectChanges();
       };
     });
   }
@@ -128,6 +133,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
     this.horarioValue = formattedValue;
 
     this.enableAddHorario = formattedValue != this.defHorarioValue;
+    this.cdr.detectChanges();
   }
 
   enableAddHorario: boolean = !1;
@@ -147,6 +153,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
       this.horarioValue = this.defHorarioValue;
     };
+
+    this.cdr.detectChanges();
   }
 
   sortBuilderOptions = () => {
@@ -167,13 +175,17 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
     if (option.status) {
       this.horarioSubText = 'Salvar Horário';
+      this.horarioIcon = 'checkmark';
       this.horarioValue = option.text.substring(0, 2) + option.text.substring(3);
       button.onclick = ev => this.saveEdit(option, ev);
     } else {
       this.horarioSubText = 'Criar Horário';
+      this.horarioIcon = 'add';
       this.horarioValue = this.defHorarioValue;
       button.onclick = this.addHorario;
     };
+
+    this.cdr.detectChanges();
   }
 
   deleteHorario = (option: option, ev: Event) => {
@@ -186,6 +198,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
       this.sortBuilderOptions();
       this.form.get(this.controlName)?.setValue(this.builderOptions);
     };
+
+    this.cdr.detectChanges();
   }
 
   saveEdit = (option: option, ev: Event) => {
@@ -193,6 +207,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
     this.enableAddHorario = !1;
 
+    const button = this.horarioSubscribe?.nativeElement as HTMLButtonElement;
     const formatHorario = `${this.horarioValue.substring(0, 2)
       }:${this.horarioValue.substring(2)}`;
 
@@ -203,10 +218,13 @@ export class FormInputComponent implements OnInit, AfterViewInit {
       this.sortBuilderOptions();
       this.form.get(this.controlName)?.setValue(this.builderOptions);
 
-      this.horarioValue = this.defHorarioValue;
-
       this.horarioSubText = 'Criar Horário';
+      this.horarioIcon = 'add';
+      this.horarioValue = this.defHorarioValue;
+      button.onclick = this.addHorario;
     };
+
+    this.cdr.detectChanges();
   }
 
   emitAction(ev: Event, index: number) {

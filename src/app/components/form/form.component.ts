@@ -21,6 +21,7 @@ export class FormComponent implements AfterViewInit {
   @Input() isFreeze: boolean = !1;
   @Input() loginForm: boolean = !1;
   @Input() freezeForm?: Function;
+  @Input() index?: number;
 
   @ViewChildren('title') titles!: ElementRef[];
   @ViewChild('inputs', { read: ViewContainerRef }) inputs!: ViewContainerRef;
@@ -37,10 +38,10 @@ export class FormComponent implements AfterViewInit {
     if (this.createMod) {
       const tableRef = this.inputs.createComponent(FormTableComponent);
 
-      for (const field in this.createMod) {
-        tableRef.setInput(field, this.createMod[field]);
-        this.cdr.detectChanges();
-      };
+      for (const field in this.createMod) tableRef.setInput(field, this.createMod[field]);
+
+      tableRef.setInput('index', this.index);
+      this.cdr.detectChanges();
 
       tableRef.instance.freezeForm.subscribe(this.freezeForm);
     };

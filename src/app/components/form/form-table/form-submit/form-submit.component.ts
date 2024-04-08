@@ -35,10 +35,11 @@ export class FormSubmitComponent {
         const minuto = +horario.text.substring(3);
         const data = new Date();
 
+        data.setUTCFullYear(2024, 0, 1);
         data.setUTCHours(hora, minuto, 0, 0);
 
         return {
-          time: data.toISOString(), periodo: hora >= 6 && hora < 12 ?
+          time: data.toISOString(), periodo: hora >= 5 && hora < 12 ?
             'MANHA' : hora >= 12 && hora < 18 ? 'TARDE' : 'NOITE'
         };
       });

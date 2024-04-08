@@ -9,8 +9,12 @@
     font-size: 1em;
     letter-spacing: .05em;
     padding: .5em 1em;
+    padding-right: .6em;
     border-radius: .5em;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: .25em;
 
     &::before {
         content: '';
@@ -24,7 +28,7 @@
         opacity: .6;
     }
 
-    span {
+    * {
         position: relative;
         z-index: 10;
     }

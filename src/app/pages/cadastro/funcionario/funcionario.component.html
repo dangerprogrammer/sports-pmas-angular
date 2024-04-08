@@ -8,9 +8,9 @@
             </form-link>
             <form-input [form]="professorForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="professorForm" controlName="cpf" [readCPF]="true">CPF</form-input>
-            <form-input [form]="professorForm" controlName="email" autocomplete="email">E-mail</form-input>
+            <form-input [form]="professorForm" controlName="email" type="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="professorForm" controlName="tel">Celular</form-input>
-            <form-input [form]="professorForm" controlName="password">Senha</form-input>
+            <form-input [form]="professorForm" controlName="password" type="password">Senha</form-input>
         </form-table>
         <form-table tableName="admin" [form]="adminForm" [submitText]="admin.submitText" [submitEvent]="submitFunction"
             (freezeForm)="onFreezeForm($event)">
@@ -19,9 +19,9 @@
             </form-link>
             <form-input [form]="adminForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="adminForm" controlName="cpf" [readCPF]="true">CPF</form-input>
-            <form-input [form]="adminForm" controlName="email" autocomplete="email">E-mail</form-input>
+            <form-input [form]="adminForm" controlName="email" type="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="adminForm" controlName="tel">Celular</form-input>
-            <form-input [form]="adminForm" controlName="password">Senha</form-input>
+            <form-input [form]="adminForm" controlName="password" type="password">Senha</form-input>
         </form-table>
         <form-table tableName="custom" [form]="customForm" [submitText]="custom.submitText"
             [submitEvent]="submitFunction" (freezeForm)="onFreezeForm($event)">
@@ -30,9 +30,9 @@
             </form-link>
             <form-input [form]="customForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="customForm" controlName="cpf" [readCPF]="true">CPF</form-input>
-            <form-input [form]="customForm" controlName="email" autocomplete="email">E-mail</form-input>
+            <form-input [form]="customForm" controlName="email" type="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="customForm" controlName="tel">Celular</form-input>
-            <form-input [form]="customForm" controlName="password">Senha</form-input>
+            <form-input [form]="customForm" controlName="password" type="password">Senha</form-input>
             <form-input [form]="solicForm" controlName="roles" [options]="roles" [multiple]="true"
                 [leastOne]="true">Cargos Desejados</form-input>
             <ng-container *ngIf="alunoEnable">

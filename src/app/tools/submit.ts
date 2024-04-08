@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { FormComponent } from "../components/form/form.component";
 import { horario, modalidade, modName, option, PrismaModalidade } from "../types";
 import { DateTools } from "./date-tools";
+import { forkJoin } from "rxjs";
 
 export class CadastroSubmit {
   private cadastro = inject(CadastroService);
@@ -128,34 +129,45 @@ export class ModSubmit extends DateTools {
   modalidadesView!: ViewContainerRef;
   availableNames: modName[] = ['HIDRO', 'NATACAO'];
 
-  submitExistingMod = (name: string, update: Partial<modalidade>, { form, formRef }: { form: FormGroup, formRef: ComponentRef<any> }) => {
+  searchModSubmit = (modalidades: PrismaModalidade[], data?: { form: FormGroup, formRef: ComponentRef<any> }) => {
+    this.modalidadesList = modalidades.sort(({ name: nameA }, { name: nameB }) =>
+      nameA > nameB ? 1 : nameA < nameB ? -1 : 0
+    );
+
+    if (data) {
+      const { form, formRef } = data;
+
+      formRef.setInput('isFreeze', !1);
+      form.setErrors({ 'equal': !0 });
+    }
+
+    const some = this.availableNames.find(name =>
+      !modalidades.find(({ name: modName }) => modName == name)
+    );
+
+    this.enableCreateMod = !!some;
+
+    this.modalidadesView.clear();
+    const prismaHorariosList = this.modalidadesList.map(this.cadastro.searchHorarios);
+
+    forkJoin(prismaHorariosList).subscribe(data => {
+      for (const index in data) {
+        const modalidade = this.modalidadesList[index];
+        const horarios = data[index];
+
+        this.addExistingMod(modalidade, horarios);
+      };
+    });
+  }
+
+  submitExistingMod = (name: string, update: Partial<modalidade>, data: { form: FormGroup, formRef: ComponentRef<any> }) => {
     const updateMod = this.cadastro.updateModalidade(name, update);
     const prismaModalidades = this.cadastro.searchModalidades();
 
-    updateMod.subscribe(() => {
-      prismaModalidades.subscribe(modalidades => {
-        this.modalidadesList = modalidades;
-
-        formRef.setInput('isFreeze', !1);
-        form.setErrors({ 'equal': !0 });
-
-        const some = this.availableNames.find(name =>
-          !modalidades.find(({ name: modName }) => modName == name)
-        );
-
-        this.enableCreateMod = !!some;
-
-        this.modalidadesView.clear();
-        for (const modalidade of modalidades) {
-          const prismaHorarios = this.cadastro.searchHorarios(modalidade);
-
-          prismaHorarios.subscribe(horarios => this.addExistingMod(modalidade, horarios, { form }));
-        };
-      });
-    });
+    updateMod.subscribe(() => prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades, data)));
   };
 
-  addExistingMod = (modalidade: PrismaModalidade, horarios: horario[], data?: { form: FormGroup }) => {
+  addExistingMod = (modalidade: PrismaModalidade, horarios: horario[]) => {
     const formRef = this.modalidadesView.createComponent(FormComponent);
     const formatHorarios = horarios.map(horario => {
       const time = this.formatTime(horario.time);
@@ -172,13 +184,7 @@ export class ModSubmit extends DateTools {
       })
     });
 
-    let oldValue = { ...form.value };
-
-    if (data) {
-      data.form.setErrors(null);
-
-      form = data.form;
-    };
+    const oldValue = { ...form.value };
 
     const localForm = form.get("local") as FormGroup;
     const availableOptions = this.availableNames.filter(name =>
@@ -196,6 +202,7 @@ export class ModSubmit extends DateTools {
       return 0;
     });
 
+    formRef.setInput('index', this.modalidadesView.length - 1);
     formRef.setInput('titleForm', modalidade.name);
     formRef.setInput('createMod', {
       form,
@@ -213,26 +220,52 @@ export class ModSubmit extends DateTools {
     formRef.setInput('freezeForm', (freeze: boolean) => formRef.setInput('isFreeze', freeze));
   }
 
-  submitNewMod = () => {
-    console.log("Opa!");
+  submitNewMod = (modalidade: modalidade, data: { form: FormGroup, formRef: ComponentRef<any> }) => {
+    const createMod = this.cadastro.createModalidade(modalidade);
+    const prismaModalidades = this.cadastro.searchModalidades();
+
+    createMod.subscribe(() => prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades, data)));
   }
 
   addNewMod = (modNames: modName[]) => {
     const formRef = this.modalidadesView.createComponent(FormComponent);
 
     const form = this.fb.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      horarios: [[], Validators.required],
+      local: this.fb.group({
+        endereco: ['', Validators.required],
+        bairro: ['', Validators.required]
+      })
     });
 
+    const localForm = form.get("local") as FormGroup;
+
+    const optionsName: option[] = modNames.map(option => {
+      return {
+        id: option, text: option, status: !1, action() {
+          form.get("name")?.setValue(option, { emitEvent: false });
+        }
+      }
+    }).sort(({ status: a }, { status: b }) => {
+      if (a > b) return -1;
+
+      return 0;
+    });
+
+    formRef.setInput('index', this.modalidadesView.length - 1);
     formRef.setInput('titleForm', 'Escolha uma modalidade!');
     formRef.setInput('titleSmall', !0);
     formRef.setInput('createMod', {
       form,
       formInputsList: [
-        { controlName: 'name', inputText: 'Modalidades' }
+        { form, controlName: 'name', inputText: 'Modalidades', options: optionsName },
+        { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: [] },
+        { form: localForm, controlName: 'endereco', inputText: 'Endereco' },
+        { form: localForm, controlName: 'bairro', inputText: 'Bairro' }
       ],
       autoGenerateForms: !0,
-      submitEvent: this.submitNewMod,
+      submitEvent: (modalidade: modalidade) => this.submitNewMod(modalidade, { form, formRef }),
     });
     formRef.setInput('freezeForm', (freeze: boolean) => formRef.setInput('isFreeze', freeze));
 
