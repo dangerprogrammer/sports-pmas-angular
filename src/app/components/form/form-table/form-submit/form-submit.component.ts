@@ -29,6 +29,21 @@ export class FormSubmitComponent {
       };
     };
 
+    if (prismaRes.horarios) {
+      prismaRes.horarios = prismaRes.horarios.map((horario: any) => {
+        const hora = +horario.text.substring(0, 2);
+        const minuto = +horario.text.substring(3);
+        const data = new Date();
+
+        data.setUTCHours(hora, minuto, 0, 0);
+
+        return {
+          time: data.toISOString(), periodo: hora >= 6 && hora < 12 ?
+            'MANHA' : hora >= 12 && hora < 18 ? 'TARDE' : 'NOITE'
+        };
+      });
+    }
+
     if (this.submitEvent) {
       this.freezeFormFunc(!0);
       return this.submitEvent(prismaRes, this.form);

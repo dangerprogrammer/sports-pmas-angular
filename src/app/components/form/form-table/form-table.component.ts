@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ContentChildren, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormSubmitComponent } from './form-submit/form-submit.component';
 import { FormGroup } from '@angular/forms';
 import { FormInputComponent } from './form-input/form-input.component';
@@ -11,10 +11,6 @@ import { FormInputComponent } from './form-input/form-input.component';
   styleUrl: './form-table.component.scss'
 })
 export class FormTableComponent implements AfterViewInit {
-  constructor(
-    private cdr: ChangeDetectorRef
-  ) { }
-
   @Input() form!: FormGroup;
   @Input() formInputsList?: any[];
   @Input() oldValue?: any;
@@ -39,8 +35,6 @@ export class FormTableComponent implements AfterViewInit {
 
         if (this.oldValue) this.form.valueChanges.subscribe((formValue: any) => {
           const isEqual = this.compareForms(formValue, this.oldValue);
-
-          console.log(formValue, this.oldValue);
 
           this.form.setErrors(isEqual ? { 'equal': !0 } : null);
         });

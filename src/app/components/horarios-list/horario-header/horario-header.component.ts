@@ -27,9 +27,8 @@ export class HorarioHeaderComponent extends StringTools implements AfterViewInit
   ngAfterViewInit(): void {
     if (this.form) this.horarios.forEach(horario => {
       const horarioRef = this.horariosContainer.createComponent(HorarioInputComponent);
-      const time = new Date(horario.time).toLocaleTimeString();
 
-      horarioRef.setInput('horario', { ...horario, time });
+      horarioRef.setInput('horario', horario);
       horarioRef.setInput('horarios', this.horarios);
       horarioRef.setInput('modalidade', this.modalidade);
       horarioRef.setInput('form', this.form);

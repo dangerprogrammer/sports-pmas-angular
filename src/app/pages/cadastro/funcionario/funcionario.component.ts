@@ -3,7 +3,7 @@ import { CadastrosHeaderComponent } from '../../../components/cadastros-header/c
 import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';
 import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
-import { formTitle, genders, options } from '../../../types';
+import { formTitle, genders, option } from '../../../types';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../../services/cadastro.service';
@@ -157,7 +157,7 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
   professorGroup = this.customForm.get('professor') as FormGroup;
   adminGroup = this.customForm.get('admin') as FormGroup;
 
-  roles: options = [
+  roles: option[] = [
     {
       id: 'ALUNO', text: 'Aluno', submitText: 'Cadastrar', form: this.alunoGroup, status: this.alunoEnable, action: () => {
         this.alunoEnable = !this.alunoEnable;

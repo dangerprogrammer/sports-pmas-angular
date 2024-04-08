@@ -5,7 +5,8 @@ import { ComponentRef, inject, ViewContainerRef } from "@angular/core";
 import { CadastroService } from "../services/cadastro.service";
 import { Router } from "@angular/router";
 import { FormComponent } from "../components/form/form.component";
-import { horario, modalidade, modName, options, PrismaModalidade } from "../types";
+import { horario, modalidade, modName, option, PrismaModalidade } from "../types";
+import { DateTools } from "./date-tools";
 
 export class CadastroSubmit {
   private cadastro = inject(CadastroService);
@@ -118,7 +119,7 @@ export class LoginSubmit {
   };
 }
 
-export class ModSubmit {
+export class ModSubmit extends DateTools {
   private cadastro = inject(CadastroService);
   private fb = inject(FormBuilder);
 
@@ -154,36 +155,36 @@ export class ModSubmit {
     });
   };
 
-  addExistingMod = (modalidade: PrismaModalidade, horarios: horario[], data?: { form?: FormGroup }) => {
+  addExistingMod = (modalidade: PrismaModalidade, horarios: horario[], data?: { form: FormGroup }) => {
     const formRef = this.modalidadesView.createComponent(FormComponent);
     const formatHorarios = horarios.map(horario => {
-      const time = new Date(horario.time).toLocaleTimeString();
+      const time = this.formatTime(horario.time);
 
       return { ...horario, time };
     });
-    const optionsHorario: options = formatHorarios.map(({ time }, ind) => { return { id: ind, text: time } });
 
     let form = this.fb.group({
       name: [modalidade.name, Validators.required],
-      horarios: [optionsHorario, horarios.length && Validators.required],
+      horarios: [formatHorarios.map(({ time }) => { return { id: 0, text: time, status: !1 } }), horarios.length && Validators.required],
       local: this.fb.group({
         endereco: [modalidade.endereco, Validators.required],
         bairro: [modalidade.bairro, Validators.required]
       })
     });
 
-    if (data?.form) {
+    let oldValue = { ...form.value };
+
+    if (data) {
       data.form.setErrors(null);
 
       form = data.form;
     };
 
-    const { value: oldValue } = form;
     const localForm = form.get("local") as FormGroup;
     const availableOptions = this.availableNames.filter(name =>
       !this.modalidadesList.find(({ name: modName }) => modName == name) || modalidade.name == name
     );
-    const optionsName: options = availableOptions.map(option => {
+    const optionsName: option[] = availableOptions.map(option => {
       return {
         id: option, text: option, status: option == modalidade.name, action() {
           form.get("name")?.setValue(option, { emitEvent: false });
@@ -199,8 +200,8 @@ export class ModSubmit {
     formRef.setInput('createMod', {
       form,
       formInputsList: [
-        { form, controlName: 'name', inputText: 'Modalidades', options: optionsName },
-        { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: optionsHorario },
+        { form, controlName: 'name', inputText: 'Modalidade', options: optionsName },
+        { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: formatHorarios.map(({ time }) => { return { id: 0, text: time, status: !1 } }) },
         { form: localForm, controlName: 'endereco', inputText: 'Endereco' },
         { form: localForm, controlName: 'bairro', inputText: 'Bairro' },
       ],

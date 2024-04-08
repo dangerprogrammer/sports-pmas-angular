@@ -2,13 +2,12 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, 
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
-import { options } from '../../../../types';
-import { JsonPipe } from '@angular/common';
+import { option } from '../../../../types';
 
 @Component({
   selector: 'form-input',
   standalone: true,
-  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, JsonPipe, FormsModule],
+  imports: [ReactiveFormsModule, NgxMaskDirective, NgxMaskPipe, FormsModule],
   templateUrl: './form-input.component.html',
   styleUrl: './form-input.component.scss'
 })
@@ -29,19 +28,21 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() textarea: boolean = !1;
   @Input() readCPF: boolean = !1;
   @Input() autocomplete: string = 'on';
-  @Input() options?: options;
+  @Input() options?: option[];
   @Input() selectedOption: number = 0;
   @Input() wrongField: boolean = !1;
   @Input() inputText?: string;
   @Input() view: boolean = !1;
-  @Input() builderOptions?: options;
+  @Input() builderOptions?: option[];
   @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
 
   @Output() inputForm: EventEmitter<any> = new EventEmitter();
 
   htmlOptions?: HTMLInputElement[];
+  horarioSubText: string = 'Loading';
 
   @ViewChildren('options') viewOptions?: QueryList<ElementRef>;
+  @ViewChild('horarioSubscribe') horarioSubscribe?: ElementRef;
 
   ngOnInit(): void {
     const reader = this.form.get(this.controlName);
@@ -85,7 +86,15 @@ export class FormInputComponent implements OnInit, AfterViewInit {
         this.form.get(this.controlName)?.setValue(controlValue);
         this.cdr.detectChanges();
       };
-    }, 0);
+
+      const button = this.horarioSubscribe?.nativeElement;
+
+      if (button) {
+        this.horarioSubText = 'Criar Horário';
+
+        (button as HTMLButtonElement).onclick = this.addHorario;
+      };
+    });
   }
 
   horarioChange = (value: string) => {
@@ -95,18 +104,26 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
     formattedValue = formattedValue.join('');
 
-    const hora = +formattedValue.substring(0, 2);
-    const minuto = +formattedValue.substring(2);
+    let hora = +formattedValue.substring(0, 2);
+    let minuto = +formattedValue.substring(2);
 
-    formattedValue = formattedValue.split('');
+    const allExistingHorarios = this.builderOptions?.map(({ text }) =>
+      `${text.substring(0, 2) + text.substring(3)}`
+    );
+    const hasHorario = allExistingHorarios?.find(horario => horario == formattedValue);
 
-    if (hora >= 24 || minuto >= 60 || hora < 5) {
+    // while (minuto >= 60) {
+    //   minuto -= 60;
+    //   hora++;
+    // };
+
+    // formattedValue = `${hora}${minuto}`;
+
+    if (hasHorario || (hora >= 24 || minuto >= 60 || hora < 5)) {
       this.enableAddHorario = !1;
 
       return;
     };
-
-    formattedValue = formattedValue.join('');
 
     this.horarioValue = formattedValue;
 
@@ -120,15 +137,75 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
     this.enableAddHorario = !1;
 
-    const horarios = this.form.get(this.controlName)?.value;
-    const formatHorario = `${
-      this.horarioValue.substring(0, 2)
-    }:${this.horarioValue.substring(2)}:00`;
+    const formatHorario = `${this.horarioValue.substring(0, 2)
+      }:${this.horarioValue.substring(2)}`;
 
     if (this.builderOptions) {
-      // VER COMO COLOCAR O HORARIO NA TELA E O FORM VER QUE NÃO É IGUAL!!
-      this.builderOptions.push({ id: horarios.length, text: formatHorario });
+      this.builderOptions.push({ id: 0, text: formatHorario, status: !1 });
+      this.sortBuilderOptions();
       this.form.get(this.controlName)?.setValue(this.builderOptions);
+
+      this.horarioValue = this.defHorarioValue;
+    };
+  }
+
+  sortBuilderOptions = () => {
+    if (this.builderOptions) this.builderOptions = this.builderOptions.sort(({ text: textA }, { text: textB }) => {
+      const valueA = +(textA.substring(0, 2) + textA.substring(3)),
+        valueB = +(textB.substring(0, 2) + textB.substring(3));
+
+      return valueA - valueB;
+    });
+  }
+
+  editHorario = (option: option, ev: Event) => {
+    ev.preventDefault();
+
+    const button = this.horarioSubscribe?.nativeElement as HTMLButtonElement;
+
+    option.status = !option.status;
+
+    if (option.status) {
+      this.horarioSubText = 'Salvar Horário';
+      this.horarioValue = option.text.substring(0, 2) + option.text.substring(3);
+      button.onclick = ev => this.saveEdit(option, ev);
+    } else {
+      this.horarioSubText = 'Criar Horário';
+      this.horarioValue = this.defHorarioValue;
+      button.onclick = this.addHorario;
+    };
+  }
+
+  deleteHorario = (option: option, ev: Event) => {
+    ev.preventDefault();
+
+    if (this.builderOptions) {
+      const index = this.builderOptions.findIndex(({ text }) => text == option.text);
+
+      this.builderOptions.splice(index, 1);
+      this.sortBuilderOptions();
+      this.form.get(this.controlName)?.setValue(this.builderOptions);
+    };
+  }
+
+  saveEdit = (option: option, ev: Event) => {
+    ev.preventDefault();
+
+    this.enableAddHorario = !1;
+
+    const formatHorario = `${this.horarioValue.substring(0, 2)
+      }:${this.horarioValue.substring(2)}`;
+
+    if (this.builderOptions) {
+      option.text = formatHorario;
+      option.status = !1;
+
+      this.sortBuilderOptions();
+      this.form.get(this.controlName)?.setValue(this.builderOptions);
+
+      this.horarioValue = this.defHorarioValue;
+
+      this.horarioSubText = 'Criar Horário';
     };
   }
 
@@ -139,7 +216,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
       labels = [...inputsHTML].map(({ lastChild }) => lastChild),
       inputsChecked = inputs.map(({ checked }, ind) => ind == index ? !checked : checked),
       hasCheckeds = inputsChecked.filter(checked => checked).length,
-      { action } = (this.options as options)[index];
+      { action } = (this.options as option[])[index];
 
     if (this.multiple) labels.forEach(label => label.classList.add('multiple'));
 

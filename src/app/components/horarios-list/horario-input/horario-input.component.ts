@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { horario, modalidade } from '../../../types';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { DateTools } from '../../../tools/date-tools';
 
 @Component({
   selector: 'horario-input',
@@ -9,19 +10,11 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './horario-input.component.html',
   styleUrl: './horario-input.component.scss'
 })
-export class HorarioInputComponent {
+export class HorarioInputComponent extends DateTools {
   @Input() horario!: horario;
   @Input() horarios!: horario[];
   @Input() modalidade!: modalidade;
   @Input() form!: FormGroup;
-
-  formatTime(time: Date) {
-    const date = new Date(time);
-    const hours = `${date.getUTCHours()}`;
-    const minutes = `${date.getUTCMinutes()}`;
-
-    return `${hours.length > 1 ? hours : `0${hours}`}:${minutes.length > 1 ? minutes : `0${minutes}`}`;
-  }
 
   updateInscricoes({ target: t }: Event) {
     const target = t as HTMLLabelElement,

@@ -4,7 +4,7 @@ export type cadastroTypes = "aluno" | "funcionario";
 
 export type subscribeTypes = "cadastro" | "login";
 
-export type options = ({
+export type option = {
     id: string | number,
     text: string,
     form: FormGroup,
@@ -16,6 +16,6 @@ export type options = ({
     text: string,
     status?: boolean,
     action?: Function
-})[];
+};
 
 export type role = "ALUNO" | "PROFESSOR" | "ADMIN";

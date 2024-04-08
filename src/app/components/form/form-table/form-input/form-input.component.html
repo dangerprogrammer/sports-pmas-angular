@@ -28,20 +28,36 @@
         } @else if (builderOptions) {
         <section class="col">
             <article class="row">
-                <input class="input-horario" [(ngModel)]="horarioValue" (ngModelChange)="horarioChange($event)"
+                <input class="horario-input" [(ngModel)]="horarioValue" (ngModelChange)="horarioChange($event)"
                     [ngModelOptions]="{standalone: !0}" [showMaskTyped]="true" mask="00:00" placeHolderCharacter="0">
-                <button (click)="addHorario($event)" class="create-horario" [class.enable]="enableAddHorario">
-                    <span>Criar Horário</span>
+                <button #horarioSubscribe class="create-horario" [class.enable]="enableAddHorario">
+                    <span>{{horarioSubText}}</span>
                 </button>
             </article>
             @if (builderOptions.length) {
             <ol class="row-wrap">
                 @for (option of builderOptions; track $index) {
-                <div>{{option | json}}</div>
+                <div class="input-horario" [class.editing]="option.status">
+                    <span>{{option.text}}</span>
+                    <span class="divider"></span>
+                    <button class="edit-horario" (click)="editHorario(option, $event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon rotate" viewBox="0 0 512 512">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="44"
+                                d="M358.62 129.28L86.49 402.08 70 442l39.92-16.49 272.8-272.13-24.1-24.1zM413.07 74.84l-11.79 11.78 24.1 24.1 11.79-11.79a16.51 16.51 0 000-23.34l-.75-.75a16.51 16.51 0 00-23.35 0z" />
+                        </svg>
+                    </button>
+                    <button class="edit-horario" (click)="deleteHorario(option, $event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon freeze" viewBox="0 0 512 512">
+                            <path
+                                d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
+                        </svg>
+                    </button>
+                </div>
                 }
             </ol>
             } @else {
-            <span>Ainda não há horários</span>
+            <span>Ainda não há horários!</span>
             }
         </section>
         } @else {

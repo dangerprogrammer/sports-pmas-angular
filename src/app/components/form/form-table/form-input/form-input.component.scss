@@ -47,14 +47,88 @@
             width: 100%;
         }
 
+        .horario-input {
+            font-size: 1.4em;
+            width: 3.5em;
+            font-family: monospace;
+            background: #eee;
+            padding: .2em .4em;
+            border-radius: .3rem;
+            text-align: center;
+        }
+
+        &:has(.input-horario.editing) .input-horario:not(.editing) {
+            opacity: .6;
+            pointer-events: none;
+        }
+
         .input-horario {
             font-size: 1.4em;
             font-family: monospace;
             background: #eee;
             padding: .2em .4em;
             border-radius: .3rem;
-            width: 3.5em;
             text-align: center;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            transition: .15s ease-in-out opacity;
+
+            &.editing {
+                .edit-horario {
+                    color: global.$main-color;
+
+                    &:has(.freeze) {
+                        opacity: .6;
+                        pointer-events: none;
+
+                        .ionicon {
+                            scale: .75;
+                        }
+                    }
+
+                    &:not(:has(.freeze)) {
+                        .ionicon {
+                            scale: 1;
+
+                            &.rotate {
+                                rotate: -90deg;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:not(.editing) {
+                .edit-horario {
+                    .ionicon {
+                        scale: .75;
+                    }
+
+                    &:hover {
+                        color: global.$main-color;
+
+                        .ionicon {
+                            scale: 1;
+
+                            &.rotate {
+                                rotate: -90deg;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .edit-horario {
+                position: relative;
+                cursor: pointer;
+                font-size: 1.1em;
+                transition: .2s ease-in-out color;
+
+                .ionicon {
+                    transition: .2s ease-in-out;
+                }
+            }
         }
 
         .create-horario {
@@ -85,14 +159,23 @@
                 opacity: .65;
                 pointer-events: none;
             }
-        
+
             &:hover::before {
                 opacity: .6;
             }
-        
+
             span {
                 z-index: 10;
             }
+        }
+
+        .divider {
+            height: 1em;
+            width: .1em;
+            background: currentColor;
+            opacity: .15;
+            border-radius: 1em;
+            margin-inline: .5em;
         }
 
         .textarea {
@@ -109,6 +192,10 @@
         .option {
             @extend %option;
         }
+    }
+
+    .row-wrap {
+        gap: .25em;
     }
 
     .col {
