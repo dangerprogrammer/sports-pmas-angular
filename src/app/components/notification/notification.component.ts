@@ -12,7 +12,7 @@ export class NotificationComponent implements OnInit {
   @Input() duration: number = 10;
   @Input() noDuration: boolean = !1;
   @Output() delete = new EventEmitter<any>();
-  @Input() actionClick?: any;
+  @Input() actionClick?: Function;
   @Input() text?: string;
   @Input() error: boolean = !1;
   @Input() hide: boolean = !1;
@@ -32,7 +32,9 @@ export class NotificationComponent implements OnInit {
     if (!this.noDuration) this.deleteNotif((this.duration + .2) * 1e3 + this.spawnDuration + this.unspawnDuration);
   }
 
-  deleteNotif(delay: number = 0, clear: boolean = !1) {
+  deleteNotif(delay: number = 0, clear: boolean = !1, ev?: Event) {
+    ev?.stopPropagation();
+
     this.delete.emit({ delay, clear });
   }
 }

@@ -66,20 +66,12 @@ export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewI
     this.notification = new NotificationService(this.notifications);
   }
 
-  validCPFAndTel = (control: AbstractControl) => {
-    const { value } = control;
-
-    if (value.length != 11 || value == '00000000000') return { 'invalid': !0 };
-
-    return null;
-  }
-
   form = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', this.validCPFAndTel],
+    cpf: ['', this.myvalidators.validCPFAndTel],
     password: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', this.validCPFAndTel],
+    tel: [''],
     solic: this.fb.group({ roles: [['ALUNO']] }),
     aluno: this.fb.group({
       endereco: ['', Validators.required],

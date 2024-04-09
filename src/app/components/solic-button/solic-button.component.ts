@@ -16,7 +16,7 @@ export class SolicButtonComponent {
 
   @Input() solicUser!: PrismaUser;
   @Input() adminUser!: PrismaUser;
-  @Input() refresh?: any;
+  @Input() refresh?: Function;
 
   acceptUser(accept: boolean) {
     const acceptPrisma = this.cadastro.acceptUser({
@@ -27,5 +27,13 @@ export class SolicButtonComponent {
     acceptPrisma.subscribe(_data => {
       if (this.refresh) this.refresh();
     });
+  }
+
+  show: boolean = !1;
+
+  showMore = (showing: boolean) => {
+    
+
+    this.show = showing;
   }
 }

@@ -8,11 +8,14 @@ import { FormComponent } from "../components/form/form.component";
 import { horario, modalidade, modName, option, PrismaModalidade } from "../types";
 import { DateTools } from "./date-tools";
 import { forkJoin } from "rxjs";
+import { MyValidators } from "./validators";
 
 export class CadastroSubmit {
   private cadastro = inject(CadastroService);
   private router = inject(Router);
 
+  
+  myvalidators = new MyValidators();
   notification!: NotificationService;
   isFreeze: boolean = !1;
 
@@ -46,7 +49,7 @@ export class CadastroSubmit {
         }
       });
       else {
-        const { cpf } = res, { roles } = res.solic;
+        const { cpf, solic } = res, { roles } = solic;
         const createSolic = this.cadastro.createSolic({ roles, cpf });
         let notifConfigs: any = {};
 
@@ -81,7 +84,7 @@ export class CadastroSubmit {
   private submitActions = {
     'goLogin': (form: FormGroup) => {
       this.cadastro.subscribe = "login";
-      this.cadastro.loginData = { cpf: form.get('cpf')?.value };
+      this.cadastro.loginData = { cpf: form.get('cpf')?.value, password: form.get('password')?.value };
 
       this.cadastro.removeFromStorage("cadastro-type");
       this.router.navigate(["/login"]);

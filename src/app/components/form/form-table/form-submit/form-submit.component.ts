@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -8,10 +8,39 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './form-submit.component.html',
   styleUrl: './form-submit.component.scss'
 })
-export class FormSubmitComponent {
+export class FormSubmitComponent implements OnInit {
   @Input() form!: FormGroup;
   @Input() submitEvent?: Function;
   @Input() freezeFormFunc!: any;
+
+  ngOnInit(): void {
+    const tel = this.form.get("tel");
+    const nome_comp = this.form.get("nome_comp");
+
+    if (tel) tel.valueChanges.subscribe(data => {
+      console.log(data, tel.errors, tel.valid);
+    });
+    if (nome_comp) nome_comp.valueChanges.subscribe(nome => {
+      if (nome == '@default') {
+        const cpf = this.form.get("cpf");
+        const password = this.form.get("password");
+        const email = this.form.get("email");
+        const tel = this.form.get("tel");
+        const endereco = this.form.get("aluno.endereco");
+        const bairro = this.form.get("aluno.bairro");
+        const data_nasc = this.form.get("aluno.data_nasc");
+
+        nome_comp.setValue('Patrick Vieira Léo', { emitEvent: !1 });
+        if (cpf) cpf.setValue('52591490848', { emitEvent: !1 });
+        if (password) password.setValue('123456', { emitEvent: !1 });
+        if (email) email.setValue('papatrileo@gmail.com', { emitEvent: !1 });
+        if (tel) tel.setValue('15 98100-4777', { emitEvent: !1 });
+        if (endereco) endereco.setValue('Avenida Itália', { emitEvent: !1 });
+        if (bairro) bairro.setValue('Monte Bianco', { emitEvent: !1 });
+        if (data_nasc) data_nasc.setValue('2004-12-10', { emitEvent: !1 });
+      };
+    });
+  }
 
   hasRole = (roles: any[], role: string) => roles.find(r => r == role);
 

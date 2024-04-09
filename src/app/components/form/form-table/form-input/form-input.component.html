@@ -28,8 +28,8 @@
         } @else if (builderOptions) {
         <section class="col">
             <article class="row">
-                <input class="horario-input" [(ngModel)]="horarioValue" (ngModelChange)="horarioChange($event)"
-                    [ngModelOptions]="{standalone: !0}" [showMaskTyped]="true" mask="00:00" placeHolderCharacter="0">
+                <input class="horario-input" type="time" [(ngModel)]="horarioValue" (ngModelChange)="horarioChange($event)"
+                    [ngModelOptions]="{standalone: !0}">
                 <button #horarioSubscribe class="create-horario" [class.enable]="enableAddHorario">
                     <span>{{horarioSubText}}</span>
                     <ng-container *ngIf="horarioIcon == 'add'">
@@ -73,7 +73,7 @@
             }
         </section>
         } @else {
-        @if (controlName == 'cpf') {
+        @if (controlName == 'cpf' && readCPF) {
         <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"
             [autocomplete]="autocomplete" [showMaskTyped]="true" mask="000.000.000-00" placeHolderCharacter="0" />
         } @else if (controlName == 'tel') {

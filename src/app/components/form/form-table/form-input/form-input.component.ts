@@ -13,7 +13,7 @@ import { NgIf } from '@angular/common';
   styleUrl: './form-input.component.scss'
 })
 export class FormInputComponent implements OnInit, AfterViewInit {
-  defHorarioValue = '0000';
+  defHorarioValue = '00:00';
   horarioValue: any = this.defHorarioValue;
 
   constructor(
@@ -103,36 +103,17 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   }
 
   horarioChange = (value: string) => {
-    let formattedValue: string | string[] = value.split('');
+    const hora = +value.substring(0, 2);
 
-    if (formattedValue.length < 4) formattedValue.splice(formattedValue.length, 0, '0');
+    const hasHorario = this.builderOptions?.find(({ text }) => text == value);
 
-    formattedValue = formattedValue.join('');
-
-    let hora = +formattedValue.substring(0, 2);
-    let minuto = +formattedValue.substring(2);
-
-    const allExistingHorarios = this.builderOptions?.map(({ text }) =>
-      `${text.substring(0, 2) + text.substring(3)}`
-    );
-    const hasHorario = allExistingHorarios?.find(horario => horario == formattedValue);
-
-    // while (minuto >= 60) {
-    //   minuto -= 60;
-    //   hora++;
-    // };
-
-    // formattedValue = `${hora}${minuto}`;
-
-    if (hasHorario || (hora >= 24 || minuto >= 60 || hora < 5)) {
+    if (hasHorario || (hora < 5)) {
       this.enableAddHorario = !1;
 
       return;
     };
 
-    this.horarioValue = formattedValue;
-
-    this.enableAddHorario = formattedValue != this.defHorarioValue;
+    this.enableAddHorario = value != this.defHorarioValue;
     this.cdr.detectChanges();
   }
 
@@ -143,11 +124,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
     this.enableAddHorario = !1;
 
-    const formatHorario = `${this.horarioValue.substring(0, 2)
-      }:${this.horarioValue.substring(2)}`;
-
     if (this.builderOptions) {
-      this.builderOptions.push({ id: 0, text: formatHorario, status: !1 });
+      this.builderOptions.push({ id: 0, text: this.horarioValue, status: !1 });
       this.sortBuilderOptions();
       this.form.get(this.controlName)?.setValue(this.builderOptions);
 
@@ -159,8 +137,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
   sortBuilderOptions = () => {
     if (this.builderOptions) this.builderOptions = this.builderOptions.sort(({ text: textA }, { text: textB }) => {
-      const valueA = +(textA.substring(0, 2) + textA.substring(3)),
-        valueB = +(textB.substring(0, 2) + textB.substring(3));
+      const valueA = +(textA.substring(0, 2)) * 60 + +textA.substring(3),
+        valueB = +(textB.substring(0, 2)) * 60 + +textB.substring(3);
 
       return valueA - valueB;
     });
@@ -176,7 +154,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
     if (option.status) {
       this.horarioSubText = 'Salvar Horário';
       this.horarioIcon = 'checkmark';
-      this.horarioValue = option.text.substring(0, 2) + option.text.substring(3);
+      this.horarioValue = option.text;
       button.onclick = ev => this.saveEdit(option, ev);
     } else {
       this.horarioSubText = 'Criar Horário';
@@ -208,11 +186,9 @@ export class FormInputComponent implements OnInit, AfterViewInit {
     this.enableAddHorario = !1;
 
     const button = this.horarioSubscribe?.nativeElement as HTMLButtonElement;
-    const formatHorario = `${this.horarioValue.substring(0, 2)
-      }:${this.horarioValue.substring(2)}`;
 
     if (this.builderOptions) {
-      option.text = formatHorario;
+      option.text = this.horarioValue;
       option.status = !1;
 
       this.sortBuilderOptions();

@@ -13,6 +13,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { CadastroSubmit } from '../../../tools';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
 import { NgIf } from '@angular/common';
+import { MyValidators } from '../../../tools/validators';
 
 @Component({
   selector: 'app-funcionario',
@@ -46,7 +47,6 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
     { id: 'FEMININO', text: 'Feminino', status: !1 },
     { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
-
   submitTexts: string[] = ['Cadastrar', 'Cadastrar', 'Cadastrar'];
 
   ngOnInit(): void {
@@ -113,19 +113,11 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
   admin = this.switchForms[1];
   custom = this.switchForms[2];
 
-  validCPFAndTel = (control: AbstractControl) => {
-    const { value } = control;
-
-    if (value.length != 11 || value == '00000000000') return { 'invalid': !0 };
-
-    return null;
-  }
-
   professorForm = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', this.validCPFAndTel],
+    cpf: ['', this.myvalidators.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', this.validCPFAndTel],
+    tel: [''],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [['PROFESSOR']] }),
     professor: this.fb.group({})
@@ -133,9 +125,9 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
 
   adminForm = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', this.validCPFAndTel],
+    cpf: ['', this.myvalidators.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', this.validCPFAndTel],
+    tel: [''],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [['ADMIN']] }),
     admin: this.fb.group({})
@@ -143,9 +135,9 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
 
   customForm = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', this.validCPFAndTel],
+    cpf: ['', this.myvalidators.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
-    tel: ['', this.validCPFAndTel],
+    tel: [''],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [[]] }),
     aluno: this.fb.group({

@@ -10,7 +10,7 @@
                 <strong>Já possui uma conta? Faça login!</strong>
             </form-link>
             <form-input [form]="form" controlName="nome_comp">Nome Completo</form-input>
-            <form-input [form]="form" controlName="cpf">CPF</form-input>
+            <form-input [form]="form" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="form" controlName="email" type="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="form" controlName="password" type="password" autocomplete="new-password">Senha</form-input>
             <form-input [form]="form" controlName="tel">Celular</form-input>

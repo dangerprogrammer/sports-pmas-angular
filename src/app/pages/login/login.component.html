@@ -9,7 +9,7 @@
         <form-table [form]="form" [submitEvent]="submitFunction" submitText="Login">
             <div class="col">
                 <form-input [form]="form" controlName="cpf">CPF</form-input>
-                <form-input [form]="form" controlName="password" autocomplete="new-password">Senha</form-input>
+                <form-input [form]="form" controlName="password" type="password" autocomplete="new-password">Senha</form-input>
             </div>
             <form-link link="/cadastro">
                 <strong>Não possui uma conta? Cadastre-se já!</strong>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CadastroService } from '../../services/cadastro.service';
-import { token } from '../../interfaces';
 import { AdminDashboardComponent } from '../../components/dashboard/admin-dashboard/admin-dashboard.component';
 import { AlunoDashboardComponent } from '../../components/dashboard/aluno-dashboard/aluno-dashboard.component';
 import { ProfessorDashboardComponent } from '../../components/dashboard/professor-dashboard/professor-dashboard.component';
@@ -41,20 +40,32 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) { }
 
-  showSidebar: boolean = !0;
+  showSidebar: boolean = !1;
+  dashboardsList?: Element;
 
   ngOnInit(): void {
     const userByToken = this.cadastro.searchUserByToken();
     const refresh = this.cadastro.refreshToken();
 
     refresh.subscribe({
-      error: this.logoutButton, complete: () => {
-        userByToken.subscribe(user => {
-          this.user = user as PrismaUser;
-          this.loaded = !0;
-          this.userRoles = this.user.roles;
+      error: this.logoutButton, complete: () => userByToken.subscribe(user => {
+        this.user = user;
+        this.loaded = !0;
+        this.userRoles = this.user.roles;
+
+
+        setTimeout(() => {
+          const dashList = document.querySelector('dashboards-list');
+          
+          if (dashList) {
+            this.dashboardsList = dashList;
+
+            dashList.addEventListener('wheel', ev => ev.preventDefault());
+
+            dashList.addEventListener('touchmove', ev => ev.preventDefault());
+          };
         });
-      }
+      })
     });
   }
 
@@ -73,8 +84,27 @@ export class DashboardComponent implements OnInit {
 
   goModalidades = () => this.router.navigate(["/modalidades"]);
 
-  toggleSidebar = () => {
-    this.showSidebar = !this.showSidebar;
+  toggleSidebar = () => this.showSidebar = !this.showSidebar;
+
+  goDashAdmin = () => {
+    const dashAdmin = document.querySelector('admin-dashboard') as any;
+
+    this.dashboardsList?.scrollTo(0, dashAdmin.offsetTop || 0);
+    this.toggleSidebar();
+  }
+
+  goDashProfessor = () => {
+    const dashProfessor = document.querySelector('professor-dashboard') as any;
+
+    this.dashboardsList?.scrollTo(0, dashProfessor.offsetTop || 0);
+    this.toggleSidebar();
+  }
+
+  goDashAluno = () => {
+    const dashAluno = document.querySelector('aluno-dashboard') as any;
+
+    this.dashboardsList?.scrollTo(0, dashAluno.offsetTop || 0);
+    this.toggleSidebar();
   }
 
   userRoles: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[] = [];
