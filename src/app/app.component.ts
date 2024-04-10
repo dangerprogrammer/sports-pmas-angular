@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   generatedUsers: any[] = [];
-  generateSize = 1e2;
+  generateSize = 5;
 
   ngOnInit(): void {
     for (let i = 0; i < this.generateSize; i++) setTimeout(() => this.generateUser(i), 1e2 * i);
