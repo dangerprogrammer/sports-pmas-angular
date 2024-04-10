@@ -4,7 +4,7 @@ import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';
 import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { genders } from '../../../types';
 import { CadastroService } from '../../../services/cadastro.service';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';

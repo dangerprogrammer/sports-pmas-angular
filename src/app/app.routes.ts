@@ -40,6 +40,10 @@ export const routes: Routes = [
         canActivate: [tokenGuard]
     },
     {
+        path: 'notifications', component: ProfileComponent,
+        canActivate: [tokenGuard]
+    },
+    {
         path: 'modalidades', component: ModalidadesComponent,
         canActivate: [tokenGuard, modGuard]
     }

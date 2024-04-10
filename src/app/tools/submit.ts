@@ -14,7 +14,7 @@ export class CadastroSubmit {
   private cadastro = inject(CadastroService);
   private router = inject(Router);
 
-  
+
   myvalidators = new MyValidators();
   notification!: NotificationService;
   isFreeze: boolean = !1;
@@ -23,8 +23,8 @@ export class CadastroSubmit {
     this.isFreeze = freeze;
   }
 
-  submitFunction = (res: any, form: FormGroup) => {
-    const prismaUser = this.cadastro.createUser(res as User);
+  submitFunction = (res: User, form: FormGroup) => {
+    const prismaUser = this.cadastro.createUser(res);
     const findedUser = this.cadastro.searchUser(res.cpf);
 
     findedUser.subscribe(user => {
@@ -54,18 +54,13 @@ export class CadastroSubmit {
         let notifConfigs: any = {};
 
         createSolic.subscribe({
-          error: () => {
-            this.notification.addNotification({
-              text: 'Solicitação falhou!',
-              error: !0
-            });
-          },
+          error: () => this.notification.addNotification({ text: 'Solicitação falhou!', error: !0 }),
           next: (value: any) => {
             const { submitAction } = value;
             if (value.createdAt) notifConfigs = { text: 'Solicitação já foi enviada!' };
             else if (value.backAPI) notifConfigs = {
               ...value,
-              actionClick: () => this.submitActions[submitAction as ('goLogin')](form),
+              actionClick: () => this.submitActions[submitAction as 'goLogin'](form),
               backAPI: undefined
             };
             else notifConfigs = {
@@ -97,7 +92,7 @@ export class LoginSubmit {
   private router = inject(Router);
 
   hasError: boolean = !1;
-  errorMsg: string = 'Erro! CPF ou senha inválidas!';
+  errorMsg: string = 'Erro! CPF ou senha inválidos!';
 
   submitFunction = (res: any) => {
     const findedUser = this.cadastro.searchUser(res.cpf);

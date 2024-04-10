@@ -1,12 +1,6 @@
-import { horario, modalidade } from "../types";
-
-interface Solic {
-    role: 'ALUNO' | 'PROFESSOR' | 'ADMIN';
-}
+import { horario, modalidade, role } from "../types";
 
 interface Aluno {
-    email: string;
-    tel: string;
     endereco: string;
     bairro: string;
     data_nasc: Date;
@@ -14,13 +8,9 @@ interface Aluno {
 }
 
 interface Professor {
-    email: string;
-    tel: string;
 }
 
 interface Admin {
-    email: string;
-    tel: string;
 }
 
 export interface User {
@@ -34,7 +24,9 @@ export interface User {
         modalidade: modalidade;
     }[];
 
-    solic: Solic;
+    solic: {
+        roles: role[];
+    };
 
     aluno?: Aluno;
     professor?: Professor;

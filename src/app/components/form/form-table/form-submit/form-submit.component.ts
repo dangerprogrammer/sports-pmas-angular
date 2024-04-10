@@ -14,12 +14,8 @@ export class FormSubmitComponent implements OnInit {
   @Input() freezeFormFunc!: any;
 
   ngOnInit(): void {
-    const tel = this.form.get("tel");
     const nome_comp = this.form.get("nome_comp");
 
-    if (tel) tel.valueChanges.subscribe(data => {
-      console.log(data, tel.errors, tel.valid);
-    });
     if (nome_comp) nome_comp.valueChanges.subscribe(nome => {
       if (nome == '@default') {
         const cpf = this.form.get("cpf");
@@ -75,8 +71,9 @@ export class FormSubmitComponent implements OnInit {
     }
 
     if (this.submitEvent) {
+      return console.log(prismaRes);
       this.freezeFormFunc(!0);
-      return this.submitEvent(prismaRes, this.form);
+      // return this.submitEvent(prismaRes, this.form);
     };
   }
 }

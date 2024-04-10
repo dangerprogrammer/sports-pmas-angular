@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CadastroService } from '../../../services/cadastro.service';
 import { PrismaSolic, PrismaUser } from '../../../types';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { SolicsListComponent } from '../../solics-list/solics-list.component';
 
 @Component({
@@ -29,11 +29,11 @@ export class AdminDashboardComponent implements OnInit {
     solics.subscribe(listSolics => {
       this.solicUsers = [];
 
-      listSolics.forEach(solic => {
-        const userSolic = this.cadastro.searchUserById(solic.userId);
+      const usersSolic = listSolics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
 
-        userSolic.subscribe(solicUser => this.solicUsers.push(solicUser));
-      });
+      forkJoin(usersSolic).subscribe(users => 
+        this.solicUsers = users.sort(({ id: idA }, { id: idB }) => idB - idA)
+      );
     });
   }
 }

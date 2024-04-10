@@ -1,6 +1,17 @@
-<h1 class="title">Lista de solicitações</h1>
-<ul class="solics">
-    @for (solicUser of solics; track $index) {
-    <solic-button [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
+<h1 class="title">Solicitações de Usuários</h1>
+<div class="solics-desc">
+    @if (pageIndex) {
+    <button class="switch">Opa</button>
     }
-</ul>
+    <span class="content">{{pageIndex * pagesSize + 1}}-{{min(solics.length, pagesSize)}} de {{solics.length}}</span>
+    @if (pageIndex < (pagesNumber - 1)) {
+    <button class="switch">Opa</button>
+    }
+</div>
+<section class="list-solics">
+    <ul class="solics" #solicsList>
+        @for (solicUser of pageSolics; track $index) {
+        <solic-button [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
+        }
+    </ul>
+</section>

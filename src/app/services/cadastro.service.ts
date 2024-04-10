@@ -65,7 +65,16 @@ export class CadastroService {
 
   searchUser = (cpf: string) => this.http.get<PrismaUser>(`nest-api/search/user/${cpf}`);
 
+  searchSolic = (id: number) => {
+    const { access_token } = this.token;
+    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+
+    return this.http.get<PrismaSolic>(`nest-api/search/solic/${id}`, { headers });
+  }
+
   createSolic = (data: { roles: role[], cpf: string }) => this.http.patch('nest-api/auth/create/solic', data);
+
+  getSolic = (cpf: string) => this.http.patch<PrismaSolic>('nest-api/auth/update/solic', { cpf, update: {} })
 
   createModalidade = (modalidade: modalidade) => {
     const { access_token } = this.token;

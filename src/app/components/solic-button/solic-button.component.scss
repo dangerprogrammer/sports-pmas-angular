@@ -1,73 +1,121 @@
+@use '../../../styles.scss' as global;
+
 .solic {
-    background: white;
-    padding: .25em min(2vw, 2em);
-    padding-right: min(2vw, .5em);
     border-radius: .5em;
-    // display: flex;
-    // flex-direction: row;
-    // justify-content: space-between;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr) auto;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
     font-weight: 600;
     font-size: 1.2em;
     box-shadow: 0 .2rem .5em #0163;
 
-    .tools {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: min(2vw, 1em);
+    >* {
+        padding: .25em min(2vw, 2em);
+    }
 
-        .buttons {
+    .solic-header {
+        background: white;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr) auto;
+        align-items: center;
+        padding-right: min(2vw, .5em);
+        border-radius: .5em;
+        cursor: pointer;
+
+        .tools {
             display: flex;
             flex-direction: row;
+            align-items: center;
+            gap: min(2vw, 1em);
 
-            .button {
-                background: transparent;
-                cursor: pointer;
+            .buttons {
                 display: flex;
-                font-size: 2em;
-                transition: .2s ease-in-out color;
+                flex-direction: row;
+                gap: .35em;
 
-                &.accept {
-                    color: green;
+                .button {
+                    position: relative;
+                    background: global.$main-color;
+                    border-radius: .2em;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: 1.5em;
+                    color: #eee;
+                    overflow: hidden;
+                    transition: .2s ease-in-out background-color;
 
                     &:hover {
-                        color: #0b0;
+                        &.accept {
+                            background-color: #080;
+                        }
+
+                        &.cancel {
+                            background: #c00;
+                        }
                     }
-                }
 
-                &.cancel {
-                    color: #c00;
-
-                    &:hover {
-                        color: #e00;
+                    * {
+                        z-index: 10;
                     }
                 }
             }
+
+            .show-more {
+                background: transparent;
+                pointer-events: none;
+                display: flex;
+                align-items: center;
+                height: 1.5em;
+                width: 1.5em;
+                justify-content: center;
+                font-size: 1.25em;
+                transition: .15s ease-in-out;
+                color: global.$main-color;
+            }
+        }
+    }
+
+    .solic-main {
+        grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100vw), 1fr));
+        gap: 1em;
+        padding-block: .5em;
+
+        solic-content {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &:not(.showing) {
+        .solic-main {
+            display: none;
+        }
+    }
+
+    &.showing {
+        .show-more {
+            rotate: 90deg;
         }
 
-        .show-more {
-            background: transparent;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            height: 1.5em;
-            width: 1.5em;
-            justify-content: center;
-            font-size: 1.25em;
-            transition: .1s ease-in-out;
+        .solic-main {
+            display: grid;
+        }
 
-            &.showing {
-                rotate: 90deg;
+        .solic-header {
+            grid-template-columns: 1fr auto;
+
+            .cpf {
+                display: none;
             }
         }
     }
 }
 
 @media screen and (max-width: 36rem) {
-    .cpf {
-        display: none;
+    .solic-header {
+        grid-template-columns: 1fr auto;
+
+        .cpf {
+            display: none;
+        }
     }
 }

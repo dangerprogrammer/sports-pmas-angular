@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { horario, modalidade } from '../../../types';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DateTools } from '../../../tools/date-tools';
+import { DateTools } from '../../../tools';
 
 @Component({
   selector: 'horario-input',

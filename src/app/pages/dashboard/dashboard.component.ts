@@ -60,7 +60,10 @@ export class DashboardComponent implements OnInit {
           if (dashList) {
             this.dashboardsList = dashList;
 
-            dashList.addEventListener('wheel', ev => ev.preventDefault());
+            dashList.addEventListener('wheel', ev => {
+              ev.preventDefault();
+              console.log("block scroll!");
+            });
 
             dashList.addEventListener('touchmove', ev => ev.preventDefault());
           };
