@@ -16,7 +16,7 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
 
   @ViewChild('solicsList') solicsList!: ElementRef;
 
-  pagesSize: 10 | 15 | 20 | 25 = 10;
+  pagesSize: 10 | 15 | 20 | 25 = 25;
   pagesNumber!: number;
   pageIndex = 0;
 
@@ -24,8 +24,11 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.pagesNumber = Math.ceil(this.solics.length / this.pagesSize);
-    this.pageSolics = this.solics.slice(this.pageIndex * this.pagesSize, (this.pageIndex + 1) * this.pagesSize);
+
+    this.updatePageSolics();
   }
+
+  updatePageSolics = () => this.pageSolics = this.solics.slice(this.pageIndex * this.pagesSize, (this.pageIndex + 1) * this.pagesSize);
 
   ngAfterViewInit(): void {
     const solic = this.solicsList.nativeElement;
@@ -33,6 +36,26 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
     solic.addEventListener('wheel', (ev: Event) => ev.stopPropagation());
 
     solic.addEventListener('touchmove', (ev: Event) => ev.stopPropagation());
+  }
+
+  switchPage = (i: number = 0) => {
+    this.pageIndex = (this.pageIndex + i) % this.pagesNumber;
+
+    if (this.pageIndex < 0) this.pageIndex += this.pagesNumber;
+    
+    this.updatePageSolics();
+  }
+
+  switchFirst = () => {
+    this.pageIndex = 0;
+    
+    this.updatePageSolics();
+  }
+
+  switchLast = () => {
+    this.pageIndex = this.pagesNumber - 1;
+    
+    this.updatePageSolics();
   }
 
   min = Math.min;
