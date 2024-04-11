@@ -71,9 +71,8 @@ export class FormSubmitComponent implements OnInit {
     }
 
     if (this.submitEvent) {
-      return console.log(prismaRes);
       this.freezeFormFunc(!0);
-      // return this.submitEvent(prismaRes, this.form);
+      return this.submitEvent(prismaRes, this.form);
     };
   }
 }
