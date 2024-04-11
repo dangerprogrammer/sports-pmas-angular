@@ -1,0 +1,12 @@
+@if (loaded) {
+    <ng-content></ng-content>
+} @else {
+    <section class="loader-container">
+        <ul class="icon-container">
+            <span class="loading-icon" [style]="{ '--i': 0, '--z': 2, '--clr': rgb3 }"></span>
+            <span class="loading-icon" [style]="{ '--i': 1, '--z': 1, '--clr': rgb2 }"></span>
+            <span class="loading-icon" [style]="{ '--i': 2, '--z': 0, '--clr': rgb1 }"></span>
+        </ul>
+        <div class="loader">{{loadingMsg}}</div>
+    </section>
+}

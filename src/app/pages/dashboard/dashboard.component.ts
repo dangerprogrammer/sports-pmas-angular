@@ -14,6 +14,8 @@ import { CreatorContentComponent } from '../../components/creator-content/creato
 import { LogoutButtonComponent } from '../../components/header/logout-button/logout-button.component';
 import { HeaderButtonListComponent } from '../../components/header/header-button-list/header-button-list.component';
 import { ButtonListMainComponent } from '../../components/header/button-list-main/button-list-main.component';
+import { LoadingContentComponent } from '../../components/loading-content/loading-content.component';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -29,7 +31,8 @@ import { ButtonListMainComponent } from '../../components/header/button-list-mai
     CreatorContentComponent,
     LogoutButtonComponent,
     HeaderButtonListComponent,
-    ButtonListMainComponent
+    ButtonListMainComponent,
+    LoadingContentComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -60,10 +63,7 @@ export class DashboardComponent implements OnInit {
           if (dashList) {
             this.dashboardsList = dashList;
 
-            dashList.addEventListener('wheel', ev => {
-              ev.preventDefault();
-              console.log("block scroll!");
-            });
+            dashList.addEventListener('wheel', ev => ev.preventDefault());
 
             dashList.addEventListener('touchmove', ev => ev.preventDefault());
           };

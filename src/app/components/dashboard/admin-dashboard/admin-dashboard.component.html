@@ -1,7 +1,9 @@
-@if (solicUsers.length) {
-<solics-list [refresh]="updateSolics" [admin]="user" [solics]="solicUsers"></solics-list>
-} @else {
-<div class="no-solics">
-    <strong>Não há solicitações!</strong>
-</div>
-}
+<loading-content [loaded]="loaded" loadingMsg="Carregando Solicitações...">
+    @if (solicUsers.length) {
+    <solics-list [refresh]="updateSolics" [admin]="user" [solics]="solicUsers"></solics-list>
+    } @else {
+    <div class="loader no-solics">
+        <strong>{{msg}}</strong>
+    </div>
+    }
+</loading-content>

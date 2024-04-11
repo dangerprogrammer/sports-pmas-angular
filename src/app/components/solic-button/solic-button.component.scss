@@ -15,7 +15,6 @@
     .solic-header {
         background: white;
         display: grid;
-        grid-template-columns: repeat(2, 1fr) auto;
         align-items: center;
         padding-right: min(2vw, .5em);
         border-radius: .5em;
@@ -100,17 +99,29 @@
             display: grid;
         }
 
-        .solic-header {
-            grid-template-columns: 1fr auto;
+        .solic-header .cpf {
+            display: none;
+        }
+    }
+}
 
-            .cpf {
-                display: none;
+@media screen and (min-width: 36rem) {
+    .solic {
+        &:not(.showing) {
+            .solic-header {
+                grid-template-columns: repeat(2, 1fr) auto;
+            }
+        }
+
+        &.showing {
+            .solic-header {
+                grid-template-columns: 1fr auto;
             }
         }
     }
 }
 
-@media screen and (max-width: 36rem) {
+@media screen and (max-width: calc(36rem - 1px)) {
     .solic-header {
         grid-template-columns: 1fr auto;
 

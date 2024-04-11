@@ -43,7 +43,7 @@ export class SolicButtonComponent extends StringTools implements OnInit {
       if (this.refresh) this.refresh();
     });
   }
-
+  
   show: boolean = !1;
 
   showMore = (showing: boolean, ev: Event) => {

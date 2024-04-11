@@ -1,41 +1,44 @@
 <h1 class="title">Solicitações de Usuários</h1>
 <div class="solics-desc">
-    @if (pageIndex) {
-    <button class="switch" (click)="switchFirst()">
+    <button class="button refresh" (click)="refresh()">
         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path
-                d="M480 145.52v221c0 13.28-13 21.72-23.63 15.35L267.5 268.8c-9.24-5.53-9.24-20.07 0-25.6l188.87-113C467 123.8 480 132.24 480 145.52zM251.43 145.52v221c0 13.28-13 21.72-23.63 15.35L38.93 268.8c-9.24-5.53-9.24-20.07 0-25.6l188.87-113c10.64-6.4 23.63 2.04 23.63 15.32z"
-                fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+            <path d="M320 146s24.36-12-64-12a160 160 0 10160 160" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" />
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                d="M256 58l80 80-80 80" />
         </svg>
     </button>
-    <button class="switch" (click)="switchPage(-1)">
-        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
-                d="M328 112L184 256l144 144" />
-        </svg>
-    </button>
-    }
-    <span class="content">{{pageIndex * pagesSize + 1}}-{{pageIndex * pagesSize + min(solics.length, pagesSize)}} de
-        {{solics.length}}</span>
-    @if (pageIndex < (pagesNumber - 1)) { <button class="switch" (click)="switchPage(1)">
-        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
-                d="M184 112l144 144-144 144" />
-        </svg>
-        </button>
-        <button class="switch" (click)="switchLast()">
+    <section class="row">
+        <span class="content">{{pageIndex * pagesSize + 1}}-{{pageIndex * pagesSize + min(solics.length, pagesSize)}} de
+            {{solics.length}}</span>
+        <button class="button" [class.no-click]="!pageIndex" (click)="switchFirst()">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                 <path
-                    d="M32 145.52v221c0 13.28 13 21.72 23.63 15.35l188.87-113c9.24-5.53 9.24-20.07 0-25.6l-188.87-113C45 123.8 32 132.24 32 145.52zM260.57 145.52v221c0 13.28 13 21.72 23.63 15.35l188.87-113c9.24-5.53 9.24-20.07 0-25.6l-188.87-113c-10.64-6.47-23.63 1.97-23.63 15.25z"
-                    fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+                    d="M30.71 229.47l188.87-113a30.54 30.54 0 0131.09-.39 33.74 33.74 0 0116.76 29.47v79.05l180.72-108.16a30.54 30.54 0 0131.09-.39A33.74 33.74 0 01496 145.52v221A33.73 33.73 0 01479.24 396a30.54 30.54 0 01-31.09-.39L267.43 287.4v79.08A33.73 33.73 0 01250.67 396a30.54 30.54 0 01-31.09-.39l-188.87-113a31.27 31.27 0 010-53z" />
             </svg>
         </button>
-        }
+        <button class="button" [class.no-click]="!pageIndex" (click)="switchPage(-1)">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
+                    d="M328 112L184 256l144 144" />
+            </svg>
+        </button>
+        <button class="button" [class.no-click]="!(pageIndex < (pagesNumber - 1))" (click)="switchPage(1)">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
+                    d="M184 112l144 144-144 144" />
+            </svg>
+        </button>
+        <button class="button" [class.no-click]="!(pageIndex < (pagesNumber - 1))" (click)="switchLast()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path
+                    d="M481.29 229.47l-188.87-113a30.54 30.54 0 00-31.09-.39 33.74 33.74 0 00-16.76 29.47v79.05L63.85 116.44a30.54 30.54 0 00-31.09-.39A33.74 33.74 0 0016 145.52v221A33.74 33.74 0 0032.76 396a30.54 30.54 0 0031.09-.39L244.57 287.4v79.08A33.74 33.74 0 00261.33 396a30.54 30.54 0 0031.09-.39l188.87-113a31.27 31.27 0 000-53z" />
+            </svg>
+        </button>
+    </section>
 </div>
 <section class="list-solics">
     <ul class="solics" #solicsList>
-        @for (solicUser of pageSolics; track $index) {
-        <solic-button [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
-        }
+        <ng-container #listSolics></ng-container>
     </ul>
 </section>
