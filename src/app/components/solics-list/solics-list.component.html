@@ -1,13 +1,29 @@
 <h1 class="title">Solicitações de Usuários</h1>
 <div class="solics-desc">
-    <button class="button refresh" (click)="refresh()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path d="M320 146s24.36-12-64-12a160 160 0 10160 160" fill="none" stroke="currentColor"
-                stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" />
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
-                d="M256 58l80 80-80 80" />
-        </svg>
-    </button>
+    <section class="row">
+        <button class="button refresh" (click)="refresh()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path d="M320 146s24.36-12-64-12a160 160 0 10160 160" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" />
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                    d="M256 58l80 80-80 80" />
+            </svg>
+        </button>
+        <button class="button" (click)="switchFirst()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="32" d="M416 128L192 384l-96-96" />
+            </svg>
+            <span>Aceitar todos</span>
+        </button>
+        <button class="button" (click)="switchFirst()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path
+                    d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
+            </svg>
+            <span>Negar todos</span>
+        </button>
+    </section>
     <section class="row">
         <span class="content">{{pageIndex * pagesSize + 1}}-{{pageIndex * pagesSize + min(solics.length, pagesSize)}} de
             {{solics.length}}</span>

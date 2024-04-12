@@ -51,23 +51,25 @@ export class DashboardComponent implements OnInit {
     const refresh = this.cadastro.refreshToken();
 
     refresh.subscribe({
-      error: this.logoutButton, complete: () => userByToken.subscribe(user => {
-        this.user = user;
-        this.loaded = !0;
-        this.userRoles = this.user.roles;
+      error: this.logoutButton, complete: () => userByToken.subscribe({
+        error: this.logoutButton, next: user => {
+          this.user = user;
+          this.userRoles = this.user.roles;
+        }, complete: () => {
+          this.loaded = !0;
 
+          setTimeout(() => {
+            const dashList = document.querySelector('dashboards-list');
 
-        setTimeout(() => {
-          const dashList = document.querySelector('dashboards-list');
-          
-          if (dashList) {
-            this.dashboardsList = dashList;
+            if (dashList) {
+              this.dashboardsList = dashList;
 
-            dashList.addEventListener('wheel', ev => ev.preventDefault());
+              dashList.addEventListener('wheel', ev => ev.preventDefault());
 
-            dashList.addEventListener('touchmove', ev => ev.preventDefault());
-          };
-        });
+              dashList.addEventListener('touchmove', ev => ev.preventDefault());
+            };
+          });
+        }
       })
     });
   }
