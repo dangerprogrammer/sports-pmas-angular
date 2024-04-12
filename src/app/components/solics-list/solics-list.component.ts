@@ -1,6 +1,8 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { PrismaUser } from '../../types';
 import { SolicButtonComponent } from '../solic-button/solic-button.component';
+import { CadastroService } from '../../services/cadastro.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'solics-list',
@@ -11,39 +13,48 @@ import { SolicButtonComponent } from '../solic-button/solic-button.component';
 })
 export class SolicsListComponent implements OnInit, AfterViewInit {
   constructor(
-    private cdr: ChangeDetectorRef
+    private cadastro: CadastroService
   ) { }
 
   @Input() admin!: PrismaUser;
   @Input() solics!: PrismaUser[];
+  @Input() size: number = 0;
   @Input() refresh!: Function;
+  @Input() pageIndex: number = 0;
+  @Input() pagesSize: number = 25;
 
   @ViewChild('solicsList') solicsList!: ElementRef;
   @ViewChild('listSolics', { read: ViewContainerRef }) listSolics!: ViewContainerRef;
 
-  pagesSize: 10 | 15 | 20 | 25 = 25;
-  pagesNumber!: number;
-  pageIndex = 0;
+  @Output() updateLimits = new EventEmitter();
 
-  pageSolics!: PrismaUser[];
+  pagesNumber!: number;
+  accepting: boolean = !1;
 
   ngOnInit(): void {
-    this.pagesNumber = Math.ceil(this.solics.length / this.pagesSize);
+    this.pagesNumber = Math.ceil(this.size / this.pagesSize);
   }
 
-  updatePageSolics = () => {
-    this.pageSolics = this.solics.slice(this.pageIndex * this.pagesSize, (this.pageIndex + 1) * this.pagesSize);
+  acceptAll = (accepted: boolean) => {
+    this.accepting = !0;
+    this.cadastro.searchByAdmin(this.admin.id, { min: 0, max: this.size }).subscribe(({ solics }) => {
+      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
 
-    this.listSolics.clear();
-    
-    for (let solicUser of this.pageSolics) {
-      const buttonRef = this.listSolics.createComponent(SolicButtonComponent);
+      forkJoin(usersSolic).subscribe(users => {
+        const acceptsListPrisma = users
+          .map(({ cpf }) => { return { cpf, accepted } })
+          .map(this.cadastro.acceptUser);
 
-      buttonRef.setInput('refresh', this.refresh);
-      buttonRef.setInput('adminUser', this.admin);
-      buttonRef.setInput('solicUser', solicUser);
-    };
-  };
+        forkJoin(acceptsListPrisma).subscribe(() => this.refresh());
+      });
+    });
+  }
+
+  updatePageSolics = () => this.updateLimits.emit({
+    min: this.pageIndex * this.pagesSize,
+    max: (this.pageIndex + 1) * this.pagesSize,
+    index: this.pageIndex
+  });
 
   ngAfterViewInit(): void {
     const solic = this.solicsList.nativeElement;
@@ -51,9 +62,6 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
     solic.addEventListener('wheel', (ev: Event) => ev.stopPropagation());
 
     solic.addEventListener('touchmove', (ev: Event) => ev.stopPropagation());
-
-    this.updatePageSolics();
-    this.cdr.detectChanges();
   }
 
   switchPage = (i: number = 0) => {

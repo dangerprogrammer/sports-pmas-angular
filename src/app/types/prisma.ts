@@ -47,4 +47,5 @@ export type PrismaModalidade = {
     bairro: string;
     available: number;
     horarios?: horario[];
+    vagas: number;
 }

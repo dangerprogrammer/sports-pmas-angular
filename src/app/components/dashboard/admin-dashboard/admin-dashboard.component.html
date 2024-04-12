@@ -1,6 +1,7 @@
 <loading-content [loaded]="loaded" loadingMsg="Carregando Solicitações...">
     @if (solicUsers.length) {
-    <solics-list [refresh]="updateSolics" [admin]="user" [solics]="solicUsers"></solics-list>
+    <solics-list (updateLimits)="onUpdateLimits($event)" [pagesSize]="pagesSize" [pageIndex]="index" [refresh]="updateSolics" [admin]="user"
+        [size]="size" [solics]="solicUsers"></solics-list>
     } @else {
     <div class="loader no-solics">
         <strong>{{msg}}</strong>

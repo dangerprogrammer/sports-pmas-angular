@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { horario, PrismaModalidade } from '../../types';
+import { horario, modName, PrismaModalidade } from '../../types';
 import { HorarioHeaderComponent } from './horario-header/horario-header.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'horarios-list',
@@ -24,6 +25,7 @@ export class HorariosListComponent implements OnInit {
   horariosList: any[] = [];
   hideAdd: boolean = !1;
   modalidades: PrismaModalidade[] = [];
+  activeHorarios: { aula: modName, horario: Date }[] = [];
 
   addHorario = (modalidade: PrismaModalidade, horarios: horario[] = []) => {
     this.horariosList.push({ component: HorarioHeaderComponent });
@@ -33,21 +35,39 @@ export class HorariosListComponent implements OnInit {
     headerRef.setInput('modalidade', modalidade);
     headerRef.setInput('horarios', horarios);
     headerRef.setInput('form', this.form);
+
+    headerRef.instance.updateHorario.subscribe((horario: { aula: modName, horario: Date }) => {
+      const compareHorarios = (a: any, b: any) => JSON.stringify(a) == JSON.stringify(b);
+      const findedHorario = this.activeHorarios.find(h => compareHorarios(horario, h));
+
+      if (!findedHorario) this.activeHorarios.push(horario);
+      else {
+        console.log("remover!", this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1));
+        this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1);
+      };
+
+      console.log("update!", this.activeHorarios);
+    });
   };
 
   ngOnInit(): void {
     const prismaModalidades = this.cadastro.searchModalidades();
 
     prismaModalidades.subscribe(modalidades => {
-      this.modalidades = modalidades;
+      this.modalidades = modalidades.sort(({ name: nameA }, { name: nameB }) =>
+        nameA > nameB ? 1 : nameA < nameB ? -1 : 0
+      );
 
-      for (const modalidade of modalidades) {
-        const prismaHorarios = this.cadastro.searchHorarios(modalidade);
+      const prismaHorariosList = this.modalidades.map(this.cadastro.searchHorarios);
 
-        prismaHorarios.subscribe(horarios => {
+      forkJoin(prismaHorariosList).subscribe(data => {
+        for (const index in data) {
+          const modalidade = this.modalidades[index];
+          const horarios = data[index];
+
           if (horarios.length) this.addHorario(modalidade, horarios);
-        });
-      };
+        };
+      });
     });
   }
 }

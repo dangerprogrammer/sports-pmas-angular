@@ -9,14 +9,14 @@
                     d="M256 58l80 80-80 80" />
             </svg>
         </button>
-        <button class="button" (click)="switchFirst()">
+        <button class="button" [class.no-click]="accepting" (click)="acceptAll(!0)">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="32" d="M416 128L192 384l-96-96" />
             </svg>
             <span>Aceitar todos</span>
         </button>
-        <button class="button" (click)="switchFirst()">
+        <button class="button" [class.no-click]="accepting" (click)="acceptAll(!1)">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                 <path
                     d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
@@ -25,8 +25,8 @@
         </button>
     </section>
     <section class="row">
-        <span class="content">{{pageIndex * pagesSize + 1}}-{{pageIndex * pagesSize + min(solics.length, pagesSize)}} de
-            {{solics.length}}</span>
+        <span class="content">{{pageIndex * pagesSize + 1}}-{{pageIndex * pagesSize + min(size - pageIndex * pagesSize, pagesSize)}} de
+            {{size}}</span>
         <button class="button" [class.no-click]="!pageIndex" (click)="switchFirst()">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                 <path
@@ -56,5 +56,8 @@
 <section class="list-solics">
     <ul class="solics" #solicsList>
         <ng-container #listSolics></ng-container>
+        @for (solicUser of solics; track $index) {
+            <solic-button [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
+        }
     </ul>
 </section>

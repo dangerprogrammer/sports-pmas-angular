@@ -15,20 +15,20 @@ export class HorarioInputComponent extends DateTools {
   @Input() horarios!: horario[];
   @Input() modalidade!: modalidade;
   @Input() form!: FormGroup;
+  @Input() updateHorario!: Function;
 
   updateInscricoes({ target: t }: Event) {
     const target = t as HTMLLabelElement,
       optionsHTML = target.parentElement?.parentElement?.children as any,
       options = [...optionsHTML].map(({ firstChild }) => firstChild),
       index = options.findIndex(({ id }) => id == target.htmlFor),
-      optionsChecked = options
-        .map(({ checked }, ind) => (ind == index ? !checked : checked) ?
-          { aula: this.modalidade.name, horario: this.horarios[ind].time } :
-          false)
-        .filter(horario => horario);
+      option = options
+        .map(({ checked }, ind) => (ind == index ? !checked : checked) &&
+          { aula: this.modalidade.name, horario: this.horarios[ind].time })[index];
 
     const inscricoes = this.form.get('inscricoes') as FormGroup;
 
-    inscricoes.setValue(optionsChecked);
+    return this.updateHorario(option);
+    // inscricoes.setValue(optionsChecked);
   }
 }

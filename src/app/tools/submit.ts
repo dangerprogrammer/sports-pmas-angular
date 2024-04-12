@@ -158,6 +158,8 @@ export class ModSubmit extends DateTools {
     });
   }
 
+  private sortNames = ({ status: a }: any, { status: b }: any) => a > b ? -1 : a < b ? 1 : 0;
+
   submitExistingMod = (name: string, update: Partial<modalidade>, data: { form: FormGroup, formRef: ComponentRef<any> }) => {
     const updateMod = this.cadastro.updateModalidade(name, update);
     const prismaModalidades = this.cadastro.searchModalidades();
@@ -179,7 +181,8 @@ export class ModSubmit extends DateTools {
       local: this.fb.group({
         endereco: [modalidade.endereco, Validators.required],
         bairro: [modalidade.bairro, Validators.required]
-      })
+      }),
+      vagas: [modalidade.vagas, Validators.required]
     });
 
     const oldValue = { ...form.value };
@@ -194,11 +197,7 @@ export class ModSubmit extends DateTools {
           form.get("name")?.setValue(option, { emitEvent: false });
         }
       }
-    }).sort(({ status: a }, { status: b }) => {
-      if (a > b) return -1;
-
-      return 0;
-    });
+    }).sort(this.sortNames);
 
     formRef.setInput('index', this.modalidadesView.length - 1);
     formRef.setInput('titleForm', modalidade.name);
@@ -209,6 +208,7 @@ export class ModSubmit extends DateTools {
         { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: formatHorarios.map(({ time }) => { return { id: 0, text: time, status: !1 } }) },
         { form: localForm, controlName: 'endereco', inputText: 'Endereco' },
         { form: localForm, controlName: 'bairro', inputText: 'Bairro' },
+        { form, controlName: 'vagas', inputText: 'Vagas' }
       ],
       oldValue,
       autoGenerateForms: !0,
@@ -234,7 +234,8 @@ export class ModSubmit extends DateTools {
       local: this.fb.group({
         endereco: ['', Validators.required],
         bairro: ['', Validators.required]
-      })
+      }),
+      vagas: [15, Validators.required]
     });
 
     const localForm = form.get("local") as FormGroup;
@@ -245,11 +246,7 @@ export class ModSubmit extends DateTools {
           form.get("name")?.setValue(option, { emitEvent: false });
         }
       }
-    }).sort(({ status: a }, { status: b }) => {
-      if (a > b) return -1;
-
-      return 0;
-    });
+    }).sort(this.sortNames);
 
     formRef.setInput('index', this.modalidadesView.length - 1);
     formRef.setInput('titleForm', 'Escolha uma modalidade!');
@@ -260,7 +257,8 @@ export class ModSubmit extends DateTools {
         { form, controlName: 'name', inputText: 'Modalidades', options: optionsName },
         { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: [] },
         { form: localForm, controlName: 'endereco', inputText: 'Endereco' },
-        { form: localForm, controlName: 'bairro', inputText: 'Bairro' }
+        { form: localForm, controlName: 'bairro', inputText: 'Bairro' },
+        { form, controlName: 'vagas', inputText: 'Vagas' }
       ],
       autoGenerateForms: !0,
       submitEvent: (modalidade: modalidade) => this.submitNewMod(modalidade, { form, formRef }),

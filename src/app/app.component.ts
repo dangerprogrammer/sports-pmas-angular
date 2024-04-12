@@ -16,10 +16,10 @@ export class AppComponent implements OnInit {
   ) { }
 
   generatedUsers: any[] = [];
-  generateSize = 30;
+  generateSize = 1e3;
 
   ngOnInit(): void {
-    for (let i = 0; i < this.generateSize; i++) setTimeout(() => this.generateUser(i), 1e2 * i);
+    // this.generateUser(0);
   }
 
   generateUser = (i: number) => {
@@ -31,11 +31,11 @@ export class AppComponent implements OnInit {
     const cpf = spaces + generateCPF;
 
     const userGenerated: User = {
-      nome_comp: `Bot ${i}`,
+      nome_comp: `Aluno ${i}`,
       cpf,
       password: '123456',
       tel: '00 00000-0000',
-      email: `bot${i}@gmail.com`,
+      email: `aluno${i}@gmail.com`,
       inscricoes: [],
       solic: {
         roles: ['ALUNO']
@@ -51,17 +51,19 @@ export class AppComponent implements OnInit {
     const prismaUser = this.cadastro.createUser(userGenerated);
     const findedUser = this.cadastro.searchUser(cpf);
 
-    setTimeout(() => {
-      findedUser.subscribe(user => {
-        if (!user) prismaUser.subscribe({
-          next: value => {
-            this.generatedUsers.push(value);
-          }, complete: () => {
-            console.log('Aluno cadastrado!', this.generatedUsers[this.generatedUsers.length - 1]);
-          }
-        });
-        // else console.log('Aluno existente!', user);
+    findedUser.subscribe(user => {
+      if (!user) prismaUser.subscribe({
+        error: () => this.generateUser(i),
+        next: value => {
+          this.generatedUsers.push(value);
+        }, complete: () => {
+          if (i < (this.generateSize - 1)) this.generateUser(i + 1);
+          console.clear();
+          console.log(`Aluno ${i} cadastrado!`, this.generatedUsers[this.generatedUsers.length - 1]);
+          console.log(this.generatedUsers);
+        }
       });
-    }, 1e2 * i);
+      else if (i < (this.generateSize - 1)) this.generateUser(i + 1);
+    });
   }
 }

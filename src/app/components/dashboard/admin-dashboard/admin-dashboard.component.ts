@@ -23,17 +23,32 @@ export class AdminDashboardComponent implements OnInit {
   msg: string = 'Não há solicitações!';
 
   ngOnInit(): void {
+    this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 });
+  }
+
+  min!: number;
+  max!: number;
+  index!: number;
+  size!: number;
+  pagesSize: 10 | 15 | 20 | 25 = 25;
+
+  onUpdateLimits = ({ min, max, index }: { min: number, max: number, index: number }) => {
+    this.min = min;
+    this.max = max;
+    this.index = index;
+
     this.updateSolics();
   }
 
   updateSolics = () => {
-    const solics = this.cadastro.searchByAdmin(this.user.id);
+    const solics = this.cadastro.searchByAdmin(this.user.id, { min: this.min, max: this.max });
 
     this.loaded = !1;
-    solics.subscribe(listSolics => {
+    solics.subscribe(({ solics, size }) => {
       this.solicUsers = [];
 
-      const usersSolic = listSolics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
+      this.size = size;
+      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
 
       if (!usersSolic.length) this.loaded = !0;
       forkJoin(usersSolic).subscribe(users => {

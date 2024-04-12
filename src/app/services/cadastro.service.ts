@@ -92,7 +92,7 @@ export class CadastroService {
 
   searchUserById = (id: number) => this.http.get<PrismaUser>(`nest-api/search/user/id/${id}`);
 
-  searchByAdmin = (id: number) => this.http.get<PrismaSolic[]>(`nest-api/search/admin/${id}`);
+  searchByAdmin = (id: number, limits: { min: number, max: number }) => this.http.post<{ solics: PrismaSolic[], size: number }>(`nest-api/search/admin/${id}`, limits);
 
   acceptUser = (data: { cpf: string, accepted: boolean }) => {
     const { access_token } = this.token;
