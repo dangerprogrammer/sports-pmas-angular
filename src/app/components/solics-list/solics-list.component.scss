@@ -19,7 +19,7 @@
         flex-direction: column;
         gap: 1em;
         flex-grow: 1;
-        max-height: 32em;
+        max-height: 36em;
         width: 100%;
         overflow-y: auto;
 
@@ -42,7 +42,6 @@
     justify-content: space-between;
     width: 100%;
     max-width: 64rem;
-    gap: 1em;
 
     .row {
         display: flex;
@@ -57,7 +56,7 @@
         gap: .3em;
         cursor: pointer;
         padding: .5em;
-        font-size: 1.1em;
+        font-size: 1.2em;
         border-radius: .2em;
         box-shadow: 0 .2rem .5em #0163;
         background: global.$main-color;
@@ -93,8 +92,18 @@
     }
 }
 
+@media screen and (max-width: calc(45rem - 1px)) {
+    .all {
+        display: none !important;
+    }
+}
+
 @media screen and (max-width: calc(32rem - 1px)) {
     .solics {
         padding-right: .5em;
+    }
+
+    .solics-desc {
+        padding-inline: min(2em, 3vw);
     }
 }

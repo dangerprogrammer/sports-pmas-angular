@@ -1,4 +1,4 @@
-<button (click)="click && click()" class="header-button" [class.left]="iconSide == 'left'" [class.right]="iconSide == 'right'">
+<button (click)="click && click()" class="header-button" [style]="{'--left-level': leftLevel}" [class.left]="iconSide == 'left'" [class.right]="iconSide == 'right'">
     <span class="content">
         <ng-content></ng-content>
     </span>

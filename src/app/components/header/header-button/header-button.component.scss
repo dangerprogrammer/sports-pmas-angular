@@ -2,9 +2,10 @@
 
 .header-button {
     @extend %button;
+    --left-level: 0;
 
     &.left {
-        padding-left: .75em;
+        padding-left: calc(.75em + var(--left-level) * .8em);
     }
 
     &.right {

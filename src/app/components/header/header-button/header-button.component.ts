@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'header-button',
@@ -7,15 +7,23 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './header-button.component.html',
   styleUrl: './header-button.component.scss'
 })
-export class HeaderButtonComponent implements OnInit {
+export class HeaderButtonComponent implements AfterContentInit {
   @Input() click?: Function;
   @Input() iconSide: 'left' | 'right' = 'left';
   @Input() showing: boolean = !1;
   @Output() outputClick = new EventEmitter();
 
+  leftLevel: number = 0;
+
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  setLeft = (level: number) => this.leftLevel += level;
+
   sendEmitter = () => this.outputClick.emit();
 
-  ngOnInit(): void {
-    if (this.outputClick.observed) this.click ||= this.sendEmitter;
+  ngAfterContentInit(): void {
+    this.cdr.detectChanges();
   }
 }

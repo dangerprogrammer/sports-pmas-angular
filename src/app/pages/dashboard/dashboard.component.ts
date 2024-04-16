@@ -4,7 +4,7 @@ import { CadastroService } from '../../services/cadastro.service';
 import { AdminDashboardComponent } from '../../components/dashboard/admin-dashboard/admin-dashboard.component';
 import { AlunoDashboardComponent } from '../../components/dashboard/aluno-dashboard/aluno-dashboard.component';
 import { ProfessorDashboardComponent } from '../../components/dashboard/professor-dashboard/professor-dashboard.component';
-import { PrismaUser } from '../../types';
+import { PrismaUser, role } from '../../types';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { Router } from '@angular/router';
 import { MainComponent } from '../../components/main/main.component';
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) { }
 
-  showSidebar: boolean = !1;
+  showSidebar: boolean = !0;
   dashboardsList?: Element;
 
   ngOnInit(): void {
@@ -80,6 +80,12 @@ export class DashboardComponent implements OnInit {
     this.toggleDashboards = toggle == undefined ? !this.toggleDashboards : toggle;
   }
 
+  toggleAdmins: boolean = !0;
+
+  onToggleAdmins(toggle?: boolean) {
+    this.toggleAdmins = toggle == undefined ? !this.toggleAdmins : toggle;
+  }
+
   logoutButton = () => {
     localStorage.removeItem("auth");
     this.router.navigate(["/login"]);
@@ -92,27 +98,39 @@ export class DashboardComponent implements OnInit {
   toggleSidebar = () => this.showSidebar = !this.showSidebar;
 
   goDashAdmin = () => {
-    const dashAdmin = document.querySelector('admin-dashboard') as any;
+    const dashAdmin = document.querySelector('admin-dashboard') as HTMLElement;
 
     this.dashboardsList?.scrollTo(0, dashAdmin.offsetTop || 0);
+    
     this.toggleSidebar();
   }
 
+  goAdminSolics = () => {
+    const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
+
+    dashRow.scrollTo(0, 0);
+  }
+
+  goSolics = () => {
+    this.goDashAdmin();
+    this.goAdminSolics();
+  };
+
   goDashProfessor = () => {
-    const dashProfessor = document.querySelector('professor-dashboard') as any;
+    const dashProfessor = document.querySelector('professor-dashboard') as HTMLElement;
 
     this.dashboardsList?.scrollTo(0, dashProfessor.offsetTop || 0);
     this.toggleSidebar();
   }
 
   goDashAluno = () => {
-    const dashAluno = document.querySelector('aluno-dashboard') as any;
+    const dashAluno = document.querySelector('aluno-dashboard') as HTMLElement;
 
     this.dashboardsList?.scrollTo(0, dashAluno.offsetTop || 0);
     this.toggleSidebar();
   }
 
-  userRoles: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[] = [];
+  userRoles: role[] = [];
   loaded: boolean = !1;
   user!: PrismaUser;
 }

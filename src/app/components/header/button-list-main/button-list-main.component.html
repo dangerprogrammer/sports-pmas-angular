@@ -1,4 +1,4 @@
-<header-button (outputClick)="sendEmitter()" [showing]="showing">
+<header-button [click]="sendEmitter" [showing]="showing" #button>
     <ng-content></ng-content>
     <svg rightIcon xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"

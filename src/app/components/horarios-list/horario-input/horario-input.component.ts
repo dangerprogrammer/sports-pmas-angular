@@ -23,12 +23,8 @@ export class HorarioInputComponent extends DateTools {
       options = [...optionsHTML].map(({ firstChild }) => firstChild),
       index = options.findIndex(({ id }) => id == target.htmlFor),
       option = options
-        .map(({ checked }, ind) => (ind == index ? !checked : checked) &&
-          { aula: this.modalidade.name, horario: this.horarios[ind].time })[index];
-
-    const inscricoes = this.form.get('inscricoes') as FormGroup;
+        .map((o, ind) => { return { aula: this.modalidade.name, horario: this.horarios[ind].time } })[index];
 
     return this.updateHorario(option);
-    // inscricoes.setValue(optionsChecked);
   }
 }

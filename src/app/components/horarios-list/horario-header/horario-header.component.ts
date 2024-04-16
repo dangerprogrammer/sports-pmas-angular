@@ -26,7 +26,7 @@ export class HorarioHeaderComponent extends StringTools implements AfterViewInit
 
   @Output() updateHorario = new EventEmitter();
 
-  setUpdateHorario = (horariosList: {aula: modName, horario: Date}) => this.updateHorario.emit(horariosList);
+  setUpdateHorario = (horario: {aula: modName, horario: Date}) => this.updateHorario.emit(horario);
 
   ngAfterViewInit(): void {
     if (this.form) this.horarios.forEach(horario => {

@@ -15,7 +15,6 @@ export class AppComponent implements OnInit {
     private cadastro: CadastroService
   ) { }
 
-  generatedUsers: any[] = [];
   generateSize = 1e3;
 
   ngOnInit(): void {
@@ -55,15 +54,17 @@ export class AppComponent implements OnInit {
       if (!user) prismaUser.subscribe({
         error: () => this.generateUser(i),
         next: value => {
-          this.generatedUsers.push(value);
         }, complete: () => {
           if (i < (this.generateSize - 1)) this.generateUser(i + 1);
           console.clear();
-          console.log(`Aluno ${i} cadastrado!`, this.generatedUsers[this.generatedUsers.length - 1]);
-          console.log(this.generatedUsers);
+          console.log(`Aluno ${i} cadastrado!`);
         }
       });
-      else if (i < (this.generateSize - 1)) this.generateUser(i + 1);
+      else if (i < (this.generateSize - 1)) {
+        console.clear();
+        console.log(`Aluno ${i} já existente!`);
+        this.generateUser(i + 1);
+      };
     });
   }
 }

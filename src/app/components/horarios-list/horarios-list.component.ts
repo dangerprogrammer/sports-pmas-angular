@@ -41,12 +41,11 @@ export class HorariosListComponent implements OnInit {
       const findedHorario = this.activeHorarios.find(h => compareHorarios(horario, h));
 
       if (!findedHorario) this.activeHorarios.push(horario);
-      else {
-        console.log("remover!", this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1));
-        this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1);
-      };
+      else this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1);
 
-      console.log("update!", this.activeHorarios);
+      const inscricoes = this.form.get('inscricoes') as FormGroup;
+
+      inscricoes.setValue(this.activeHorarios);
     });
   };
 

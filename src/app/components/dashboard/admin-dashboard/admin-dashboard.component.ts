@@ -30,7 +30,7 @@ export class AdminDashboardComponent implements OnInit {
   max!: number;
   index!: number;
   size!: number;
-  pagesSize: 10 | 15 | 20 | 25 = 25;
+  pagesSize: 15 | 20 | 25 | 50 | 75 | 100 = 50;
 
   onUpdateLimits = ({ min, max, index }: { min: number, max: number, index: number }) => {
     this.min = min;
