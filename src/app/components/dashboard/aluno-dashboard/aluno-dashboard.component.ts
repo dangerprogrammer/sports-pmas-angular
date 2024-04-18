@@ -17,6 +17,6 @@ export class AlunoDashboardComponent {
   @Input() user!: PrismaUser;
 
   ngOnInit(): void {
-    console.log(this.user);
+    // console.log(this.user);
   }
 }

@@ -22,6 +22,8 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
   @Input() refresh!: Function;
   @Input() pageIndex: number = 0;
   @Input() pagesSize: number = 25;
+  @Input() onlyRead: boolean = !1;
+  @Input() titleMsg?: string;
 
   @ViewChild('solicsList') solicsList!: ElementRef;
   @ViewChild('listSolics', { read: ViewContainerRef }) listSolics!: ViewContainerRef;
@@ -37,7 +39,7 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
 
   acceptAll = (accepted: boolean) => {
     this.accepting = !0;
-    this.cadastro.searchByAdmin(this.admin.id, { min: 0, max: this.size }).subscribe(({ solics }) => {
+    this.cadastro.searchByAdmin(this.admin.id, { min: 0, max: this.size }, !1).subscribe(({ solics }) => {
       const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
 
       forkJoin(usersSolic).subscribe(users => {

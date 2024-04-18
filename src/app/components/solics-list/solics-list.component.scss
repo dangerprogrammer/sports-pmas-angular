@@ -62,11 +62,6 @@
         background: global.$main-color;
         color: #eee;
 
-        &.no-click {
-            opacity: .5;
-            pointer-events: none !important;
-        }
-
         &.refresh {
             background: global.$main-color;
             color: #eee;
@@ -79,6 +74,15 @@
         user-select: none;
         font-weight: 600;
     }
+}
+
+.no-click {
+    opacity: .5;
+    pointer-events: none !important;
+}
+
+.hidden {
+    display: none !important;
 }
 
 @media screen and (min-width: 32rem) {

@@ -53,9 +53,7 @@ export class HorariosListComponent implements OnInit {
     const prismaModalidades = this.cadastro.searchModalidades();
 
     prismaModalidades.subscribe(modalidades => {
-      this.modalidades = modalidades.sort(({ name: nameA }, { name: nameB }) =>
-        nameA > nameB ? 1 : nameA < nameB ? -1 : 0
-      );
+      this.modalidades = modalidades;
 
       const prismaHorariosList = this.modalidades.map(this.cadastro.searchHorarios);
 

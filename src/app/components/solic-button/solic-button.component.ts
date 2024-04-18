@@ -22,6 +22,7 @@ export class SolicButtonComponent extends StringTools implements OnInit {
   @Input() solicUser!: PrismaUser;
   @Input() adminUser!: PrismaUser;
   @Input() refresh?: Function;
+  @Input() onlyRead: boolean = !1;
 
   userSolic!: PrismaSolic;
 

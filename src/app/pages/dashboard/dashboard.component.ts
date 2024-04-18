@@ -105,16 +105,29 @@ export class DashboardComponent implements OnInit {
     this.toggleSidebar();
   }
 
+  goAdminSolicsUnread = () => {
+    const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
+    const solicsUnread = dashRow.firstChild as HTMLElement;
+
+    dashRow.scrollTo(solicsUnread.offsetLeft, 0);
+  }
+
   goAdminSolics = () => {
     const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
+    const solics = dashRow.lastChild as HTMLElement;
 
-    dashRow.scrollTo(0, 0);
+    dashRow.scrollTo(solics.offsetLeft, 0);
   }
+
+  goSolicsUnread = () => {
+    this.goDashAdmin();
+    this.goAdminSolicsUnread();
+  };
 
   goSolics = () => {
     this.goDashAdmin();
     this.goAdminSolics();
-  };
+  }
 
   goDashProfessor = () => {
     const dashProfessor = document.querySelector('professor-dashboard') as HTMLElement;

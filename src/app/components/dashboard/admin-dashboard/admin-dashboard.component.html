@@ -1,21 +1,21 @@
 <div class="row">
-    <loading-content [loaded]="loaded" loadingMsg="Carregando Solicitações...">
-        @if (solicUsers.length) {
-        <solics-list (updateLimits)="onUpdateLimits($event)" [pagesSize]="pagesSize" [pageIndex]="index" [refresh]="updateSolics" [admin]="user"
-            [size]="size" [solics]="solicUsers"></solics-list>
+    <loading-content [loaded]="loadedUnread" loadingMsg="Carregando Solicitações...">
+        @if (solicUnreadUsers.length) {
+        <solics-list (updateLimits)="onUpdateLimits($event)" [pagesSize]="pagesSize" [pageIndex]="index" [refresh]="refreshSolics" [admin]="user"
+            [size]="sizeUnread" [solics]="solicUnreadUsers"></solics-list>
         } @else {
         <div class="loader no-solics">
-            <strong>{{msg}}</strong>
+            <strong>Não há solicitações pendentes!</strong>
         </div>
         }
     </loading-content>
     <loading-content [loaded]="loaded" loadingMsg="Carregando Solicitações...">
         @if (solicUsers.length) {
-        <solics-list (updateLimits)="onUpdateLimits($event)" [pagesSize]="pagesSize" [pageIndex]="index" [refresh]="updateSolics" [admin]="user"
-            [size]="size" [solics]="solicUsers"></solics-list>
+        <solics-list titleMsg="Solicitações Concluídas" (updateLimits)="onUpdateLimits($event)" [pagesSize]="pagesSize" [pageIndex]="index" [refresh]="refreshSolics" [admin]="user"
+            [size]="size" [solics]="solicUsers" [onlyRead]="!0"></solics-list>
         } @else {
         <div class="loader no-solics">
-            <strong>{{msg}}</strong>
+            <strong>Não há solicitações!</strong>
         </div>
         }
     </loading-content>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { cadastroTypes, horario, loginData, modalidade, PrismaModalidade, PrismaSolic, PrismaUser, role, subscribeTypes } from '../types';
+import { cadastroTypes, horario, inscricao, loginData, modalidade, PrismaModalidade, PrismaSolic, PrismaUser, role, subscribeTypes } from '../types';
 import { tap } from 'rxjs';
 import { User, token } from '../interfaces';
 
@@ -79,7 +79,7 @@ export class CadastroService {
   createModalidade = (modalidade: modalidade) => {
     const { access_token } = this.token;
     const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
-    
+
     return this.http.post<modalidade>('nest-api/auth/create/modalidade', modalidade, { headers });
   }
 
@@ -92,7 +92,9 @@ export class CadastroService {
 
   searchUserById = (id: number) => this.http.get<PrismaUser>(`nest-api/search/user/id/${id}`);
 
-  searchByAdmin = (id: number, limits: { min: number, max: number }) => this.http.post<{ solics: PrismaSolic[], size: number }>(`nest-api/search/admin/${id}`, limits);
+  searchByAdmin = (id: number, limits: { min: number, max: number }, done: boolean) => this.http.post<{ solics: PrismaSolic[], size: number }>(`nest-api/search/solic/${id}`, { limits, done });
+
+  searchInscricoes = (id: number) => this.http.get<{ inscricoes: inscricao[], modalidades: PrismaModalidade[] }>(`nest-api/search/inscricao/${id}`);
 
   acceptUser = (data: { cpf: string, accepted: boolean }) => {
     const { access_token } = this.token;
@@ -104,6 +106,8 @@ export class CadastroService {
   searchModalidades = () => this.http.get<PrismaModalidade[]>('nest-api/search/modalidades');
 
   searchHorarios = ({ name }: PrismaModalidade) => this.http.get<horario[]>(`nest-api/search/horarios/${name}`);
+
+  searchHorariosSubscribe = ({ name }: PrismaModalidade, inscricoes: inscricao[]) => this.http.post<horario[]>(`nest-api/search/horarios-subscribe/${name}`, inscricoes);
 
   searchUserByToken = () => {
     const { access_token } = this.token;
