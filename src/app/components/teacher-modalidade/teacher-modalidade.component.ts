@@ -34,6 +34,9 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
       
       itemRef.setInput('horario', horario);
       itemRef.setInput('vagas', this.vagas);
+
+      // DESCOBRIR COMO TIRAR O CLICK DO ITEM
+      itemRef.instance.clickEvent.subscribe(clickable => {});
       this.cdr.detectChanges();
     };
   }
