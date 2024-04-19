@@ -40,7 +40,7 @@ export class ModalidadesComponent extends ModSubmit implements AfterViewInit {
     this.modalidadesView = this.modalidades;
     
     setTimeout(() => {
-      const prismaModalidades = this.service.searchModalidades();
+      const prismaModalidades = this.service.search.searchModalidades();
 
       prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades));
     });

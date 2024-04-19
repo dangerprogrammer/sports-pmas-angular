@@ -50,12 +50,12 @@ export class HorariosListComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    const prismaModalidades = this.cadastro.searchModalidades();
+    const prismaModalidades = this.cadastro.search.searchModalidades();
 
     prismaModalidades.subscribe(modalidades => {
       this.modalidades = modalidades;
 
-      const prismaHorariosList = this.modalidades.map(this.cadastro.searchHorarios);
+      const prismaHorariosList = this.modalidades.map(this.cadastro.search.searchHorarios);
 
       forkJoin(prismaHorariosList).subscribe(data => {
         for (const index in data) {

@@ -43,6 +43,36 @@ notifications-list {
     z-index: 1000;
 }
 
+modalidade-item {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) auto;
+    gap: 1em;
+    padding: .5em 1em;
+    border-radius: .5em;
+    font-size: 1.2em;
+    user-select: none;
+    transition: .1s ease-in-out background;
+
+    &:not(.title) {
+        cursor: pointer;
+
+        &:hover {
+            background: #e0e0e0;
+        }
+    }
+
+    &.title {
+        font-weight: 700;
+    }
+}
+
+app-divider {
+    height: 1px;
+    background: #e0e0e0;
+    width: auto;
+    margin-inline: 1em;
+}
+
 app-main {
     background: #f5f5f5;
     flex-grow: 1;

@@ -6,3 +6,4 @@ export * from './login';
 export * from './modalidade';
 export * from './horario';
 export * from './inscricao';
+export * from './aluno-type';

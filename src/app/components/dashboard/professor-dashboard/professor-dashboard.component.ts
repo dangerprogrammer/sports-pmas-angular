@@ -1,42 +1,55 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { CadastroService } from '../../../services/cadastro.service';
 import { horario, PrismaModalidade, PrismaUser } from '../../../types';
 import { forkJoin } from 'rxjs';
+import { LoadingContentComponent } from '../../loading-content/loading-content.component';
+import { TeacherModalidadeComponent } from '../../teacher-modalidade/teacher-modalidade.component';
 
 @Component({
   selector: 'professor-dashboard',
   standalone: true,
-  imports: [],
+  imports: [LoadingContentComponent],
   templateUrl: './professor-dashboard.component.html',
   styleUrl: './professor-dashboard.component.scss'
 })
 export class ProfessorDashboardComponent {
   constructor(
     private cadastro: CadastroService
-  ) {}
+  ) { }
 
   @Input() user!: PrismaUser;
 
+  @ViewChild('modalidadesList', { read: ViewContainerRef }) modalidadesList!: ViewContainerRef;
+
+  modalidades: PrismaModalidade[] = [];
+  loaded: boolean = !1;
+
   ngOnInit(): void {
-    const searchInscricoes = this.cadastro.searchInscricoes(this.user.id);
-    
-    searchInscricoes.subscribe(({inscricoes, modalidades}) => {
-      const horariosList = modalidades.map(modalidade => this.cadastro.searchHorariosSubscribe(modalidade, inscricoes));
-      
+    const searchInscricoes = this.cadastro.search.searchInscricoes(this.user.id);
+
+    searchInscricoes.subscribe(({ inscricoes, modalidades }) => {
+      const horariosList = modalidades.map(modalidade => this.cadastro.search.searchHorariosSubscribe(modalidade, inscricoes));
+
+      // console.log(this.user, inscricoes, modalidades);
+      this.modalidades = modalidades;
+      if (!horariosList.length) this.loaded = !0;
       forkJoin(horariosList).subscribe(data => {
         for (const index in data) {
           const modalidade = modalidades[index];
           const horarios = data[index];
 
-          if (horarios.length) this.addHorario(modalidade, horarios);
+          this.loaded = !0;
+          if (horarios.length) this.addModalidade(modalidade, horarios);
         };
       });
     });
   }
 
-  addHorario = (modalidade: PrismaModalidade, horarios: horario[]) => {
-    console.group(modalidade.name);
-    for (const horario of horarios) console.log(horario);
-    console.groupEnd();
+  addModalidade = (modalidade: PrismaModalidade, horarios: horario[]) => {
+    const modalidadeRef = this.modalidadesList.createComponent(TeacherModalidadeComponent);
+
+    modalidadeRef.setInput('horarios', horarios);
+    modalidadeRef.setInput('vagas', modalidade.vagas);
+    modalidadeRef.setInput('title', modalidade.name);
   }
 }

@@ -27,7 +27,7 @@ export class SolicButtonComponent extends StringTools implements OnInit {
   userSolic!: PrismaSolic;
 
   ngOnInit(): void {
-    const searchSolic = this.cadastro.searchSolic(this.solicUser.id);
+    const searchSolic = this.cadastro.search.searchSolic(this.solicUser.id);
 
     searchSolic.subscribe(data => this.userSolic = data);
   }
@@ -35,7 +35,7 @@ export class SolicButtonComponent extends StringTools implements OnInit {
   acceptUser(accept: boolean, ev: Event) {
     ev.stopPropagation();
 
-    const acceptPrisma = this.cadastro.acceptUser({
+    const acceptPrisma = this.cadastro.auth.acceptUser({
       cpf: this.solicUser.cpf,
       accepted: accept
     });

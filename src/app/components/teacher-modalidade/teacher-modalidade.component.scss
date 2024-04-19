@@ -1,0 +1,12 @@
+.modalidade-component {
+    display: flex;
+    flex-direction: column;
+    max-width: 64rem;
+    margin-inline: auto;
+    gap: 1em;
+
+    .grid-modalidade {
+        display: flex;
+        flex-direction: column;
+    }
+}

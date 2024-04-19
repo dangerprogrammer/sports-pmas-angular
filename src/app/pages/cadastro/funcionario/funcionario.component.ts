@@ -72,7 +72,7 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
     const cpf = form.get('cpf');
 
     cpf?.valueChanges.subscribe((data: string) => {
-      const searchUser = this.service.searchUser(data as string);
+      const searchUser = this.service.search.searchUser(data as string);
 
       if (data) searchUser.subscribe(user => this.switchForms[indexForm].submitText = user ? 'Solicitar' : 'Cadastrar');
     });
@@ -120,7 +120,8 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
     tel: [''],
     password: ['', Validators.required],
     solic: this.fb.group({ roles: [['PROFESSOR']] }),
-    professor: this.fb.group({})
+    professor: this.fb.group({}),
+    inscricoes: [[], Validators.required]
   });
 
   adminForm = this.fb.group({

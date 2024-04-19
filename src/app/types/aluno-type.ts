@@ -1,0 +1,1 @@
+export type alunoType = 'INFANTIL' | 'JUVENIL' | 'ADULTO' | 'IDOSO';

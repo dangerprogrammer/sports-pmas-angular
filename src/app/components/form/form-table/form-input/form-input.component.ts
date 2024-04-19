@@ -51,7 +51,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
     const reader = this.form.get(this.controlName);
 
     if (this.controlName == 'cpf' && this.readCPF) reader?.valueChanges.subscribe((cpf: string) => {
-      const searchUser = this.cadastro.searchUser(cpf);
+      const searchUser = this.cadastro.search.searchUser(cpf);
 
       if (reader.valid) searchUser.subscribe(user => this.wrongField = !!user);
     });

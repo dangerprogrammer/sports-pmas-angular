@@ -49,14 +49,14 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   updateUnreadSolics = () => {
-    const solics = this.cadastro.searchByAdmin(this.user.id, { min: this.min, max: this.max }, !1);
+    const solics = this.cadastro.search.searchByAdmin(this.user.id, { min: this.min, max: this.max }, !1);
 
     this.loadedUnread = !1;
     solics.subscribe(({ solics, size }) => {
       this.solicUnreadUsers = [];
 
       this.sizeUnread = size;
-      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
+      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.search.searchUserById);
 
       if (!usersSolic.length) this.loadedUnread = !0;
       forkJoin(usersSolic).subscribe(users => {
@@ -67,14 +67,14 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   updateSolics = () => {
-    const solics = this.cadastro.searchByAdmin(this.user.id, { min: this.min, max: this.max }, !0);
+    const solics = this.cadastro.search.searchByAdmin(this.user.id, { min: this.min, max: this.max }, !0);
 
     this.loaded = !1;
     solics.subscribe(({ solics, size }) => {
       this.solicUsers = [];
 
       this.size = size;
-      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
+      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.search.searchUserById);
 
       if (!usersSolic.length) this.loaded = !0;
       forkJoin(usersSolic).subscribe(users => {

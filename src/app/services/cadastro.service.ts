@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { cadastroTypes, horario, inscricao, loginData, modalidade, PrismaModalidade, PrismaSolic, PrismaUser, role, subscribeTypes } from '../types';
+import { cadastroTypes, horario, inscricao, loginData, modalidade, PrismaAluno, PrismaModalidade, PrismaSolic, PrismaUser, role, subscribeTypes } from '../types';
 import { tap } from 'rxjs';
 import { User, token } from '../interfaces';
 
@@ -51,77 +51,85 @@ export class CadastroService {
     keys.forEach(key => localStorage.removeItem(key));
   }
 
-  createUser = (user: User) => this.http.post<PrismaUser>('nest-api/auth/local/signup', user).pipe(tap(() => {
-    this.subscribe = "login";
+  auth = {
+    createUser: (user: User) => this.http.post<PrismaUser>('nest-api/auth/local/signup', user).pipe(tap(() => {
+      this.subscribe = "login";
 
-    this.removeFromStorage("cadastro-type");
-  }));
+      this.removeFromStorage("cadastro-type");
+    })),
 
-  loginUser = (user: User) => this.http.post<PrismaUser>('nest-api/auth/local/signin', user).pipe(tap((response: any) => {
-    this.token = response;
-
-    this.removeFromStorage("cadastro-type", "subscribe-type");
-  }));
-
-  searchUser = (cpf: string) => this.http.get<PrismaUser>(`nest-api/search/user/${cpf}`);
-
-  searchSolic = (id: number) => {
-    const { access_token } = this.token;
-    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
-
-    return this.http.get<PrismaSolic>(`nest-api/search/solic/${id}`, { headers });
-  }
-
-  createSolic = (data: { roles: role[], cpf: string }) => this.http.patch('nest-api/auth/create/solic', data);
-
-  getSolic = (cpf: string) => this.http.patch<PrismaSolic>('nest-api/auth/update/solic', { cpf, update: {} })
-
-  createModalidade = (modalidade: modalidade) => {
-    const { access_token } = this.token;
-    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
-
-    return this.http.post<modalidade>('nest-api/auth/create/modalidade', modalidade, { headers });
-  }
-
-  updateModalidade = (name: string, update: Partial<modalidade>) => {
-    const { access_token } = this.token;
-    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
-
-    return this.http.patch<PrismaModalidade>('nest-api/auth/update/modalidade', { name, update }, { headers });
-  }
-
-  searchUserById = (id: number) => this.http.get<PrismaUser>(`nest-api/search/user/id/${id}`);
-
-  searchByAdmin = (id: number, limits: { min: number, max: number }, done: boolean) => this.http.post<{ solics: PrismaSolic[], size: number }>(`nest-api/search/solic/${id}`, { limits, done });
-
-  searchInscricoes = (id: number) => this.http.get<{ inscricoes: inscricao[], modalidades: PrismaModalidade[] }>(`nest-api/search/inscricao/${id}`);
-
-  acceptUser = (data: { cpf: string, accepted: boolean }) => {
-    const { access_token } = this.token;
-    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
-
-    return this.http.post('nest-api/auth/user', data, { headers });
-  };
-
-  searchModalidades = () => this.http.get<PrismaModalidade[]>('nest-api/search/modalidades');
-
-  searchHorarios = ({ name }: PrismaModalidade) => this.http.get<horario[]>(`nest-api/search/horarios/${name}`);
-
-  searchHorariosSubscribe = ({ name }: PrismaModalidade, inscricoes: inscricao[]) => this.http.post<horario[]>(`nest-api/search/horarios-subscribe/${name}`, inscricoes);
-
-  searchUserByToken = () => {
-    const { access_token } = this.token;
-    const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
-
-    return this.http.get<PrismaUser>('nest-api/search/token', { headers });
-  };
-
-  refreshToken = () => {
-    const { refresh_token } = this.token;
-    const headers = new HttpHeaders({ Authorization: `bearer ${refresh_token}` });
-
-    return this.http.post('nest-api/auth/refresh', undefined, { headers }).pipe(tap((response: any) => {
+    loginUser: (user: User) => this.http.post<PrismaUser>('nest-api/auth/local/signin', user).pipe(tap((response: any) => {
       this.token = response;
-    }));
-  }
+  
+      this.removeFromStorage("cadastro-type", "subscribe-type");
+    })),
+
+    createModalidade: (modalidade: modalidade) => {
+      const { access_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+  
+      return this.http.post<modalidade>('nest-api/auth/create/modalidade', modalidade, { headers });
+    },
+
+    updateModalidade: (name: string, update: Partial<modalidade>) => {
+      const { access_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+  
+      return this.http.patch<PrismaModalidade>('nest-api/auth/update/modalidade', { name, update }, { headers });
+    },
+
+    acceptUser: (data: { cpf: string, accepted: boolean }) => {
+      const { access_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+  
+      return this.http.post('nest-api/auth/user', data, { headers });
+    },
+
+    createSolic: (data: { roles: role[], cpf: string }) => this.http.patch('nest-api/auth/create/solic', data),
+
+    getSolic: (cpf: string) => this.http.patch<PrismaSolic>('nest-api/auth/update/solic', { cpf, update: {} }),
+
+    refreshToken: () => {
+      const { refresh_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${refresh_token}` });
+  
+      return this.http.post('nest-api/auth/refresh', undefined, { headers }).pipe(tap((response: any) => {
+        this.token = response;
+      }));
+    }
+  };
+
+  search = {
+    searchUser: (cpf: string) => this.http.get<PrismaUser>(`nest-api/search/user/${cpf}`),
+
+    searchUserById: (id: number) => this.http.get<PrismaUser>(`nest-api/search/user/id/${id}`),
+
+    searchAlunoById: (id: number) => this.http.get<PrismaAluno>(`nest-api/search/aluno/id/${id}`),
+
+    searchByAdmin: (id: number, limits: { min: number, max: number }, done: boolean) => this.http.post<{ solics: PrismaSolic[], size: number }>(`nest-api/search/solic/${id}`, { limits, done }),
+
+    searchInscricoes: (id: number) => this.http.get<{ inscricoes: inscricao[], modalidades: PrismaModalidade[] }>(`nest-api/search/inscricao/${id}`),
+
+    searchModalidades: () => this.http.get<PrismaModalidade[]>('nest-api/search/modalidades'),
+
+    searchHorarios: ({ name }: PrismaModalidade) => this.http.get<horario[]>(`nest-api/search/horarios/${name}`),
+
+    searchUsersHorario: (time: Date) => this.http.get<inscricao[]>(`nest-api/search/users/${time}`),
+
+    searchHorariosSubscribe: ({ name }: PrismaModalidade, inscricoes: inscricao[]) => this.http.post<horario[]>(`nest-api/search/horarios-subscribe/${name}`, inscricoes),
+
+    searchSolic: (id: number) => {
+      const { access_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+  
+      return this.http.get<PrismaSolic>(`nest-api/search/solic/${id}`, { headers });
+    },
+
+    searchUserByToken: () => {
+      const { access_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+  
+      return this.http.get<PrismaUser>('nest-api/search/token', { headers });
+    }
+  };
 }

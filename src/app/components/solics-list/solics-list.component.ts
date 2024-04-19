@@ -26,7 +26,6 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
   @Input() titleMsg?: string;
 
   @ViewChild('solicsList') solicsList!: ElementRef;
-  @ViewChild('listSolics', { read: ViewContainerRef }) listSolics!: ViewContainerRef;
 
   @Output() updateLimits = new EventEmitter();
 
@@ -39,13 +38,13 @@ export class SolicsListComponent implements OnInit, AfterViewInit {
 
   acceptAll = (accepted: boolean) => {
     this.accepting = !0;
-    this.cadastro.searchByAdmin(this.admin.id, { min: 0, max: this.size }, !1).subscribe(({ solics }) => {
-      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.searchUserById);
+    this.cadastro.search.searchByAdmin(this.admin.id, { min: 0, max: this.size }, !1).subscribe(({ solics }) => {
+      const usersSolic = solics.map(({ userId }) => userId).map(this.cadastro.search.searchUserById);
 
       forkJoin(usersSolic).subscribe(users => {
         const acceptsListPrisma = users
           .map(({ cpf }) => { return { cpf, accepted } })
-          .map(this.cadastro.acceptUser);
+          .map(this.cadastro.auth.acceptUser);
 
         forkJoin(acceptsListPrisma).subscribe(() => this.refresh());
       });

@@ -47,8 +47,8 @@ export class AppComponent implements OnInit {
       }
     };
 
-    const prismaUser = this.cadastro.createUser(userGenerated);
-    const findedUser = this.cadastro.searchUser(cpf);
+    const prismaUser = this.cadastro.auth.createUser(userGenerated);
+    const findedUser = this.cadastro.search.searchUser(cpf);
 
     findedUser.subscribe(user => {
       if (!user) prismaUser.subscribe({

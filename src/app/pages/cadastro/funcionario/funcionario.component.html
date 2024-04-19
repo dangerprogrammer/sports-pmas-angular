@@ -11,6 +11,7 @@
             <form-input [form]="professorForm" controlName="email" type="email" autocomplete="email">E-mail</form-input>
             <form-input [form]="professorForm" controlName="tel">Celular</form-input>
             <form-input [form]="professorForm" controlName="password" type="password">Senha</form-input>
+            <horarios-list [form]="professorForm" controlName="inscricoes"></horarios-list>
         </form-table>
         <form-table tableName="admin" [form]="adminForm" [submitText]="admin.submitText" [submitEvent]="submitFunction"
             (freezeForm)="onFreezeForm($event)">

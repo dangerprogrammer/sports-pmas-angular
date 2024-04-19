@@ -1,0 +1,9 @@
+@if (isTitle) {
+<span class="item">Horário</span>
+<span class="item">Categorias</span>
+<span class="item small">Alunos</span>
+} @else {
+<span class="item">{{formatTime(horario.time)}}</span>
+<span class="item">{{formattedTypes}}</span>
+<span class="item small">{{inscricoes.length}}/{{vagas}}</span>
+}

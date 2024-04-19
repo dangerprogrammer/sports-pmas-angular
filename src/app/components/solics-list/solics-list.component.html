@@ -55,7 +55,6 @@
 </div>
 <section class="list-solics" [class.no-click]="accepting">
     <ul class="solics" #solicsList>
-        <ng-container #listSolics></ng-container>
         @for (solicUser of solics; track $index) {
             <solic-button [onlyRead]="onlyRead" [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
         }

@@ -56,7 +56,7 @@ export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewI
     const cpf = this.form.get('cpf');
 
     cpf?.valueChanges.subscribe(data => {
-      const searchUser = this.service.searchUser(data as string);
+      const searchUser = this.service.search.searchUser(data as string);
 
       searchUser.subscribe(user => this.submitText = user ? 'Solicitar' : 'Cadastrar');
     });

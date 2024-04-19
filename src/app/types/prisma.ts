@@ -16,7 +16,7 @@ export type PrismaUser = {
     accepted: boolean;
 };
 
-interface PrismaAluno {
+export type PrismaAluno = {
     email: string;
     tel: string;
     endereco: string;
@@ -25,12 +25,12 @@ interface PrismaAluno {
     sexo: "MASCULINO" | "FEMININO" | "OUTRO";
 }
 
-interface PrismaProfessor {
+export type PrismaProfessor = {
     email: string;
     tel: string;
 }
 
-interface PrismaAdmin {
+export type PrismaAdmin = {
     email: string;
     tel: string;
 }

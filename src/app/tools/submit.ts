@@ -24,8 +24,8 @@ export class CadastroSubmit {
   }
 
   submitFunction = (res: User, form: FormGroup) => {
-    const prismaUser = this.cadastro.createUser(res);
-    const findedUser = this.cadastro.searchUser(res.cpf);
+    const prismaUser = this.cadastro.auth.createUser(res);
+    const findedUser = this.cadastro.search.searchUser(res.cpf);
 
     findedUser.subscribe(user => {
       if (!user) prismaUser.subscribe({
@@ -50,7 +50,7 @@ export class CadastroSubmit {
       });
       else {
         const { cpf, solic } = res, { roles } = solic;
-        const createSolic = this.cadastro.createSolic({ roles, cpf });
+        const createSolic = this.cadastro.auth.createSolic({ roles, cpf });
         let notifConfigs: any = {};
 
         createSolic.subscribe({
@@ -95,7 +95,7 @@ export class LoginSubmit {
   errorMsg: string = 'Erro! CPF ou senha inválidos!';
 
   submitFunction = (res: any) => {
-    const findedUser = this.cadastro.searchUser(res.cpf);
+    const findedUser = this.cadastro.search.searchUser(res.cpf);
 
     this.hasError = !1;
     findedUser.subscribe((user: any) => {
@@ -104,7 +104,7 @@ export class LoginSubmit {
         return;
       };
 
-      const login = this.cadastro.loginUser(res as User);
+      const login = this.cadastro.auth.loginUser(res as User);
 
       this.hasError = !1;
       login.subscribe({
@@ -146,7 +146,7 @@ export class ModSubmit extends DateTools {
     this.enableCreateMod = !!some;
 
     this.modalidadesView.clear();
-    const prismaHorariosList = this.modalidadesList.map(this.cadastro.searchHorarios);
+    const prismaHorariosList = this.modalidadesList.map(this.cadastro.search.searchHorarios);
 
     forkJoin(prismaHorariosList).subscribe(data => {
       for (const index in data) {
@@ -161,8 +161,8 @@ export class ModSubmit extends DateTools {
   private sortNames = ({ status: a }: any, { status: b }: any) => a > b ? -1 : a < b ? 1 : 0;
 
   submitExistingMod = (name: string, update: Partial<modalidade>, data: { form: FormGroup, formRef: ComponentRef<any> }) => {
-    const updateMod = this.cadastro.updateModalidade(name, update);
-    const prismaModalidades = this.cadastro.searchModalidades();
+    const updateMod = this.cadastro.auth.updateModalidade(name, update);
+    const prismaModalidades = this.cadastro.search.searchModalidades();
 
     updateMod.subscribe(() => prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades, data)));
   };
@@ -219,8 +219,8 @@ export class ModSubmit extends DateTools {
   }
 
   submitNewMod = (modalidade: modalidade, data: { form: FormGroup, formRef: ComponentRef<any> }) => {
-    const createMod = this.cadastro.createModalidade(modalidade);
-    const prismaModalidades = this.cadastro.searchModalidades();
+    const createMod = this.cadastro.auth.createModalidade(modalidade);
+    const prismaModalidades = this.cadastro.search.searchModalidades();
 
     createMod.subscribe(() => prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades, data)));
   }

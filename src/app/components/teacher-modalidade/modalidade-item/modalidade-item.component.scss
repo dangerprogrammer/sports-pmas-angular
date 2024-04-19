@@ -1,0 +1,8 @@
+.item {
+    display: flex;
+    flex-grow: 1;
+
+    &.small {
+        padding-left: 1em;
+    }
+}

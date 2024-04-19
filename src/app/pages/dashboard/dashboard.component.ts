@@ -43,12 +43,12 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) { }
 
-  showSidebar: boolean = !0;
+  showSidebar: boolean = !1;
   dashboardsList?: Element;
 
   ngOnInit(): void {
-    const userByToken = this.cadastro.searchUserByToken();
-    const refresh = this.cadastro.refreshToken();
+    const userByToken = this.cadastro.search.searchUserByToken();
+    const refresh = this.cadastro.auth.refreshToken();
 
     refresh.subscribe({
       error: this.logoutButton, complete: () => userByToken.subscribe({

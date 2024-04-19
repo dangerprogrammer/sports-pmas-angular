@@ -1,1 +1,8 @@
-<p>professor-dashboard works!</p>
+<loading-content [loaded]="loaded" loadingMsg="Carregando Modalidades...">
+    @if (modalidades.length) {
+    <main class="modalidades-section">
+        <ng-container #modalidadesList></ng-container>
+    </main>
+    }
+
+</loading-content>
