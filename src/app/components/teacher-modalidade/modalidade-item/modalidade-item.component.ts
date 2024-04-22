@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { alunoType, horario, inscricao } from '../../../types';
+import { alunoType, horario, inscricao, PrismaAluno } from '../../../types';
 import { DateTools, StringTools } from '../../../tools';
 import { CadastroService } from '../../../services/cadastro.service';
 import { JsonPipe } from '@angular/common';
@@ -17,7 +17,7 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
   @Input() vagas!: number;
   @Input() isTitle: boolean = !1;
 
-  @Output() clickEvent = new EventEmitter<boolean>();
+  @Output() clickEvent = new EventEmitter<PrismaAluno[] | false>();
 
   constructor(
     private cadastro: CadastroService
@@ -42,9 +42,9 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
 
         const alunos = inscricoes.map(({ alunoId }) => this.cadastro.search.searchAlunoById(alunoId));
 
+        if (!inscricoes.length) this.clickEvent.emit(!1);
         forkJoin(alunos).subscribe(alunos => {
-          this.clickEvent.emit(!!alunos.length);
-          
+          this.clickEvent.emit(alunos);
           const infantil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) <= 11);
           const juvenil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) > 11 && this.yearsOld(data_nasc) <= 17);
           const adulto = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) > 17 && this.yearsOld(data_nasc) <= 59);

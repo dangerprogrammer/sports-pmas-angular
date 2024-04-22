@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
-import { horario, modName } from '../../types';
+import { horario, modName, PrismaAluno } from '../../types';
 import { StringTools } from '../../tools';
 import { ModalidadeItemComponent } from './modalidade-item/modalidade-item.component';
 import { DividerComponent } from './divider/divider.component';
@@ -35,9 +35,16 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
       itemRef.setInput('horario', horario);
       itemRef.setInput('vagas', this.vagas);
 
-      // DESCOBRIR COMO TIRAR O CLICK DO ITEM
-      itemRef.instance.clickEvent.subscribe(clickable => {});
+      const { nativeElement: itemElem } = itemRef.location;
+      itemRef.instance.clickEvent.subscribe(alunos => {
+        if (alunos) itemElem.addEventListener('click', () => this.showAlunos(alunos));
+        else itemElem.classList.add('no-click');
+      });
       this.cdr.detectChanges();
     };
+  }
+
+  showAlunos(alunos: PrismaAluno[]) {
+    console.log('show', alunos);
   }
 }

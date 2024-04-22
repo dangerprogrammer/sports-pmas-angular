@@ -64,6 +64,11 @@ modalidade-item {
     &.title {
         font-weight: 700;
     }
+
+    &.no-click {
+        pointer-events: none !important;
+        opacity: .65;
+    }
 }
 
 app-divider {
