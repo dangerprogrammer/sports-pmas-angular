@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { horario, modName, PrismaAluno } from '../../types';
-import { StringTools } from '../../tools';
+import { DateTools, StringTools } from '../../tools';
 import { ModalidadeItemComponent } from './modalidade-item/modalidade-item.component';
 import { DividerComponent } from './divider/divider.component';
 
@@ -15,12 +15,15 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
   @Input() horarios!: horario[];
   @Input() vagas!: number;
   @Input() title!: modName;
+  @Input() createAlert!: Function;
 
   constructor(
     private cdr: ChangeDetectorRef
   ) {
     super();
   }
+
+  date = new DateTools();
 
   @ViewChild('listHorarios', { read: ViewContainerRef }) listHorarios!: ViewContainerRef;
 
@@ -31,20 +34,19 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
       const itemRef = this.listHorarios.createComponent(ModalidadeItemComponent);
 
       if (i != (this.horarios.length - 1)) this.listHorarios.createComponent(DividerComponent);
-      
+
       itemRef.setInput('horario', horario);
       itemRef.setInput('vagas', this.vagas);
 
-      const { nativeElement: itemElem } = itemRef.location;
+      const { location: { nativeElement: itemElem } } = itemRef;
       itemRef.instance.clickEvent.subscribe(alunos => {
-        if (alunos) itemElem.addEventListener('click', () => this.showAlunos(alunos));
+        const formattedHorario = this.date.formatTime(horario.time);
+        const title = `Alunos cadastrados às ${formattedHorario} em ${this.title}`;
+
+        if (alunos) itemElem.addEventListener('click', () => this.createAlert({ title, alunos }));
         else itemElem.classList.add('no-click');
       });
       this.cdr.detectChanges();
     };
-  }
-
-  showAlunos(alunos: PrismaAluno[]) {
-    console.log('show', alunos);
   }
 }

@@ -14,4 +14,5 @@ import { PrismaUser } from '../../../types';
 export class DashboardsListComponent {
   @Input() dashboards!: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[];
   @Input() user!: PrismaUser;
+  @Input() createAlert!: Function;
 }

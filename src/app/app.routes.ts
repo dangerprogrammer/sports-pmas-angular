@@ -12,6 +12,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ModalidadesComponent } from './pages/modalidades/modalidades.component';
 import { modGuard } from './guards/mod.guard';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 export const routes: Routes = [
     {
@@ -40,7 +41,7 @@ export const routes: Routes = [
         canActivate: [tokenGuard]
     },
     {
-        path: 'notifications', component: ProfileComponent,
+        path: 'notifications', component: NotificationsComponent,
         canActivate: [tokenGuard]
     },
     {

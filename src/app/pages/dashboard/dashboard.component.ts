@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CadastroService } from '../../services/cadastro.service';
 import { AdminDashboardComponent } from '../../components/dashboard/admin-dashboard/admin-dashboard.component';
@@ -15,6 +15,7 @@ import { LogoutButtonComponent } from '../../components/header/logout-button/log
 import { HeaderButtonListComponent } from '../../components/header/header-button-list/header-button-list.component';
 import { ButtonListMainComponent } from '../../components/header/button-list-main/button-list-main.component';
 import { LoadingContentComponent } from '../../components/loading-content/loading-content.component';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,11 +38,15 @@ import { LoadingContentComponent } from '../../components/loading-content/loadin
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(
     private cadastro: CadastroService,
     private router: Router
   ) { }
+
+  @ViewChild('alerts', { read: ViewContainerRef }) alerts!: ViewContainerRef;
+
+  alert!: AlertService;
 
   showSidebar: boolean = !1;
   dashboardsList?: Element;
@@ -74,6 +79,14 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.alert = new AlertService(this.alerts);
+  }
+
+  createAlert = (data?: any) => {
+    this.alert.createAlert(data);
+  }
+
   toggleDashboards: boolean = !0;
 
   onToggleDashboards(toggle?: boolean) {
@@ -92,6 +105,8 @@ export class DashboardComponent implements OnInit {
   }
 
   goProfile = () => this.router.navigate(["/profile"]);
+
+  goNotifs = () => this.router.navigate(["/notifications"]);
 
   goModalidades = () => this.router.navigate(["/modalidades"]);
 

@@ -1,0 +1,29 @@
+.desc-item {
+    padding-block: .5em;
+
+    &.title {
+        font-weight: 600;
+        user-select: none;
+        text-align: center;
+    }
+
+    &.left {
+        text-align: left;
+    }
+
+    &.center {
+        text-align: center;
+    }
+
+    &.right {
+        text-align: right;
+    }
+}
+
+.hr {
+    height: 1em;
+    width: 1px;
+    margin-block: auto;
+    margin-inline: .5em;
+    background: #e0e0e0;
+}

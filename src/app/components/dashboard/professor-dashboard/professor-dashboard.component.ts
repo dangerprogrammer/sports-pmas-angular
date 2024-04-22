@@ -18,6 +18,7 @@ export class ProfessorDashboardComponent {
   ) { }
 
   @Input() user!: PrismaUser;
+  @Input() createAlert!: Function;
 
   @ViewChild('modalidadesList', { read: ViewContainerRef }) modalidadesList!: ViewContainerRef;
 
@@ -30,7 +31,6 @@ export class ProfessorDashboardComponent {
     searchInscricoes.subscribe(({ inscricoes, modalidades }) => {
       const horariosList = modalidades.map(modalidade => this.cadastro.search.searchHorariosSubscribe(modalidade, inscricoes));
 
-      // console.log(this.user, inscricoes, modalidades);
       this.modalidades = modalidades;
       if (!horariosList.length) this.loaded = !0;
       forkJoin(horariosList).subscribe(data => {
@@ -51,5 +51,6 @@ export class ProfessorDashboardComponent {
     modalidadeRef.setInput('horarios', horarios);
     modalidadeRef.setInput('vagas', modalidade.vagas);
     modalidadeRef.setInput('title', modalidade.name);
+    modalidadeRef.setInput('createAlert', this.createAlert);
   }
 }

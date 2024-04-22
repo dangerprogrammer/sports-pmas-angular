@@ -1,0 +1,52 @@
+.alert-component {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: .8em 1.2em;
+    background: white;
+    border-radius: .5em;
+    transition: .2s ease;
+
+    &.deleting {
+        pointer-events: none;
+        scale: .85;
+        opacity: 0;
+    }
+
+    .alert-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1em;
+
+        .close-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: transparent;
+            color: #f00a;
+            transition: .2s ease-in-out color;
+            cursor: pointer;
+
+            .ionicon {
+                pointer-events: none;
+                scale: .8;
+                transition: .3s scale;
+            }
+
+            &:hover {
+                color: #f00;
+
+                .ionicon {
+                    scale: 1;
+                }
+            }
+        }
+    }
+
+    .alert-content {
+        display: flex;
+        flex-direction: column;
+    }
+}

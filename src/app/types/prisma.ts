@@ -17,7 +17,10 @@ export type PrismaUser = {
 };
 
 export type PrismaAluno = {
+    id: number;
     email: string;
+    cpf: string;
+    nome_comp: string;
     tel: string;
     endereco: string;
     bairro: string;

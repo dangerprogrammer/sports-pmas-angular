@@ -71,6 +71,27 @@ modalidade-item {
     }
 }
 
+app-alert {
+    position: absolute;
+    pointer-events: auto;
+    inset: 0;
+    background: #0004;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s opacity;
+
+    &.deleting {
+        opacity: 0;
+    }
+}
+
+aluno-desc {
+    display: grid;
+    pointer-events: none;
+    grid-template-columns: 1fr auto 2fr auto 1fr auto 1fr;
+}
+
 app-divider {
     height: 1px;
     background: #e0e0e0;

@@ -11,7 +11,7 @@ export class NotificationComponent implements OnInit {
   @Input() index: number = 0;
   @Input() duration: number = 10;
   @Input() noDuration: boolean = !1;
-  @Output() delete = new EventEmitter<any>();
+  @Output() delete = new EventEmitter();
   @Input() actionClick?: Function;
   @Input() text?: string;
   @Input() error: boolean = !1;

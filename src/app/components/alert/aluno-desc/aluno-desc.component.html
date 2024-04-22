@@ -1,0 +1,17 @@
+@if (aluno) {
+<div class="desc-item">{{string.formatCPF(aluno.cpf)}}</div>
+<span class="hr"></span>
+<div class="desc-item">{{aluno.nome_comp}}</div>
+<span class="hr"></span>
+<div class="desc-item center">{{yearsOld(aluno.data_nasc)}} anos</div>
+<span class="hr"></span>
+<div class="desc-item right">{{aluno.tel}}</div>
+} @else {
+<div class="desc-item title center">CPF</div>
+<span class="hr"></span>
+<div class="desc-item title">Nome Completo</div>
+<span class="hr"></span>
+<div class="desc-item title">Idade</div>
+<span class="hr"></span>
+<div class="desc-item title center">Telefone</div>
+}
