@@ -15,6 +15,8 @@
     </header-button>
 </app-header>
 <app-main>
-    <h1>CPF E NOME NÃO EDITÁVEL, CARGO ALUNO E PROFESSOR PEDE SOLIC PRA ADM MECHER, INPUTS EDITÁVEIS</h1>
-    <p>profile works!</p>
+    <!-- CPF E NOME NÃO EDITÁVEL, CARGO ALUNO E PROFESSOR PEDE SOLIC PRA ADM MECHER, INPUTS EDITÁVEIS -->
+    <form-table [form]="form" [submitEvent]="updateUser" submitText="Atualizar Informações">
+        <form-input [form]="form" controlName="nome_comp">Nome Completo</form-input>
+    </form-table>
 </app-main>

@@ -13,7 +13,6 @@ import { NotificationService } from '../../../services/notification.service';
 import { CadastroSubmit } from '../../../tools';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
 import { NgIf } from '@angular/common';
-import { MyValidators } from '../../../tools/validators';
 
 @Component({
   selector: 'app-funcionario',
