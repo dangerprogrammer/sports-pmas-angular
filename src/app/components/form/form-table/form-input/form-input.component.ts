@@ -36,6 +36,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() view: boolean = !1;
   @Input() builderOptions?: option[];
   @Input() index: number = 0;
+  @Input() edit: boolean = !0;
   @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
 
   @Output() inputForm: EventEmitter<any> = new EventEmitter();

@@ -5,9 +5,11 @@ import { Router } from '@angular/router';
 import { MainComponent } from '../../components/main/main.component';
 import { FormTableComponent } from '../../components/form/form-table/form-table.component';
 import { FormInputComponent } from '../../components/form/form-table/form-input/form-input.component';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { PrismaAluno, PrismaUser } from '../../types';
+import { inscricao, PrismaAluno, PrismaUser } from '../../types';
+import { MyValidators } from '../../tools';
+import { HorariosListComponent } from '../../components/horarios-list/horarios-list.component';
 
 @Component({
   selector: 'app-profile',
@@ -17,32 +19,65 @@ import { PrismaAluno, PrismaUser } from '../../types';
     HeaderButtonComponent,
     MainComponent,
     FormTableComponent,
-    FormInputComponent
+    FormInputComponent,
+    HorariosListComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent extends MyValidators implements OnInit {
   constructor(
     private router: Router,
     private cadastro: CadastroService,
     private fb: FormBuilder
-  ) {}
+  ) {
+    super();
+  }
 
   user!: PrismaUser;
   aluno?: PrismaAluno;
+  inscricoes?: inscricao[];
+  hasHorarios: boolean = !1;
 
   ngOnInit(): void {
     const user = this.cadastro.search.searchUserByToken();
+    const refresh = this.cadastro.auth.refreshToken();
 
-    user.subscribe(prismaUser => {
-      this.user = prismaUser;
+    refresh.subscribe({
+      error: this.logoutButton, complete: () => user.subscribe({
+        error: this.logoutButton, next: prismaUser => {
+          this.user = prismaUser;
+        }, complete: () => {
+          const { roles } = this.user;
+          const aluno = this.cadastro.search.searchAlunoById(this.user.id);
 
-      const aluno = this.cadastro.search.searchAlunoById(prismaUser.id);
+          this.appendValues(this.form, this.user, 'nome_comp');
 
-      if (prismaUser.roles.includes('ALUNO')) aluno.subscribe(prismaAluno => this.aluno = prismaAluno);
-      console.log(prismaUser);
+          const nome_comp = this.form.get("nome_comp");
+          const cpf = this.form.get("cpf");
+          const email = this.form.get("email");
+          const tel = this.form.get("tel");
+          const formInscricoes = this.form.get("inscricoes");
+
+          nome_comp?.setValue(this.user.nome_comp);
+          cpf?.setValue(this.user.cpf);
+          email?.setValue(this.user.email);
+          tel?.setValue(this.user.tel);
+
+          if (roles.includes('ALUNO') || roles.includes('PROFESSOR')) {
+            this.hasHorarios = !0;
+            this.cadastro.search.searchInscricoes(this.user.id).subscribe(({ inscricoes, modalidades }) => {
+              this.inscricoes = inscricoes;
+            });
+          };
+          if (roles.includes('ALUNO')) aluno.subscribe(prismaAluno => this.aluno = prismaAluno);
+        }
+      })
     });
+  }
+
+  appendValues(form: FormGroup, prisma: PrismaUser, ...values: ('nome_comp' | 'cpf' | 'email' | 'tel')[]) {
+    for (const value of values) form.get(value)?.setValue(prisma[value]);
   }
 
   goDashboard = () => {
@@ -60,7 +95,7 @@ export class ProfileComponent implements OnInit {
 
   form = this.fb.group({
     nome_comp: ['', Validators.required],
-    cpf: ['', ],
+    cpf: ['', this.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
     tel: [''],
     password: ['', Validators.required],
@@ -75,4 +110,6 @@ export class ProfileComponent implements OnInit {
     admin: this.fb.group({}),
     inscricoes: [[], Validators.required]
   });
+
+  formAluno = this.form.get("aluno") as FormGroup;
 }

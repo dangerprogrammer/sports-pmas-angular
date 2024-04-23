@@ -1,5 +1,5 @@
-<input type="checkbox" [value]="'opa'" [id]="horario.id" hidden>
-<label [htmlFor]="horario.id" class="option multiple" [formGroup]="form" (click)="updateInscricoes($event)">
+<input type="checkbox" [value]="'opa'" [id]="modalidade.name+'-'+horario.id" [checked]="checked" hidden>
+<label [htmlFor]="modalidade.name+'-'+horario.id" class="option multiple" [formGroup]="form" (click)="updateInscricoes($event)">
     <div class="option-icon">
         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
             <circle cx="256" cy="256" r="192" fill="none" stroke="currentColor" stroke-linecap="round"

@@ -28,6 +28,22 @@
         user-select: none;
     }
 
+    &.no-edit {
+        pointer-events: none !important;
+
+        .input-title {
+            color: #444;
+        }
+
+        .input {
+            color: #777;
+        }
+
+        * {
+            pointer-events: none !important;
+        }
+    }
+
     .input-content {
         display: flex;
         flex-direction: row;

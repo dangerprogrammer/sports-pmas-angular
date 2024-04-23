@@ -5,7 +5,7 @@ import { FormComponent } from '../../../components/form/form.component';
 import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
 import { formTitle, genders, option } from '../../../types';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../../services/cadastro.service';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
 import { NotificationsListComponent } from '../../../components/notifications-list/notifications-list.component';
@@ -36,7 +36,7 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
     private fb: FormBuilder,
     private service: CadastroService
   ) {
-    super()
+    super();
   }
 
   @ViewChild('notifications', { read: ViewContainerRef }) notifications!: ViewContainerRef;

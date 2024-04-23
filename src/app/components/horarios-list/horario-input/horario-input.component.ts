@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { horario, modalidade } from '../../../types';
+import { Component, Input, OnInit } from '@angular/core';
+import { horario, inscricao, modalidade } from '../../../types';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DateTools } from '../../../tools';
 
@@ -10,12 +10,19 @@ import { DateTools } from '../../../tools';
   templateUrl: './horario-input.component.html',
   styleUrl: './horario-input.component.scss'
 })
-export class HorarioInputComponent extends DateTools {
+export class HorarioInputComponent extends DateTools implements OnInit {
   @Input() horario!: horario;
   @Input() horarios!: horario[];
   @Input() modalidade!: modalidade;
   @Input() form!: FormGroup;
+  @Input() inscricoes?: inscricao[];
   @Input() updateHorario!: Function;
+
+  checked: boolean = !1;
+
+  ngOnInit(): void {
+    this.checked = !!this.inscricoes?.find(({ aula, time }) => this.horario.time == time && this.modalidade.name == aula);
+  }
 
   updateInscricoes({ target: t }: Event) {
     const target = t as HTMLLabelElement,

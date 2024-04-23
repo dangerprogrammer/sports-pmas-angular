@@ -1,7 +1,9 @@
+import { modName } from "./modalidade";
+
 export type inscricao = {
     id: number;
     alunoId: number;
     professorId: number;
-    aula: string;
+    aula: modName;
     time: Date;
 }

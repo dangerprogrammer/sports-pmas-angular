@@ -14,7 +14,6 @@ export class CadastroSubmit {
   private cadastro = inject(CadastroService);
   private router = inject(Router);
 
-
   myvalidators = new MyValidators();
   notification!: NotificationService;
   isFreeze: boolean = !1;
@@ -205,8 +204,8 @@ export class ModSubmit extends DateTools {
       form,
       formInputsList: [
         { form, controlName: 'name', inputText: 'Modalidade', options: optionsName },
-        { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: formatHorarios.map(({ time }) => { return { id: 0, text: time, status: !1 } }) },
-        { form: localForm, controlName: 'endereco', inputText: 'Endereco' },
+        { form, controlName: 'horarios', inputText: 'Horários', builderOptions: formatHorarios.map(({ time }) => { return { id: 0, text: time, status: !1 } }) },
+        { form: localForm, controlName: 'endereco', inputText: 'Endereço' },
         { form: localForm, controlName: 'bairro', inputText: 'Bairro' },
         { form, controlName: 'vagas', inputText: 'Vagas' }
       ],
@@ -255,8 +254,8 @@ export class ModSubmit extends DateTools {
       form,
       formInputsList: [
         { form, controlName: 'name', inputText: 'Modalidades', options: optionsName },
-        { form, controlName: 'horarios', inputText: 'Horarios', builderOptions: [] },
-        { form: localForm, controlName: 'endereco', inputText: 'Endereco' },
+        { form, controlName: 'horarios', inputText: 'Horários', builderOptions: [] },
+        { form: localForm, controlName: 'endereco', inputText: 'Endereço' },
         { form: localForm, controlName: 'bairro', inputText: 'Bairro' },
         { form, controlName: 'vagas', inputText: 'Vagas' }
       ],

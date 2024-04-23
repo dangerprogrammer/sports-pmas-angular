@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { horario, modName, PrismaModalidade } from '../../types';
+import { horario, inscricao, modName, PrismaModalidade } from '../../types';
 import { HorarioHeaderComponent } from './horario-header/horario-header.component';
 import { forkJoin } from 'rxjs';
 
@@ -17,8 +17,8 @@ export class HorariosListComponent implements OnInit {
     private cadastro: CadastroService
   ) { }
 
-  @Input() controlName!: string;
   @Input() form!: FormGroup;
+  @Input() inscricoes?: inscricao[];
 
   @ViewChild('horarios', { read: ViewContainerRef }) horarios!: ViewContainerRef;
 
@@ -35,19 +35,22 @@ export class HorariosListComponent implements OnInit {
     headerRef.setInput('modalidade', modalidade);
     headerRef.setInput('horarios', horarios);
     headerRef.setInput('form', this.form);
+    headerRef.setInput('inscricoes', this.inscricoes);
 
-    headerRef.instance.updateHorario.subscribe((horario: { aula: modName, horario: Date }) => {
-      const compareHorarios = (a: any, b: any) => JSON.stringify(a) == JSON.stringify(b);
-      const findedHorario = this.activeHorarios.find(h => compareHorarios(horario, h));
-
-      if (!findedHorario) this.activeHorarios.push(horario);
-      else this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1);
-
-      const inscricoes = this.form.get('inscricoes') as FormGroup;
-
-      inscricoes.setValue(this.activeHorarios);
-    });
+    headerRef.instance.updateHorario.subscribe(this.updateHorario);
   };
+
+  updateHorario = (horario: { aula: modName, horario: Date }) => {
+    const compareHorarios = (a: any, b: any) => JSON.stringify(a) == JSON.stringify(b);
+    const findedHorario = this.activeHorarios.find(h => compareHorarios(horario, h));
+
+    if (!findedHorario) this.activeHorarios.push(horario);
+    else this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1);
+
+    const inscricoes = this.form.get('inscricoes') as FormGroup;
+
+    inscricoes.setValue(this.activeHorarios);
+  }
 
   ngOnInit(): void {
     const prismaModalidades = this.cadastro.search.searchModalidades();
@@ -58,6 +61,8 @@ export class HorariosListComponent implements OnInit {
       const prismaHorariosList = this.modalidades.map(this.cadastro.search.searchHorarios);
 
       forkJoin(prismaHorariosList).subscribe(data => {
+        this.inscricoes?.forEach(({ aula, time }) => this.updateHorario({ aula, horario: time }));
+
         for (const index in data) {
           const modalidade = this.modalidades[index];
           const horarios = data[index];
