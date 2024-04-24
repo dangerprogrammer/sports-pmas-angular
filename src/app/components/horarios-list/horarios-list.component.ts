@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
 import { horario, inscricao, modName, PrismaModalidade } from '../../types';
 import { HorarioHeaderComponent } from './horario-header/horario-header.component';
@@ -19,6 +19,8 @@ export class HorariosListComponent implements OnInit {
 
   @Input() form!: FormGroup;
   @Input() inscricoes?: inscricao[];
+
+  @Output() updateOld = new EventEmitter();
 
   @ViewChild('horarios', { read: ViewContainerRef }) horarios!: ViewContainerRef;
 
@@ -49,6 +51,8 @@ export class HorariosListComponent implements OnInit {
 
     const inscricoes = this.form.get('inscricoes') as FormGroup;
 
+    if (!this.activeHorarios.length) inscricoes.removeValidators(Validators.required);
+    else inscricoes.setValidators(Validators.required);
     inscricoes.setValue(this.activeHorarios);
   }
 
@@ -62,6 +66,8 @@ export class HorariosListComponent implements OnInit {
 
       forkJoin(prismaHorariosList).subscribe(data => {
         this.inscricoes?.forEach(({ aula, time }) => this.updateHorario({ aula, horario: time }));
+
+        this.updateOld.emit(this.form.value);
 
         for (const index in data) {
           const modalidade = this.modalidades[index];

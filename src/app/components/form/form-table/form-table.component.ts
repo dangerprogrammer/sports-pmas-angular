@@ -34,19 +34,20 @@ export class FormTableComponent implements AfterViewInit {
 
           for (let inputField in input) inputRef.setInput(inputField, input[inputField]);
         };
-
-        if (this.oldValue) this.form.valueChanges.subscribe((formValue: any) => {
-          const isEqual = this.compareForms(formValue, this.oldValue);
-
-          this.form.setErrors(isEqual ? { 'equal': !0 } : null);
-        });
       };
+
+      if (this.oldValue) this.form.valueChanges.subscribe((formValue: any) => {
+        const isEqual = this.compareForms(formValue, this.oldValue);
+
+        console.log(formValue, this.oldValue, isEqual);
+        this.form.setErrors(isEqual ? { 'equal': !0 } : null);
+      });
     });
   }
 
   compareForms(form1: any, form2: any) {
     const str1 = JSON.stringify(form1), str2 = JSON.stringify(form2);
-    
+
     return str1 == str2;
   }
 
