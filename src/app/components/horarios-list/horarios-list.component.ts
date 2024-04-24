@@ -51,7 +51,7 @@ export class HorariosListComponent implements OnInit {
 
     const inscricoes = this.form.get('inscricoes') as FormGroup;
 
-    if (!this.activeHorarios.length) inscricoes.removeValidators(Validators.required);
+    if (!this.horariosList.length) inscricoes.removeValidators(Validators.required);
     else inscricoes.setValidators(Validators.required);
     inscricoes.setValue(this.activeHorarios);
   }

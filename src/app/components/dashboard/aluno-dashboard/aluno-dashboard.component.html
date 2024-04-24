@@ -1,1 +1,9 @@
-<p>aluno-dashboard works!</p>
+<loading-content [loaded]="loaded" loadingMsg="Carregando Aulas...">
+    @if (modalidades.length) {
+    <main class="horarios-section">
+        <ng-container #horariosList></ng-container>
+    </main>
+    } @else {
+    <p>aluno-dashboard works!</p>
+    }
+</loading-content>

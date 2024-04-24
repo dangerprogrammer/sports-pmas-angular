@@ -39,7 +39,6 @@ export class FormTableComponent implements AfterViewInit {
       if (this.oldValue) this.form.valueChanges.subscribe((formValue: any) => {
         const isEqual = this.compareForms(formValue, this.oldValue);
 
-        console.log(formValue, this.oldValue, isEqual);
         this.form.setErrors(isEqual ? { 'equal': !0 } : null);
       });
     });

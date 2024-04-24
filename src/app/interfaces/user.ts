@@ -1,4 +1,4 @@
-import { horario, modalidade, role } from "../types";
+import { horario, modalidade, modName, role } from "../types";
 
 interface Aluno {
     endereco: string;
@@ -32,6 +32,22 @@ export interface User {
     professor?: Professor;
     admin?: Admin;
 };
+
+export interface updateUser {
+    cpf?: string;
+    password: string;
+    tel: string;
+    email: string;
+
+    aluno?: Aluno;
+    professor?: Professor;
+    admin?: Admin;
+
+    inscricoes?: {
+        aula: modName;
+        horario: Date;
+    }[];
+}
 
 export interface signinUser {
     cpf: string;

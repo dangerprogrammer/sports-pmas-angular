@@ -26,7 +26,7 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
   }
 
   time!: Date;
-  inscricoes: inscricao[] = [];
+  alunos: PrismaAluno[] = [];
   alunoTypes: alunoType[] = [];
   formattedTypes: string = 'Nenhuma';
   string = new StringTools();
@@ -38,13 +38,15 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
       const searchUsersHorario = this.cadastro.search.searchUsersHorario(this.time);
 
       searchUsersHorario.subscribe(inscricoes => {
-        this.inscricoes = inscricoes;
-
         const alunos = inscricoes.map(({ alunoId }) => this.cadastro.search.searchAlunoById(alunoId));
 
         if (!inscricoes.length) this.clickEvent.emit(!1);
         forkJoin(alunos).subscribe(alunos => {
+          alunos = alunos.filter((aluno, i) => i == alunos.findIndex(al => al.id == aluno.id));
+          
+          this.alunos = alunos;
           this.clickEvent.emit(alunos);
+
           const infantil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) <= 11);
           const juvenil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) > 11 && this.yearsOld(data_nasc) <= 17);
           const adulto = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) > 17 && this.yearsOld(data_nasc) <= 59);

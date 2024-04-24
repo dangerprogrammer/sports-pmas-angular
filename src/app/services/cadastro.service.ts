@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { cadastroTypes, horario, inscricao, loginData, modalidade, PrismaAluno, PrismaModalidade, PrismaSolic, PrismaUser, role, subscribeTypes } from '../types';
 import { tap } from 'rxjs';
-import { User, token } from '../interfaces';
+import { User, token, updateUser } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +83,13 @@ export class CadastroService {
       const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
   
       return this.http.post('nest-api/auth/user', data, { headers });
+    },
+
+    updateUser: (cpf: string, update: updateUser) => {
+      const { access_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+
+      return this.http.patch('nest-api/auth/update/user', { cpf, update }, { headers });
     },
 
     createSolic: (data: { roles: role[], cpf: string }) => this.http.patch('nest-api/auth/create/solic', data),

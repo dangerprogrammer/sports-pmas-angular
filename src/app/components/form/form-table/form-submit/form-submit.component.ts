@@ -54,6 +54,11 @@ export class FormSubmitComponent implements OnInit {
       };
     };
 
+    if (prismaRes.aluno) prismaRes.aluno = {
+      ...prismaRes.aluno,
+      data_nasc: new Date(prismaRes.aluno.data_nasc).toISOString()
+    };
+
     if (prismaRes.horarios) {
       prismaRes.horarios = prismaRes.horarios.map((horario: any) => {
         const hora = +horario.text.substring(0, 2);

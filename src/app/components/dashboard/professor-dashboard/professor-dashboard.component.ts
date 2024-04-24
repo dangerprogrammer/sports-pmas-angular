@@ -29,9 +29,10 @@ export class ProfessorDashboardComponent {
     const searchInscricoes = this.cadastro.search.searchInscricoes(this.user.id);
 
     searchInscricoes.subscribe(({ inscricoes, modalidades }) => {
+      this.modalidades = modalidades;
+      
       const horariosList = modalidades.map(modalidade => this.cadastro.search.searchHorariosSubscribe(modalidade, inscricoes));
 
-      this.modalidades = modalidades;
       if (!horariosList.length) this.loaded = !0;
       forkJoin(horariosList).subscribe(data => {
         for (const index in data) {

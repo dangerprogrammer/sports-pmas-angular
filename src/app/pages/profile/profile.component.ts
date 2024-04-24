@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { CadastroService } from '../../services/cadastro.service';
 import { genders, inscricao, PrismaAluno, PrismaUser } from '../../types';
 import { MyValidators } from '../../tools';
 import { HorariosListComponent } from '../../components/horarios-list/horarios-list.component';
+import { updateUser } from '../../interfaces';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,6 @@ export class ProfileComponent extends MyValidators implements OnInit {
   constructor(
     private router: Router,
     private cadastro: CadastroService,
-    private cdr: ChangeDetectorRef,
     private fb: FormBuilder
   ) {
     super();
@@ -85,18 +85,19 @@ export class ProfileComponent extends MyValidators implements OnInit {
   // FAZER O OUTPUT DE HORARIOS-LIST FUNCIONAR PARA FORM-TABLE
   updateOld = (value: any) => {
     this.oldValue = value;
-    this.cdr.detectChanges();
   }
 
   appendValues(form: FormGroup, prisma: PrismaUser | PrismaAluno,
     ...values: string[]) {
     for (const value of values) {
+      const prismaValue = (prisma as any)[value];
+
       if (value == 'data_nasc') {
-        const data = new Date((prisma as any)[value]);
+        const data = new Date(prismaValue);
         const formatted = data.toJSON().split('T')[0];
 
         form.get(value)?.setValue(formatted);
-      } else form.get(value)?.setValue((prisma as any)[value]);
+      } else form.get(value)?.setValue(prismaValue);
     };
   }
 
@@ -109,8 +110,10 @@ export class ProfileComponent extends MyValidators implements OnInit {
     this.router.navigate(["/login"]);
   }
 
-  updateUser = () => {
-    console.log("submit update!");
+  updateUser = (update: updateUser) => {
+    const updatePrismaUser = this.cadastro.auth.updateUser(update.cpf as string, update);
+
+    updatePrismaUser.subscribe(() => location.reload());
   }
 
   form = this.fb.group({

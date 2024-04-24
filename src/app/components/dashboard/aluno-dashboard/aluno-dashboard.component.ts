@@ -1,22 +1,58 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { CadastroService } from '../../../services/cadastro.service';
-import { PrismaUser } from '../../../types';
+import { horario, PrismaModalidade, PrismaUser } from '../../../types';
+import { forkJoin } from 'rxjs';
+import { LoadingContentComponent } from '../../loading-content/loading-content.component';
+import { AlunoHorarioComponent } from '../../aluno-horario/aluno-horario.component';
 
 @Component({
   selector: 'aluno-dashboard',
   standalone: true,
-  imports: [],
+  imports: [LoadingContentComponent],
   templateUrl: './aluno-dashboard.component.html',
   styleUrl: './aluno-dashboard.component.scss'
 })
 export class AlunoDashboardComponent {
   constructor(
     private cadastro: CadastroService
-  ) {}
+  ) { }
 
   @Input() user!: PrismaUser;
 
+  @ViewChild('horariosList', { read: ViewContainerRef }) horariosList?: ViewContainerRef;
+
+  loaded: boolean = !1;
+  modalidades: PrismaModalidade[] = [];
+
+  createHorarios = (modalidade: PrismaModalidade, horarios: horario[]) => {
+    horarios.forEach(horario => {
+      const horarioRef = this.horariosList?.createComponent(AlunoHorarioComponent);
+
+      console.log(horarioRef);
+    });
+  }
+
   ngOnInit(): void {
-    // console.log(this.user);
+    const searchInscricoes = this.cadastro.search.searchInscricoes(this.user.id);
+
+    searchInscricoes.subscribe(({ inscricoes, modalidades }) => {
+      this.modalidades = modalidades;
+
+      const horariosList = modalidades.map(modalidade => this.cadastro.search.searchHorariosSubscribe(modalidade, inscricoes));
+
+      if (!horariosList.length) this.loaded = !0;
+      forkJoin(horariosList).subscribe(data => {
+        for (const index in data) {
+          const modalidade = modalidades[index];
+          const horarios = data[index];
+
+          this.loaded = !0;
+          if (horarios.length) {
+            this.createHorarios(modalidade, horarios);
+          };
+        };
+      });
+    });
+    console.log(this.user);
   }
 }
