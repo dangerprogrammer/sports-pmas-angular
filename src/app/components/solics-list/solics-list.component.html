@@ -1,7 +1,7 @@
 <h1 class="title">{{titleMsg || 'Solicitações de Usuários'}}</h1>
 <div class="solics-desc">
     <section class="row">
-        <button class="button refresh" (click)="refresh()">
+        <button class="button refresh" (click)="refresh()" [class.no-click]="accepting">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                 <path d="M320 146s24.36-12-64-12a160 160 0 10160 160" fill="none" stroke="currentColor"
                     stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" />

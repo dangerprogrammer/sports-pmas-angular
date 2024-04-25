@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
-import { horario, modName, PrismaAluno } from '../../types';
+import { horario, modName } from '../../types';
 import { DateTools, StringTools } from '../../tools';
 import { ModalidadeItemComponent } from './modalidade-item/modalidade-item.component';
 import { DividerComponent } from './divider/divider.component';
@@ -29,6 +29,7 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
 
   ngAfterViewInit(): void {
     this.listHorarios.clear();
+
     for (const horario of this.horarios) {
       const i = this.horarios.indexOf(horario);
       const itemRef = this.listHorarios.createComponent(ModalidadeItemComponent);
@@ -37,6 +38,7 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
 
       itemRef.setInput('horario', horario);
       itemRef.setInput('vagas', this.vagas);
+      itemRef.setInput('title', this.title);
 
       const { location: { nativeElement: itemElem } } = itemRef;
       itemRef.instance.clickEvent.subscribe(alunos => {

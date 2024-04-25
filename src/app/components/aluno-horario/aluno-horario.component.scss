@@ -1,0 +1,49 @@
+.horario-aluno {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto 1fr;
+    font-weight: 600;
+    background: #fff;
+
+    &.title {
+        padding-inline: 3rem;
+        font-size: 1.3em;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        box-shadow: 0 .2rem .5em #0163;
+
+        .divider {
+            background: #ccc;
+        }
+    }
+
+    &:not(.title) {
+        margin-inline: 1rem;
+        padding: .3em 2rem;
+        font-size: 1.2em;
+        border-radius: .5em;
+    }
+
+    .divider {
+        display: flex;
+        position: relative;
+        height: 1em;
+        width: 1px;
+    }
+
+    .item {
+        padding: .5em 1em;
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

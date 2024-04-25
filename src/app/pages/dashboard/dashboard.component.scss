@@ -38,7 +38,7 @@ dashboard-sidebar {
 }
 
 creator-content {
-    position: absolute;
+    position: fixed;
     bottom: 1em;
     right: 1em;
 }
@@ -47,9 +47,10 @@ dashboards-list {
     position: relative;
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     overflow-y: auto;
     scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
 
     &::-webkit-scrollbar {
         width: 0;

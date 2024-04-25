@@ -113,6 +113,8 @@ export class CadastroService {
 
     searchAlunoById: (id: number) => this.http.get<PrismaAluno>(`nest-api/search/aluno/id/${id}`),
 
+    searchProfessorById: (id: number) => this.http.get<PrismaAluno>(`nest-api/search/aluno/id/${id}`),
+
     searchByAdmin: (id: number, limits: { min: number, max: number }, done: boolean) => this.http.post<{ solics: PrismaSolic[], size: number }>(`nest-api/search/solic/${id}`, { limits, done }),
 
     searchInscricoes: (id: number) => this.http.get<{ inscricoes: inscricao[], modalidades: PrismaModalidade[] }>(`nest-api/search/inscricao/${id}`),

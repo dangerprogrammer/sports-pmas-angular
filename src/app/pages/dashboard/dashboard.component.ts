@@ -115,7 +115,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   goDashAdmin = () => {
     const dashAdmin = document.querySelector('admin-dashboard') as HTMLElement;
 
-    this.dashboardsList?.scrollTo(0, dashAdmin.offsetTop || 0);
+    this.dashboardsList?.scrollTo(dashAdmin.offsetLeft || 0, dashAdmin.offsetTop || 0);
     
     this.toggleSidebar();
   }
@@ -124,14 +124,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
     const solicsUnread = dashRow.firstChild as HTMLElement;
 
-    dashRow.scrollTo(solicsUnread.offsetLeft, 0);
+    dashRow.scrollTo(solicsUnread.offsetLeft, solicsUnread.offsetTop || 0);
   }
 
   goAdminSolics = () => {
     const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
     const solics = dashRow.lastChild as HTMLElement;
 
-    dashRow.scrollTo(solics.offsetLeft, 0);
+    dashRow.scrollTo(solics.offsetLeft, solics.offsetTop || 0);
   }
 
   goSolicsUnread = () => {
@@ -147,14 +147,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   goDashProfessor = () => {
     const dashProfessor = document.querySelector('professor-dashboard') as HTMLElement;
 
-    this.dashboardsList?.scrollTo(0, dashProfessor.offsetTop || 0);
+    this.dashboardsList?.scrollTo(dashProfessor.offsetLeft || 0, dashProfessor.offsetTop || 0);
     this.toggleSidebar();
   }
 
   goDashAluno = () => {
     const dashAluno = document.querySelector('aluno-dashboard') as HTMLElement;
 
-    this.dashboardsList?.scrollTo(0, dashAluno.offsetTop || 0);
+    this.dashboardsList?.scrollTo(dashAluno.offsetLeft || 0, dashAluno.offsetTop || 0);
     this.toggleSidebar();
   }
 

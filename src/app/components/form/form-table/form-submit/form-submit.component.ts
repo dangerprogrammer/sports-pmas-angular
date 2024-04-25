@@ -34,6 +34,8 @@ export class FormSubmitComponent implements OnInit {
         if (endereco) endereco.setValue('Avenida Itália', { emitEvent: !1 });
         if (bairro) bairro.setValue('Monte Bianco', { emitEvent: !1 });
         if (data_nasc) data_nasc.setValue('2004-12-10', { emitEvent: !1 });
+
+        this.form.updateValueAndValidity();
       };
     });
   }

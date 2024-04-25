@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { alunoType, horario, inscricao, PrismaAluno } from '../../../types';
+import { alunoType, horario, inscricao, modName, PrismaAluno } from '../../../types';
 import { DateTools, StringTools } from '../../../tools';
 import { CadastroService } from '../../../services/cadastro.service';
 import { JsonPipe } from '@angular/common';
@@ -15,6 +15,7 @@ import { forkJoin } from 'rxjs';
 export class ModalidadeItemComponent extends DateTools implements OnInit {
   @Input() horario!: horario;
   @Input() vagas!: number;
+  @Input() title!: modName;
   @Input() isTitle: boolean = !1;
 
   @Output() clickEvent = new EventEmitter<PrismaAluno[] | false>();
@@ -25,7 +26,6 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
     super();
   }
 
-  time!: Date;
   alunos: PrismaAluno[] = [];
   alunoTypes: alunoType[] = [];
   formattedTypes: string = 'Nenhuma';
@@ -33,17 +33,15 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
 
   ngOnInit(): void {
     if (this.horario) {
-      this.time = this.horario.time;
-
-      const searchUsersHorario = this.cadastro.search.searchUsersHorario(this.time);
+      const searchUsersHorario = this.cadastro.search.searchUsersHorario(this.horario.time);
 
       searchUsersHorario.subscribe(inscricoes => {
-        const alunos = inscricoes.map(({ alunoId }) => this.cadastro.search.searchAlunoById(alunoId));
+        const alunos = inscricoes.filter(({ alunoId, aula }) => alunoId && aula == this.title).map(({ alunoId }) => this.cadastro.search.searchAlunoById(alunoId));
 
-        if (!inscricoes.length) this.clickEvent.emit(!1);
+        if (!alunos.length) this.clickEvent.emit(!1);
         forkJoin(alunos).subscribe(alunos => {
           alunos = alunos.filter((aluno, i) => i == alunos.findIndex(al => al.id == aluno.id));
-          
+
           this.alunos = alunos;
           this.clickEvent.emit(alunos);
 

@@ -25,7 +25,7 @@
 
         &::-webkit-scrollbar {
             background: white;
-            width: .65em;
+            width: .5rem;
         }
 
         &::-webkit-scrollbar-thumb {
@@ -91,7 +91,7 @@
         border-radius: 1em;
 
         .solics {
-            padding: .75em;
+            padding: .75rem;
         }
     }
 }
@@ -104,10 +104,10 @@
 
 @media screen and (max-width: calc(32rem - 1px)) {
     .solics {
-        padding-right: .5em;
+        padding-right: .5rem;
     }
 
     .solics-desc {
-        padding-inline: min(2em, 3vw);
+        padding-inline: min(2rem, 3vw);
     }
 }

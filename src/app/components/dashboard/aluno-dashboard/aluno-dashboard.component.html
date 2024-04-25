@@ -1,7 +1,12 @@
 <loading-content [loaded]="loaded" loadingMsg="Carregando Aulas...">
     @if (modalidades.length) {
     <main class="horarios-section">
-        <ng-container #horariosList></ng-container>
+        <h1>Horários Inscrito</h1>
+        <article class="horarios-content">
+            <li class="horarios" #scrollerHorario>
+                <ng-container #horariosList></ng-container>
+            </li>
+        </article>
     </main>
     } @else {
     <p>aluno-dashboard works!</p>

@@ -99,6 +99,13 @@ app-divider {
     margin-inline: 1em;
 }
 
+aluno-horario {
+    &.sticky {
+        top: 0;
+        position: sticky;
+    }
+}
+
 app-main {
     background: #f5f5f5;
     flex-grow: 1;

@@ -1,1 +1,17 @@
-<p>aluno-horario works!</p>
+@if (!horario && !modalidade) {
+<section class="horario-aluno title">
+    <div class="item">Horário</div>
+    <span class="divider"></span>
+    <div class="item center">Modalidade</div>
+    <span class="divider"></span>
+    <div class="item right">Professor</div>
+</section>
+} @else {
+<section class="horario-aluno">
+    <div class="item">{{formatTime(horario?.time)}}</div>
+    <span class="divider"></span>
+    <div class="item center">{{modalidade?.name}}</div>
+    <span class="divider"></span>
+    <div class="item right">{{nomes ? nomes.join(' | ') : 'Não há professor ainda!'}}</div>
+</section>
+}
