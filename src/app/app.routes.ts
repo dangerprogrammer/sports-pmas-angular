@@ -13,6 +13,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ModalidadesComponent } from './pages/modalidades/modalidades.component';
 import { modGuard } from './guards/mod.guard';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
+import { acceptGuard } from './guards/accept.guard';
 
 export const routes: Routes = [
     {
@@ -38,14 +39,18 @@ export const routes: Routes = [
     },
     {
         path: 'profile', component: ProfileComponent,
-        canActivate: [tokenGuard]
+        canActivate: [acceptGuard]
     },
     {
         path: 'notifications', component: NotificationsComponent,
-        canActivate: [tokenGuard]
+        canActivate: [acceptGuard]
     },
     {
         path: 'modalidades', component: ModalidadesComponent,
-        canActivate: [tokenGuard, modGuard]
+        canActivate: [modGuard]
+    },
+    {
+        path: 'users/:cpf', component: ProfileComponent,
+        canActivate: [modGuard]
     }
 ];

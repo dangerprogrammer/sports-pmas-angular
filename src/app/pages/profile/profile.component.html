@@ -21,10 +21,10 @@
         <form-input [form]="form" controlName="email" type="email" autocomplete="email">E-mail</form-input>
         <form-input [form]="form" controlName="password" type="password" autocomplete="new-password">Senha</form-input>
         <form-input [form]="form" controlName="tel">Celular</form-input>
-        @if (aluno) {<form-input [form]="formAluno" controlName="endereco">Endereço</form-input>}
+        <!-- @if (aluno) {<form-input [form]="formAluno" controlName="endereco">Endereço</form-input>}
         @if (aluno) {<form-input [form]="formAluno" controlName="bairro">Bairro</form-input>}
         @if (aluno) {<form-input [form]="formAluno" controlName="data_nasc" type="date">Nascimento</form-input>}
-        @if (aluno) {<form-input [form]="formAluno" controlName="sexo" [options]="genders">Gênero</form-input>}
+        @if (aluno) {<form-input [form]="formAluno" controlName="sexo" [options]="genders">Gênero</form-input>} -->
         @if (hasHorarios) {
         <horarios-list (updateOld)="updateOld($event)" [form]="form" [inscricoes]="inscricoes"></horarios-list>
         }

@@ -20,6 +20,11 @@ app-header {
     }
 }
 
+.no-click {
+    pointer-events: none !important;
+    opacity: .75;
+}
+
 dashboard-sidebar {
     pointer-events: none;
     position: absolute;

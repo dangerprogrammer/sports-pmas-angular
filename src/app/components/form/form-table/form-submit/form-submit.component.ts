@@ -47,6 +47,7 @@ export class FormSubmitComponent implements OnInit {
 
     const prismaRes = this.form.value;
 
+      return console.log(prismaRes);
     if (prismaRes.solic) {
       if (typeof prismaRes.solic.roles == "string") prismaRes.solic.roles = prismaRes.solic.roles.split(',');
 
@@ -79,7 +80,7 @@ export class FormSubmitComponent implements OnInit {
 
     if (this.submitEvent) {
       this.freezeFormFunc(!0);
-      return this.submitEvent(prismaRes, this.form);
+      // return this.submitEvent(prismaRes, this.form);
     };
   }
 }

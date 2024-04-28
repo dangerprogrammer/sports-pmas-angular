@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MainComponent } from '../../components/main/main.component';
 import { FormTableComponent } from '../../components/form/form-table/form-table.component';
 import { FormInputComponent } from '../../components/form/form-table/form-input/form-input.component';
@@ -11,6 +11,7 @@ import { genders, inscricao, PrismaAluno, PrismaUser } from '../../types';
 import { MyValidators } from '../../tools';
 import { HorariosListComponent } from '../../components/horarios-list/horarios-list.component';
 import { updateUser } from '../../interfaces';
+
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,7 @@ export class ProfileComponent extends MyValidators implements OnInit {
   constructor(
     private router: Router,
     private cadastro: CadastroService,
+    private route: ActivatedRoute,
     private fb: FormBuilder
   ) {
     super();
@@ -49,9 +51,11 @@ export class ProfileComponent extends MyValidators implements OnInit {
   ];
 
   ngOnInit(): void {
-    const user = this.cadastro.search.searchUserByToken();
     const refresh = this.cadastro.auth.refreshToken();
+    const cpf = this.route.snapshot.paramMap.get("cpf");
+    const user = cpf ? this.cadastro.search.searchUser(cpf) : this.cadastro.search.searchUserByToken();
 
+    console.log("opa!", cpf);
     refresh.subscribe({
       error: this.logoutButton, complete: () => user.subscribe({
         error: this.logoutButton, next: prismaUser => {
@@ -76,13 +80,17 @@ export class ProfileComponent extends MyValidators implements OnInit {
               );
             }
           });
-          else setTimeout(() => this.updateOld(this.form.value));
+          else {
+            // DESCOBRIR COMO REMOVER ALUNO DO FORM :(
+            this.form.removeControl('aluno');
+
+            setTimeout(() => this.updateOld(this.form.value));
+          };
         }
       })
     });
   }
 
-  // FAZER O OUTPUT DE HORARIOS-LIST FUNCIONAR PARA FORM-TABLE
   updateOld = (value: any) => {
     this.oldValue = value;
   }
