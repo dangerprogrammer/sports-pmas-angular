@@ -41,6 +41,9 @@ export type PrismaAdmin = {
 export type PrismaSolic = {
     id: number;
     userId: number;
+    adminId: number;
+    updatedAt: Date;
+    done: boolean;
     roles: role[];
 }
 

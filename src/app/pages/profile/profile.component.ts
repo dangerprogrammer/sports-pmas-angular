@@ -12,7 +12,6 @@ import { MyValidators } from '../../tools';
 import { HorariosListComponent } from '../../components/horarios-list/horarios-list.component';
 import { updateUser } from '../../interfaces';
 
-
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -37,10 +36,11 @@ export class ProfileComponent extends MyValidators implements OnInit {
     super();
   }
 
-  user!: PrismaUser;
+  user?: PrismaUser;
   aluno?: PrismaAluno;
   inscricoes?: inscricao[];
   hasHorarios: boolean = !1;
+  noUsers: boolean = !1;
 
   oldValue: any = {};
 
@@ -55,36 +55,42 @@ export class ProfileComponent extends MyValidators implements OnInit {
     const cpf = this.route.snapshot.paramMap.get("cpf");
     const user = cpf ? this.cadastro.search.searchUser(cpf) : this.cadastro.search.searchUserByToken();
 
-    console.log("opa!", cpf);
     refresh.subscribe({
       error: this.logoutButton, complete: () => user.subscribe({
-        error: this.logoutButton, next: prismaUser => {
-          this.user = prismaUser;
-        }, complete: () => {
-          const { roles } = this.user;
-          const aluno = this.cadastro.search.searchAlunoById(this.user.id);
+        error: this.logoutButton, next: prismaUser => this.user = prismaUser, complete: () => {
+          if (!this.user) {
+            this.noUsers = !0;
+            console.log("Não existe!");
+          } else {
+            const { roles } = this.user;
+            const aluno = this.cadastro.search.searchAlunoById(this.user.id);
 
-          this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel');
+            this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel');
 
-          if (roles.includes('ALUNO') || roles.includes('PROFESSOR')) {
-            this.hasHorarios = !0;
-            this.cadastro.search.searchInscricoes(this.user.id).subscribe(
-              ({ inscricoes }) => this.inscricoes = inscricoes
-            );
-          };
-          if (roles.includes('ALUNO')) aluno.subscribe({
-            error: this.logoutButton, next: prismaAluno => this.aluno = prismaAluno,
-            complete: () => {
-              this.appendValues(this.formAluno, this.aluno as PrismaAluno,
-                'endereco', 'bairro', 'data_nasc', 'sexo'
+            if (roles.includes('ALUNO') || roles.includes('PROFESSOR')) {
+              this.hasHorarios = !0;
+              this.cadastro.search.searchInscricoes(this.user.id).subscribe(
+                ({ inscricoes }) => this.inscricoes = inscricoes
               );
-            }
-          });
-          else {
-            // DESCOBRIR COMO REMOVER ALUNO DO FORM :(
-            this.form.removeControl('aluno');
+            };
 
-            setTimeout(() => this.updateOld(this.form.value));
+            if (roles.includes('ALUNO')) aluno.subscribe({
+              error: this.logoutButton, next: prismaAluno => this.aluno = prismaAluno,
+              complete: () => {
+                this.appendValues(this.formAluno, this.aluno as PrismaAluno,
+                  'endereco', 'bairro', 'data_nasc', 'sexo'
+                );
+              }
+            });
+            else {
+              this.form.removeControl('aluno' as never);
+
+              setTimeout(() => this.updateOld(this.form.value));
+            };
+
+            if (!roles.includes('PROFESSOR')) this.form.removeControl('professor' as never);
+
+            if (!roles.includes('ADMIN')) this.form.removeControl('admin' as never);
           };
         }
       })

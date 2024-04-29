@@ -20,9 +20,13 @@ app-header {
     }
 }
 
+header-button {
+    transition: .35s ease-in-out opacity;
+}
+
 .no-click {
     pointer-events: none !important;
-    opacity: .75;
+    opacity: .5;
 }
 
 dashboard-sidebar {

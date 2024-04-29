@@ -1,1 +1,10 @@
+@use '../../../styles.scss' as global;
 @use '../../styles';
+
+.no-users {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: global.$main-color;
+    user-select: none;
+}

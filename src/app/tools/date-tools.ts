@@ -10,6 +10,12 @@ export class DateTools {
         } else return null;
     }
 
+    formatDate(time: Date) {
+        const date = new Date(time);
+
+        return date.toLocaleString();
+    }
+
     yearsOld(time: Date) {
         const diff = (new Date() as unknown as number) - (new Date(time) as unknown as number);
 

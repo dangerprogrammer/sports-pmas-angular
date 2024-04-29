@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PrismaSolic, PrismaUser } from '../../types';
 import { CadastroService } from '../../services/cadastro.service';
-import { StringTools } from '../../tools';
+import { DateTools, StringTools } from '../../tools';
 import { SolicContentComponent } from '../solic-content/solic-content.component';
 import { JsonPipe } from '@angular/common';
 
@@ -24,12 +24,21 @@ export class SolicButtonComponent extends StringTools implements OnInit {
   @Input() refresh?: Function;
   @Input() onlyRead: boolean = !1;
 
-  userSolic!: PrismaSolic;
+  userSolic?: PrismaSolic;
+  doneBy?: PrismaUser;
+
+  date = new DateTools();
 
   ngOnInit(): void {
     const searchSolic = this.cadastro.search.searchSolic(this.solicUser.id);
 
-    searchSolic.subscribe(data => this.userSolic = data);
+    searchSolic.subscribe(solic => {
+      this.userSolic = solic;
+    
+      const adminPrisma = this.cadastro.search.searchUserById(this.userSolic.adminId);
+
+      if (this.userSolic.done) adminPrisma.subscribe(admin => this.doneBy = admin);
+    });
   }
 
   acceptUser(accept: boolean, ev: Event) {

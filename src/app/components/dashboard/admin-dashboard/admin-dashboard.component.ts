@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CadastroService } from '../../../services/cadastro.service';
-import { PrismaSolic, PrismaUser } from '../../../types';
-import { forkJoin, Observable } from 'rxjs';
+import { PrismaUser } from '../../../types';
+import { forkJoin } from 'rxjs';
 import { SolicsListComponent } from '../../solics-list/solics-list.component';
 import { LoadingContentComponent } from '../../loading-content/loading-content.component';
 

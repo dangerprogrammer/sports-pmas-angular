@@ -31,9 +31,16 @@
                 flex-direction: row;
                 gap: .35em;
 
+                .desc {
+                    color: #444;
+                    letter-spacing: initial;
+                    font-weight: 500;
+                    font-size: .8em;
+                }
+
                 .button {
                     position: relative;
-                    background: global.$main-color;
+                    background-color: global.$main-color;
                     border-radius: .2em;
                     cursor: pointer;
                     display: flex;
@@ -48,7 +55,7 @@
                         }
 
                         &.cancel {
-                            background: #c00;
+                            background-color: #c00;
                         }
                     }
 
@@ -74,7 +81,7 @@
     }
 
     .solic-main {
-        grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100vw), 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(13.5rem, 100vw), 1fr));
         gap: 1em;
         padding-block: .5em;
 
