@@ -24,8 +24,8 @@
         <form-input [form]="form" controlName="tel">Celular</form-input>
         @if (aluno) {<form-input [form]="formAluno" controlName="endereco">Endereço</form-input>}
         @if (aluno) {<form-input [form]="formAluno" controlName="bairro">Bairro</form-input>}
-        @if (aluno) {<form-input [form]="formAluno" controlName="data_nasc" type="date">Nascimento</form-input>}
-        @if (aluno) {<form-input [form]="formAluno" controlName="sexo" [options]="genders">Gênero</form-input>}
+        @if (aluno) {<form-input [form]="formAluno" controlName="data_nasc" type="date" [edit]="!1">Nascimento</form-input>}
+        @if (aluno) {<form-input [form]="formAluno" controlName="sexo" [options]="genders" [edit]="!1">Gênero</form-input>}
         @if (hasHorarios) {
         <horarios-list (updateOld)="updateOld($event)" [form]="form" [inscricoes]="inscricoes"></horarios-list>
         }

@@ -91,21 +91,20 @@ export class LoginSubmit {
   private router = inject(Router);
 
   hasError: boolean = !1;
-  errorMsg: string = 'Erro! CPF ou senha inválidos!';
+  errorMsg: string = 'Erro! Usuário não encontrado!';
 
   submitFunction = (res: any) => {
     const findedUser = this.cadastro.search.searchUser(res.cpf);
 
     this.hasError = !1;
-    findedUser.subscribe((user: any) => {
-      if (!user) {
+    findedUser.subscribe(user => {
+      if (!user || !user.accepted) {
         this.hasError = !0;
         return;
       };
 
       const login = this.cadastro.auth.loginUser(res as User);
 
-      this.hasError = !1;
       login.subscribe({
         error: () => this.hasError = !0, complete: () => {
           this.cadastro.removeFromStorage("login-data");

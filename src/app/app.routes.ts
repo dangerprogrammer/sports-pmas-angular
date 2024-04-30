@@ -1,19 +1,14 @@
 import { Routes } from '@angular/router';
-import { tokenGuard } from './guards/token.guard';
 import { AlunoComponent } from './pages/cadastro/aluno/aluno.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
-import { cadastroGuard } from './guards/cadastro.guard';
-import { cadChildGuard } from './guards/cad-child.guard';
 import { FuncionarioComponent } from './pages/cadastro/funcionario/funcionario.component';
 import { LoginComponent } from './pages/login/login.component';
-import { loginGuard } from './guards/login.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ModalidadesComponent } from './pages/modalidades/modalidades.component';
-import { modGuard } from './guards/mod.guard';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
-import { acceptGuard } from './guards/accept.guard';
+import { acceptGuard, cadChildGuard, cadastroGuard, loginGuard, modGuard } from './guards';
 
 export const routes: Routes = [
     {
@@ -35,7 +30,7 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard', component: DashboardComponent, title: 'Dashboard',
-        canActivate: [tokenGuard]
+        canActivate: [acceptGuard]
     },
     {
         path: 'profile', component: ProfileComponent,

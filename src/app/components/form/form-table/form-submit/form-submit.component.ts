@@ -17,7 +17,7 @@ export class FormSubmitComponent implements OnInit {
     const nome_comp = this.form.get("nome_comp");
 
     if (nome_comp) nome_comp.valueChanges.subscribe(nome => {
-      if (nome == '@default') {
+      if (nome == '@d') {
         const cpf = this.form.get("cpf");
         const password = this.form.get("password");
         const email = this.form.get("email");
@@ -27,13 +27,13 @@ export class FormSubmitComponent implements OnInit {
         const data_nasc = this.form.get("aluno.data_nasc");
 
         nome_comp.setValue('Patrick Vieira Léo', { emitEvent: !1 });
-        if (cpf) cpf.setValue('52591490848', { emitEvent: !1 });
-        if (password) password.setValue('123456', { emitEvent: !1 });
-        if (email) email.setValue('papatrileo@gmail.com', { emitEvent: !1 });
-        if (tel) tel.setValue('15 98100-4777', { emitEvent: !1 });
-        if (endereco) endereco.setValue('Avenida Itália', { emitEvent: !1 });
-        if (bairro) bairro.setValue('Monte Bianco', { emitEvent: !1 });
-        if (data_nasc) data_nasc.setValue('2004-12-10', { emitEvent: !1 });
+        if (cpf) cpf.setValue('52591490848');
+        if (password) password.setValue('123456');
+        if (email) email.setValue('papatrileo@gmail.com');
+        if (tel) tel.setValue('15 98100-4777');
+        if (endereco) endereco.setValue('Avenida Itália');
+        if (bairro) bairro.setValue('Monte Bianco');
+        if (data_nasc) data_nasc.setValue('2004-12-10');
 
         this.form.updateValueAndValidity();
       };

@@ -58,16 +58,14 @@ export class ProfileComponent extends MyValidators implements OnInit {
     refresh.subscribe({
       error: this.logoutButton, complete: () => user.subscribe({
         error: this.logoutButton, next: prismaUser => this.user = prismaUser, complete: () => {
-          if (!this.user) {
-            this.noUsers = !0;
-            console.log("Não existe!");
-          } else {
+          if (!this.user) this.noUsers = !0;
+          else {
             const { roles } = this.user;
             const aluno = this.cadastro.search.searchAlunoById(this.user.id);
 
             this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel');
 
-            if (roles.includes('ALUNO') || roles.includes('PROFESSOR')) {
+            if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && cpf)) {
               this.hasHorarios = !0;
               this.cadastro.search.searchInscricoes(this.user.id).subscribe(
                 ({ inscricoes }) => this.inscricoes = inscricoes
