@@ -41,6 +41,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
   @Output() inputForm: EventEmitter<any> = new EventEmitter();
 
+  toggleEye: boolean = !1;
   htmlOptions?: HTMLInputElement[];
   horarioSubText: string = 'Loading';
   horarioIcon: 'add' | 'checkmark' = 'add';

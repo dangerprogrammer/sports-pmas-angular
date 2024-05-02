@@ -99,6 +99,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.toggleAdmins = toggle == undefined ? !this.toggleAdmins : toggle;
   }
 
+  toggleUsers: boolean = !1;
+
+  onToggleUsers(toggle?: boolean) {
+    this.toggleUsers = toggle == undefined ? !this.toggleUsers : toggle;
+  }
+
   logoutButton = () => {
     localStorage.removeItem("auth");
     this.router.navigate(["/login"]);
@@ -122,14 +128,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   goAdminSolicsUnread = () => {
     const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
-    const solicsUnread = dashRow.firstChild as HTMLElement;
+    const solicsUnread = dashRow.children[0] as HTMLElement;
 
     dashRow.scrollTo(solicsUnread.offsetLeft, solicsUnread.offsetTop || 0);
   }
 
   goAdminSolics = () => {
     const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
-    const solics = dashRow.lastChild as HTMLElement;
+    const solics = dashRow.children[1] as HTMLElement;
 
     dashRow.scrollTo(solics.offsetLeft, solics.offsetTop || 0);
   }

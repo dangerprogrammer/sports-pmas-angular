@@ -7,7 +7,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ModalidadesComponent } from './pages/modalidades/modalidades.component';
-import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { acceptGuard, cadChildGuard, cadastroGuard, loginGuard, modGuard } from './guards';
 
 export const routes: Routes = [
@@ -34,10 +33,6 @@ export const routes: Routes = [
     },
     {
         path: 'profile', component: ProfileComponent,
-        canActivate: [acceptGuard]
-    },
-    {
-        path: 'notifications', component: NotificationsComponent,
         canActivate: [acceptGuard]
     },
     {

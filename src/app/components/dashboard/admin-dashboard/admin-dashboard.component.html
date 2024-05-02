@@ -1,7 +1,7 @@
 <div class="row">
     <loading-content [loaded]="loadedUnread" loadingMsg="Carregando Solicitações...">
         @if (solicUnreadUsers.length) {
-        <solics-list (updateLimits)="onUpdateLimits($event)" [pagesSize]="pagesSize" [pageIndex]="index" [refresh]="refreshSolics" [admin]="user"
+        <solics-list (updateLimits)="onUpdateLimits($event, 'unread')" [pagesSize]="pagesSize" [pageIndex]="indexSolicUnread" [refresh]="refreshSolics" [admin]="user"
             [size]="sizeUnread" [solics]="solicUnreadUsers"></solics-list>
         } @else {
         <div class="loader no-solics">
@@ -11,7 +11,7 @@
     </loading-content>
     <loading-content [loaded]="loaded" loadingMsg="Carregando Solicitações...">
         @if (solicUsers.length) {
-        <solics-list titleMsg="Solicitações Concluídas" (updateLimits)="onUpdateLimits($event)" [pagesSize]="pagesSize" [pageIndex]="index" [refresh]="refreshSolics" [admin]="user"
+        <solics-list titleMsg="Solicitações Concluídas" (updateLimits)="onUpdateLimits($event, 'read')" [pagesSize]="pagesSize" [pageIndex]="indexSolic" [refresh]="refreshSolics" [admin]="user"
             [size]="size" [solics]="solicUsers" [onlyRead]="!0"></solics-list>
         } @else {
         <div class="loader no-solics">

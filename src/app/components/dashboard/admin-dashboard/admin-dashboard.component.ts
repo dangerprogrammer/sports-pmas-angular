@@ -20,36 +20,95 @@ export class AdminDashboardComponent implements OnInit {
   @Input() user!: PrismaUser;
   solicUnreadUsers: PrismaUser[] = [];
   solicUsers: PrismaUser[] = [];
+  solicAdmins: PrismaUser[] = [];
+  solicProfessores: PrismaUser[] = [];
+  solicAlunos: PrismaUser[] = [];
+
   loadedUnread: boolean = !1;
   loaded: boolean = !1;
+  loadedAdmins: boolean = !1;
+  loadedProfessores: boolean = !1;
+  loadedAlunos: boolean = !1;
 
   ngOnInit(): void {
-    this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 });
+    this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'unread');
+    this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'read');
+    
+    this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'admin');
+    this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'professor');
+    this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'aluno');
   }
 
-  min!: number;
-  max!: number;
-  index!: number;
+  minSolicUnread!: number;
+  minSolic!: number;
+  minAdmin!: number;
+  minProfessor!: number;
+  minAluno!: number;
+
+  maxSolicUnread!: number;
+  maxSolic!: number;
+  maxAdmin!: number;
+  maxProfessor!: number;
+  maxAluno!: number;
+
+  indexSolicUnread!: number;
+  indexSolic!: number;
+  indexAdmin!: number;
+  indexProfessor!: number;
+  indexAluno!: number;
+
   sizeUnread!: number;
   size!: number;
+  sizeAdmin!: number;
+  sizeProfessor!: number;
+  sizeAluno!: number;
+
   pagesSize: 15 | 20 | 25 | 50 | 75 | 100 = 50;
 
-  onUpdateLimits = ({ min, max, index }: { min: number, max: number, index: number }) => {
-    this.min = min;
-    this.max = max;
-    this.index = index;
+  onUpdateLimits = (
+    { min, max, index }: { min: number, max: number, index: number },
+    solicType: 'unread' | 'read' | 'admin' | 'professor' | 'aluno') => {
+    if (solicType == 'unread') {
+      this.minSolicUnread = min;
+      this.maxSolicUnread = max;
+      this.indexSolicUnread = index;
 
-    this.updateUnreadSolics();
-    this.updateSolics();
+      this.updateSolics();
+    } else if (solicType == 'read') {
+      this.minSolic = min;
+      this.maxSolic = max;
+      this.indexSolic = index;
+
+      this.updateUnreadSolics();
+    } else if (solicType == 'admin') {
+      this.minAdmin = min;
+      this.maxAdmin = max;
+      this.indexAdmin = index;
+
+      this.updateAdmins();
+    } else if (solicType == 'professor') {
+      this.minProfessor = min;
+      this.maxProfessor = max;
+      this.indexProfessor = index;
+
+      this.updateProfessores();
+    } else {
+      this.minAluno = min;
+      this.maxAluno = max;
+      this.indexAluno = index;
+
+      this.updateAlunos();
+    };
   }
 
   refreshSolics = () => {
     this.updateUnreadSolics();
     this.updateSolics();
+    this.updateAdmins();
   }
 
   updateUnreadSolics = () => {
-    const solics = this.cadastro.search.searchByAdmin(this.user.id, { min: this.min, max: this.max }, !1);
+    const solics = this.cadastro.search.searchByAdmin(this.user.id, { min: this.minSolic, max: this.maxSolic }, !1);
 
     this.loadedUnread = !1;
     solics.subscribe(({ solics, size }) => {
@@ -67,7 +126,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   updateSolics = () => {
-    const solics = this.cadastro.search.searchByAdmin(this.user.id, { min: this.min, max: this.max }, !0);
+    const solics = this.cadastro.search.searchByAdmin(this.user.id, { min: this.minSolicUnread, max: this.maxSolicUnread }, !0);
 
     this.loaded = !1;
     solics.subscribe(({ solics, size }) => {
@@ -81,6 +140,33 @@ export class AdminDashboardComponent implements OnInit {
         this.solicUsers = users.sort(({ id: idA }, { id: idB }) => idB - idA);
         this.loaded = !0;
       });
+    });
+  }
+
+  updateAdmins = () => {
+    const prismaAdmins = this.cadastro.search.searchUsers('ADMIN', { min: this.minAdmin, max: this.maxAdmin });
+
+    this.loadedAdmins = !1;
+    prismaAdmins.subscribe(users => {
+      console.log(users);
+    });
+  }
+
+  updateProfessores = () => {
+    const prismaProfessores = this.cadastro.search.searchUsers('PROFESSOR', { min: this.minProfessor, max: this.maxProfessor });
+
+    this.loadedProfessores = !1;
+    prismaProfessores.subscribe(users => {
+      console.log(users);
+    });
+  }
+
+  updateAlunos = () => {
+    const prismaAlunos = this.cadastro.search.searchUsers('ALUNO', { min: this.minAluno, max: this.maxAluno });
+
+    this.loadedAlunos = !1;
+    prismaAlunos.subscribe(users => {
+      console.log(users);
     });
   }
 }

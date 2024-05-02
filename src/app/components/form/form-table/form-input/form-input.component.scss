@@ -56,6 +56,81 @@
             width: 100%;
         }
 
+        .password-content {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+
+            &:hover,
+            &:has(input:focus) {
+                .password-eye {
+                    opacity: 1;
+                }
+            }
+
+            &:not(:hover, :has(input:focus)) {
+                .password-eye {
+                    pointer-events: none;
+                    opacity: 0;
+                }
+            }
+
+            .password-eye {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                right: .2em;
+                padding: .15em;
+                font-size: 1.2em;
+                cursor: pointer;
+                color: global.$main-color;
+                transition: .15s ease opacity;
+
+                &:not(.not-see) {
+                    .see {
+                        display: block;
+                    }
+
+                    .not-see {
+                        display: none;
+                    }
+                }
+
+                &.not-see {
+                    .see {
+                        display: none;
+                    }
+
+                    .not-see {
+                        display: block;
+                    }
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    border-radius: .25em;
+                    background: global.$main-color;
+                    opacity: 0;
+                    transition: .2s ease-in-out opacity;
+                }
+
+                &:hover::before {
+                    opacity: .25;
+                }
+
+                * {
+                    pointer-events: none;
+                    z-index: 100;
+                }
+            }
+        }
+
         .input {
             font-size: 1em;
             background: #eee;
