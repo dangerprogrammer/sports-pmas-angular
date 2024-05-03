@@ -1,1 +1,12 @@
-<p>users-list works!</p>
+<section class="main-users">
+    <ng-content></ng-content>
+    <article class="users-container">
+        <ul class="list-users" #listUsers>
+            @for (user of users; track $index) {
+            <code>
+                <pre>{{user | json}}</pre>
+            </code>
+            }
+        </ul>
+    </article>
+</section>

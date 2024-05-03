@@ -11,8 +11,8 @@
         </button>
         <button class="button all" [class.no-click]="accepting" [class.hidden]="onlyRead" (click)="acceptAll(!0)">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="32" d="M416 128L192 384l-96-96" />
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                    d="M416 128L192 384l-96-96" />
             </svg>
             <small>Aceitar todos</small>
         </button>
@@ -25,7 +25,8 @@
         </button>
     </section>
     <section class="row">
-        <span class="content">{{(pageIndex * pagesSize + 1).toLocaleString()}}-{{(pageIndex * pagesSize + min(size - pageIndex * pagesSize, pagesSize)).toLocaleString()}} de
+        <span class="content">{{(pageIndex * pagesSize + 1).toLocaleString()}}-{{(pageIndex * pagesSize + min(size -
+            pageIndex * pagesSize, pagesSize)).toLocaleString()}} de
             {{size.toLocaleString()}}</span>
         <button class="button" [class.no-click]="!pageIndex" (click)="switchFirst()">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
@@ -56,7 +57,7 @@
 <section class="list-solics" [class.no-click]="accepting">
     <ul class="solics" #solicsList>
         @for (solicUser of solics; track $index) {
-            <solic-button [onlyRead]="onlyRead" [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
+        <solic-button [onlyRead]="onlyRead" [refresh]="refresh" [adminUser]="admin" [solicUser]="solicUser" />
         }
     </ul>
 </section>

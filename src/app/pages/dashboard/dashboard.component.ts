@@ -81,6 +81,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.alert = new AlertService(this.alerts);
+
+    setTimeout(() => this.goAdminAlunos(), 5e2);
   }
 
   createAlert = (data?: any) => {
@@ -99,7 +101,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.toggleAdmins = toggle == undefined ? !this.toggleAdmins : toggle;
   }
 
-  toggleUsers: boolean = !1;
+  toggleUsers: boolean = !0;
 
   onToggleUsers(toggle?: boolean) {
     this.toggleUsers = toggle == undefined ? !this.toggleUsers : toggle;
@@ -140,6 +142,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     dashRow.scrollTo(solics.offsetLeft, solics.offsetTop || 0);
   }
 
+  goAdminAdmins = () => {
+    const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
+    const admins = dashRow.children[2] as HTMLElement;
+
+    dashRow.scrollTo(admins.offsetLeft, admins.offsetTop || 0);
+  }
+
+  goAdminProfessores = () => {
+    const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
+    const professores = dashRow.children[3] as HTMLElement;
+
+    dashRow.scrollTo(professores.offsetLeft, professores.offsetTop || 0);
+  }
+
+  goAdminAlunos = () => {
+    const dashRow = document.querySelector('admin-dashboard')?.firstChild as Element;
+    const alunos = dashRow.children[4] as HTMLElement;
+
+    dashRow.scrollTo(alunos.offsetLeft, alunos.offsetTop || 0);
+  }
+
   goSolicsUnread = () => {
     this.goDashAdmin();
     this.goAdminSolicsUnread();
@@ -148,6 +171,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   goSolics = () => {
     this.goDashAdmin();
     this.goAdminSolics();
+  }
+
+  goAdmins = () => {
+    this.goDashAdmin();
+    this.goAdminAdmins();
+  }
+
+  goProfessores = () => {
+    this.goDashAdmin();
+    this.goAdminProfessores();
+  }
+
+  goAlunos = () => {
+    this.goDashAdmin();
+    this.goAdminAlunos();
   }
 
   goDashProfessor = () => {

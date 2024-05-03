@@ -19,4 +19,37 @@
         </div>
         }
     </loading-content>
+    <loading-content [loaded]="loadedAdmins" loadingMsg="Carregando Administradores...">
+        @if (solicAdmins.length) {
+        <users-list [users]="solicAdmins">
+            <h1>Lista de Administradores</h1>
+        </users-list>
+        } @else {
+        <div class="loader no-solics">
+            <strong>Não há administradores!</strong>
+        </div>
+        }
+    </loading-content>
+    <loading-content [loaded]="loadedProfessores" loadingMsg="Carregando Professores...">
+        @if (solicProfessores.length) {
+        <users-list [users]="solicProfessores">
+            <h1>Lista de Professores</h1>
+        </users-list>
+        } @else {
+        <div class="loader no-solics">
+            <strong>Não há professores!</strong>
+        </div>
+        }
+    </loading-content>
+    <loading-content [loaded]="loadedAlunos" loadingMsg="Carregando Alunos...">
+        @if (solicAlunos.length) {
+        <users-list [users]="solicAlunos">
+            <h1>Lista de Alunos</h1>
+        </users-list>
+        } @else {
+        <div class="loader no-solics">
+            <strong>Não há alunos!</strong>
+        </div>
+        }
+    </loading-content>
 </div>

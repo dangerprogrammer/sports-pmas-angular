@@ -1,0 +1,34 @@
+@use '../../../styles.scss' as global;
+
+.main-users {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    flex-grow: 1;
+
+    .users-container {
+        overflow: hidden;
+        max-width: 64rem;
+        width: 100%;
+
+        .list-users {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            flex-grow: 1;
+            max-height: 36em;
+            width: 100%;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+                background: white;
+                width: .5rem;
+            }
+    
+            &::-webkit-scrollbar-thumb {
+                background: global.$main-color;
+            }
+        }
+    }
+}

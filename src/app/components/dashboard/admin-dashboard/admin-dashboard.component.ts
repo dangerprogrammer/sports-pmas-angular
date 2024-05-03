@@ -4,11 +4,12 @@ import { PrismaUser } from '../../../types';
 import { forkJoin } from 'rxjs';
 import { SolicsListComponent } from '../../solics-list/solics-list.component';
 import { LoadingContentComponent } from '../../loading-content/loading-content.component';
+import { UsersListComponent } from '../../users-list/users-list.component';
 
 @Component({
   selector: 'admin-dashboard',
   standalone: true,
-  imports: [SolicsListComponent, LoadingContentComponent],
+  imports: [SolicsListComponent, LoadingContentComponent, UsersListComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss'
 })
@@ -33,7 +34,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'unread');
     this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'read');
-    
+
     this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'admin');
     this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'professor');
     this.onUpdateLimits({ min: 0, max: this.pagesSize, index: 0 }, 'aluno');
@@ -147,8 +148,10 @@ export class AdminDashboardComponent implements OnInit {
     const prismaAdmins = this.cadastro.search.searchUsers('ADMIN', { min: this.minAdmin, max: this.maxAdmin });
 
     this.loadedAdmins = !1;
-    prismaAdmins.subscribe(users => {
-      console.log(users);
+    prismaAdmins.subscribe(({ users }) => {
+      this.solicAdmins = users;
+
+      this.loadedAdmins = !0;
     });
   }
 
@@ -156,8 +159,10 @@ export class AdminDashboardComponent implements OnInit {
     const prismaProfessores = this.cadastro.search.searchUsers('PROFESSOR', { min: this.minProfessor, max: this.maxProfessor });
 
     this.loadedProfessores = !1;
-    prismaProfessores.subscribe(users => {
-      console.log(users);
+    prismaProfessores.subscribe(({ users }) => {
+      this.solicProfessores = users;
+
+      this.loadedProfessores = !0;
     });
   }
 
@@ -165,8 +170,10 @@ export class AdminDashboardComponent implements OnInit {
     const prismaAlunos = this.cadastro.search.searchUsers('ALUNO', { min: this.minAluno, max: this.maxAluno });
 
     this.loadedAlunos = !1;
-    prismaAlunos.subscribe(users => {
-      console.log(users);
+    prismaAlunos.subscribe(({ users }) => {
+      this.solicAlunos = users;
+
+      this.loadedAlunos = !0;
     });
   }
 }
