@@ -106,6 +106,8 @@ export class AdminDashboardComponent implements OnInit {
     this.updateUnreadSolics();
     this.updateSolics();
     this.updateAdmins();
+    this.updateProfessores();
+    this.updateAlunos();
   }
 
   updateUnreadSolics = () => {
@@ -148,9 +150,10 @@ export class AdminDashboardComponent implements OnInit {
     const prismaAdmins = this.cadastro.search.searchUsers('ADMIN', { min: this.minAdmin, max: this.maxAdmin });
 
     this.loadedAdmins = !1;
-    prismaAdmins.subscribe(({ users }) => {
+    prismaAdmins.subscribe(({ users, size }) => {
       this.solicAdmins = users;
 
+      this.sizeAdmin = size;
       this.loadedAdmins = !0;
     });
   }
@@ -159,9 +162,10 @@ export class AdminDashboardComponent implements OnInit {
     const prismaProfessores = this.cadastro.search.searchUsers('PROFESSOR', { min: this.minProfessor, max: this.maxProfessor });
 
     this.loadedProfessores = !1;
-    prismaProfessores.subscribe(({ users }) => {
+    prismaProfessores.subscribe(({ users, size }) => {
       this.solicProfessores = users;
 
+      this.sizeProfessor = size;
       this.loadedProfessores = !0;
     });
   }
@@ -170,9 +174,10 @@ export class AdminDashboardComponent implements OnInit {
     const prismaAlunos = this.cadastro.search.searchUsers('ALUNO', { min: this.minAluno, max: this.maxAluno });
 
     this.loadedAlunos = !1;
-    prismaAlunos.subscribe(({ users }) => {
+    prismaAlunos.subscribe(({ users, size }) => {
       this.solicAlunos = users;
 
+      this.sizeAluno = size;
       this.loadedAlunos = !0;
     });
   }

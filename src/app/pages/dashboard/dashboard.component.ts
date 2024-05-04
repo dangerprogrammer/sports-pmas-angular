@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.alert = new AlertService(this.alerts);
 
-    setTimeout(() => this.goAdminAlunos(), 5e2);
+    setTimeout(() => this.goAdminAdmins(), 5e2);
   }
 
   createAlert = (data?: any) => {

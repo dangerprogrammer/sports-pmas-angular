@@ -7,6 +7,54 @@
     justify-content: space-around;
     flex-grow: 1;
 
+    .title-users {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+    }
+
+    .users-desc {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1em auto;
+        max-width: 64rem;
+        width: 100%;
+
+        .col {
+            display: flex;
+            flex-direction: row;
+            gap: .5em;
+            align-items: center;
+        }
+
+        .button {
+            display: flex;
+            flex-direction: row;
+            gap: .3em;
+            cursor: pointer;
+            padding: .5em;
+            font-size: 1.2em;
+            border-radius: .2em;
+            box-shadow: 0 .2rem .5em #0163;
+            background: global.$main-color;
+            color: #eee;
+    
+            &.refresh {
+                background: global.$main-color;
+                color: #eee;
+            }
+        }
+
+        .content {
+            padding: .2em .5em;
+            border-radius: .2em;
+            user-select: none;
+            font-weight: 600;
+        }
+    }
+
     .users-container {
         overflow: hidden;
         max-width: 64rem;
@@ -21,6 +69,13 @@
             width: 100%;
             overflow-y: auto;
 
+            .user-item {
+                background: white;
+                border-radius: .5em;
+                box-shadow: 0 .2rem .5em #0163;
+                padding: .25em min(2vw, 2em);
+            }
+
             &::-webkit-scrollbar {
                 background: white;
                 width: .5rem;
@@ -30,5 +85,35 @@
                 background: global.$main-color;
             }
         }
+    }
+}
+
+.no-click {
+    opacity: .5;
+    pointer-events: none !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media screen and (min-width: 32rem) {
+    .users-container {
+        background: #e9e9e9;
+        border-radius: 1em;
+
+        .list-users {
+            padding: .75rem;
+        }
+    }
+}
+
+@media screen and (max-width: calc(32rem - 1px)) {
+    .list-users {
+        padding-right: .5rem;
+    }
+
+    .users-desc {
+        padding-inline: min(2rem, 3vw);
     }
 }
