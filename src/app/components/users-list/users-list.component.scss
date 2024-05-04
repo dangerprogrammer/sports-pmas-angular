@@ -74,6 +74,10 @@
                 border-radius: .5em;
                 box-shadow: 0 .2rem .5em #0163;
                 padding: .25em min(2vw, 2em);
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(13.5rem, 100vw), 1fr));
+                gap: 1em;
+                padding-block: .5em;
             }
 
             &::-webkit-scrollbar {

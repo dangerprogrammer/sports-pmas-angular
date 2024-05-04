@@ -14,6 +14,7 @@ export type PrismaUser = {
     tel: string;
     hashedRt?: string;
     accepted: boolean;
+    status: 'ATIVO' | 'INATIVO';
 };
 
 export type PrismaAluno = {

@@ -46,9 +46,16 @@
     <article class="users-container">
         <ul class="list-users" #listUsers>
             @for (user of users; track $index) {
-            <code class="user-item">
-                <pre>{{user | json}}</pre>
-            </code>
+            <div class="user-item">
+                <solic-content title="ID">{{user.id}}</solic-content>
+                <solic-content title="Nome Completo">{{user.nome_comp}}</solic-content>
+                <solic-content title="CPF">{{user.cpf == 'ROOT' ? user.cpf : formatCPF(user.cpf)}}</solic-content>
+                <solic-content title="E-mail">{{user.email}}</solic-content>
+                <solic-content title="Celular">{{formatPhone(user.tel)}}</solic-content>
+                <solic-content title="Status">{{user.status}}</solic-content>
+                <solic-content title="Criado em">{{date.formatDate(user.createdAt)}}</solic-content>
+                <solic-content title="Última Atualização">{{date.formatDate(user.updatedAt)}}</solic-content>
+            </div>
             }
         </ul>
     </article>

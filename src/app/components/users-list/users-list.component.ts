@@ -1,15 +1,17 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { PrismaUser } from '../../types';
+import { SolicContentComponent } from '../solic-content/solic-content.component';
+import { DateTools, StringTools } from '../../tools';
 import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'users-list',
   standalone: true,
-  imports: [JsonPipe],
+  imports: [JsonPipe, SolicContentComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'
 })
-export class UsersListComponent implements OnInit, AfterViewInit {
+export class UsersListComponent extends StringTools implements OnInit, AfterViewInit {
   @Input() users!: PrismaUser[];
   @Input() size: number = 0;
   @Input() refresh!: Function;
@@ -22,6 +24,8 @@ export class UsersListComponent implements OnInit, AfterViewInit {
 
   pagesNumber!: number;
   accepting: boolean = !1;
+
+  date = new DateTools();
 
   ngOnInit(): void {
     this.pagesNumber = Math.ceil(this.size / this.pagesSize);
