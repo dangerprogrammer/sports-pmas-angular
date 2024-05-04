@@ -8,8 +8,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                     <path d="M320 146s24.36-12-64-12a160 160 0 10160 160" fill="none" stroke="currentColor"
                         stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" />
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
-                        d="M256 58l80 80-80 80" />
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="32" d="M256 58l80 80-80 80" />
                 </svg>
             </button>
         </div>
@@ -25,14 +25,14 @@
             </button>
             <button class="button" [class.no-click]="!pageIndex" (click)="switchPage(-1)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
-                        d="M328 112L184 256l144 144" />
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="48" d="M328 112L184 256l144 144" />
                 </svg>
             </button>
             <button class="button" [class.no-click]="!(pageIndex < (pagesNumber - 1))" (click)="switchPage(1)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
-                        d="M184 112l144 144-144 144" />
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="48" d="M184 112l144 144-144 144" />
                 </svg>
             </button>
             <button class="button" [class.no-click]="!(pageIndex < (pagesNumber - 1))" (click)="switchLast()">
@@ -55,6 +55,15 @@
                 <solic-content title="Status">{{user.status}}</solic-content>
                 <solic-content title="Criado em">{{date.formatDate(user.createdAt)}}</solic-content>
                 <solic-content title="Última Atualização">{{date.formatDate(user.updatedAt)}}</solic-content>
+                <span>
+                    <button class="go-user" (click)="goTo(user.cpf)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="48" d="M268 112l144 144-144 144M392 256H100" />
+                        </svg>
+                        <span>Ver mais</span>
+                    </button>
+                </span>
             </div>
             }
         </ul>

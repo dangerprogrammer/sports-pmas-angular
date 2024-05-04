@@ -78,6 +78,17 @@
                 grid-template-columns: repeat(auto-fit, minmax(min(13.5rem, 100vw), 1fr));
                 gap: 1em;
                 padding-block: .5em;
+
+                .go-user {
+                    display: flex;
+                    gap: .5em;
+                    align-items: center;
+                    cursor: pointer;
+                    background: global.$main-color;
+                    color: #eee;
+                    padding: .2em 1em;
+                    border-radius: .5em;
+                }
             }
 
             &::-webkit-scrollbar {

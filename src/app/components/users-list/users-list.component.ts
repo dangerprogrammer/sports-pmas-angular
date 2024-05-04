@@ -3,6 +3,7 @@ import { PrismaUser } from '../../types';
 import { SolicContentComponent } from '../solic-content/solic-content.component';
 import { DateTools, StringTools } from '../../tools';
 import { JsonPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'users-list',
@@ -17,6 +18,12 @@ export class UsersListComponent extends StringTools implements OnInit, AfterView
   @Input() refresh!: Function;
   @Input() pageIndex: number = 0;
   @Input() pagesSize: number = 25;
+
+  constructor(
+    private router: Router
+  ) {
+    super();
+  }
 
   @ViewChild('listUsers') listUsers!: ElementRef;
 
@@ -63,6 +70,10 @@ export class UsersListComponent extends StringTools implements OnInit, AfterView
     this.pageIndex = this.pagesNumber - 1;
 
     this.updatePageSolics();
+  }
+
+  goTo = (cpf: string) => {
+    this.router.navigate([`users/${cpf}`]);
   }
 
   min = Math.min;
