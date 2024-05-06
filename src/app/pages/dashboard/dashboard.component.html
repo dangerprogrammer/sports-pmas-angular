@@ -131,7 +131,7 @@
                 <logout-button [click]="logoutButton"></logout-button>
             </main>
         </dashboard-sidebar>
-        <dashboards-list [dashboards]="userRoles" [user]="user" [createAlert]="createAlert"></dashboards-list>
+        <dashboards-list [dashboards]="userRoles" [user]="user" [createAlert]="alert.createAlert"></dashboards-list>
         }
     </loading-content>
     <creator-content></creator-content>

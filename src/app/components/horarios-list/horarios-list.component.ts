@@ -34,6 +34,7 @@ export class HorariosListComponent implements OnInit {
 
     const headerRef = this.horarios.createComponent(HorarioHeaderComponent);
 
+    console.log(horarios)
     headerRef.setInput('modalidade', modalidade);
     headerRef.setInput('horarios', horarios);
     headerRef.setInput('form', this.form);
@@ -49,11 +50,12 @@ export class HorariosListComponent implements OnInit {
     if (!findedHorario) this.activeHorarios.push(horario);
     else this.activeHorarios.splice(this.activeHorarios.indexOf(findedHorario), 1);
 
-    const inscricoes = this.form.get('inscricoes') as FormGroup;
+    const inscricoes = this.form.get('inscricoes');
 
-    if (!this.horariosList.length) inscricoes.removeValidators(Validators.required);
-    else inscricoes.setValidators(Validators.required);
-    inscricoes.setValue(this.activeHorarios);
+    if (!this.horariosList.length) inscricoes?.removeValidators(Validators.required);
+    else inscricoes?.setValidators(Validators.required);
+
+    this.form.patchValue({ inscricoes: this.activeHorarios });
   }
 
   ngOnInit(): void {

@@ -39,6 +39,7 @@ export class ProfileComponent extends MyValidators implements OnInit {
   user?: PrismaUser;
   aluno?: PrismaAluno;
   inscricoes?: inscricao[];
+  isAdmin: boolean = !1;
   hasHorarios: boolean = !1;
   noUsers: boolean = !1;
 
@@ -54,6 +55,8 @@ export class ProfileComponent extends MyValidators implements OnInit {
     const refresh = this.cadastro.auth.refreshToken();
     const cpf = this.route.snapshot.paramMap.get("cpf");
     const user = cpf ? this.cadastro.search.searchUser(cpf) : this.cadastro.search.searchUserByToken();
+
+    if (cpf) this.isAdmin = !0;
 
     refresh.subscribe({
       error: this.logoutButton, complete: () => user.subscribe({
@@ -133,7 +136,7 @@ export class ProfileComponent extends MyValidators implements OnInit {
     cpf: ['', this.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
     tel: ['', Validators.required],
-    password: ['', Validators.required],
+    password: [''],
     aluno: this.fb.group({
       endereco: [''],
       bairro: [''],

@@ -12,6 +12,7 @@ export class FormSubmitComponent implements OnInit {
   @Input() form!: FormGroup;
   @Input() submitEvent?: Function;
   @Input() freezeFormFunc!: any;
+  @Input() removePassword: boolean = !1;
 
   ngOnInit(): void {
     const nome_comp = this.form.get("nome_comp");
@@ -76,6 +77,8 @@ export class FormSubmitComponent implements OnInit {
         };
       });
     }
+
+    if (this.removePassword) delete prismaRes.password;
 
     if (this.submitEvent) {
       this.freezeFormFunc(!0);
