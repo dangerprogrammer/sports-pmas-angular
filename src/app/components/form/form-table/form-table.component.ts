@@ -23,6 +23,8 @@ export class FormTableComponent implements AfterViewInit {
   @ContentChildren(FormInputComponent) formInput!: QueryList<ElementRef>;
   @ViewChild('inputs', { read: ViewContainerRef }) formInputs!: ViewContainerRef;
 
+  oldInscricoes?: any[];
+
   ngAfterViewInit(): void {
     setTimeout(() => {
       if (this.autoGenerateForms) {
@@ -36,19 +38,28 @@ export class FormTableComponent implements AfterViewInit {
         };
       };
 
-      setTimeout(() => this.form.updateValueAndValidity(), 1e3);
-      
+      setTimeout(() => {
+        if (this.form.value.inscricoes) this.oldInscricoes = [...this.form.value.inscricoes];
+        this.form.updateValueAndValidity();
+      }, 3e2);
+
       if (this.oldValue) this.form.valueChanges.subscribe((formValue: any) => {
+        if (!this.oldValue.cpf) return this.form.setErrors({ 'loading': !0 });
+
+        if (this.oldInscricoes) this.oldValue.inscricoes = this.oldInscricoes;
+        else {
+          delete this.oldValue.inscricoes;
+          delete formValue.inscricoes;
+        };
         const isEqual = this.compareForms(formValue, this.oldValue);
 
-        console.log(formValue.inscricoes, this.oldValue.inscricoes)
         this.form.setErrors(isEqual ? { 'equal': !0 } : null);
       });
     });
   }
 
   compareForms(form1: any, form2: any) {
-    const str1 = JSON.stringify(form1), str2 = JSON.stringify(form2);
+    const str = JSON.stringify, str1 = str(form1), str2 = str(form2);
 
     return str1 == str2;
   }

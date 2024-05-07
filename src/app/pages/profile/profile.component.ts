@@ -68,7 +68,7 @@ export class ProfileComponent extends MyValidators implements OnInit {
 
             this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel');
 
-            if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && cpf)) {
+            if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && this.isAdmin)) {
               this.hasHorarios = !0;
               this.cadastro.search.searchInscricoes(this.user.id).subscribe(
                 ({ inscricoes }) => this.inscricoes = inscricoes
@@ -111,8 +111,8 @@ export class ProfileComponent extends MyValidators implements OnInit {
         const data = new Date(prismaValue);
         const formatted = data.toJSON().split('T')[0];
 
-        form.get(value)?.setValue(formatted);
-      } else form.get(value)?.setValue(prismaValue);
+        form.get(value)?.setValue(formatted, { emitEvent: !1 });
+      } else form.get(value)?.setValue(prismaValue, { emitEvent: !1 });
     };
   }
 
