@@ -20,17 +20,21 @@
         <form-input [form]="form" controlName="nome_comp" [edit]="isAdmin">Nome Completo</form-input>
         <form-input [form]="form" controlName="cpf" [edit]="!1">CPF</form-input>
         <form-input [form]="form" controlName="email" type="email" autocomplete="email">E-mail</form-input>
-        <form-input [form]="form" controlName="password" type="password" autocomplete="new-password">Alterar Senha</form-input>
+        <form-input [form]="form" controlName="password" type="password" autocomplete="new-password">Alterar
+            Senha</form-input>
         <form-input [form]="form" controlName="tel">Celular</form-input>
         @if (aluno) {<form-input [form]="formAluno" controlName="endereco">Endereço</form-input>}
         @if (aluno) {<form-input [form]="formAluno" controlName="bairro">Bairro</form-input>}
-        @if (aluno) {<form-input [form]="formAluno" controlName="data_nasc" type="date" [edit]="!1">Nascimento</form-input>}
-        @if (aluno) {<form-input [form]="formAluno" controlName="sexo" [options]="genders" [edit]="!1">Gênero</form-input>}
+        @if (aluno) {<form-input [form]="formAluno" controlName="data_nasc" type="date"
+            [edit]="!1">Nascimento</form-input>}
+        @if (aluno) {<form-input [form]="formAluno" controlName="sexo" [options]="genders"
+            [edit]="!1">Gênero</form-input>}
+        @if (isAdmin) {<form-input [form]="form" controlName="status" [options]="status">Status</form-input>}
         @if (hasHorarios) {
         <horarios-list (updateOld)="updateOld($event)" [form]="form" [inscricoes]="inscricoes"></horarios-list>
         }
     </form-table>
-} @else {
+    } @else {
     <h1 class="no-users">Ops! Parece que não tem nenhum usuário com este CPF!</h1>
-}
+    }
 </app-main>

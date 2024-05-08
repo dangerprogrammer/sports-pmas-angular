@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { FormTableComponent } from '../../components/form/form-table/form-table.
 import { FormInputComponent } from '../../components/form/form-table/form-input/form-input.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { genders, inscricao, PrismaAluno, PrismaUser } from '../../types';
+import { genders, inscricao, option, PrismaAluno, PrismaUser } from '../../types';
 import { MyValidators } from '../../tools';
 import { HorariosListComponent } from '../../components/horarios-list/horarios-list.component';
 import { updateUser } from '../../interfaces';
@@ -31,6 +31,7 @@ export class ProfileComponent extends MyValidators implements OnInit {
     private router: Router,
     private cadastro: CadastroService,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
     private fb: FormBuilder
   ) {
     super();
@@ -46,9 +47,14 @@ export class ProfileComponent extends MyValidators implements OnInit {
   oldValue: any = {};
 
   genders: genders = [
-    { id: 'MASCULINO', text: 'Masculino', status: !0 },
-    { id: 'FEMININO', text: 'Feminino', status: !1 },
-    { id: 'OUTRO', text: 'Outro', status: !1 }
+    { id: 'MASCULINO', text: 'Masculino' },
+    { id: 'FEMININO', text: 'Feminino' },
+    { id: 'OUTRO', text: 'Outro' }
+  ];
+
+  status: option[] = [
+    { id: 'ATIVO', text: 'Ativo' },
+    { id: 'INATIVO', text: 'Inativo' }
   ];
 
   ngOnInit(): void {
@@ -66,14 +72,22 @@ export class ProfileComponent extends MyValidators implements OnInit {
             const { roles } = this.user;
             const aluno = this.cadastro.search.searchAlunoById(this.user.id);
 
-            this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel');
+            this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel', 'status');
+            
+            const statusValue = this.form.get("status")?.value;
 
-            if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && this.isAdmin)) {
-              this.hasHorarios = !0;
-              this.cadastro.search.searchInscricoes(this.user.id).subscribe(
-                ({ inscricoes }) => this.inscricoes = inscricoes
-              );
+            if (statusValue) {
+              const opt = this.status.find(({ id }) => id == statusValue);
+
+              if (opt) opt.status = !0;
             };
+
+            // if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && this.isAdmin)) {
+            //   this.hasHorarios = !0;
+            //   this.cadastro.search.searchInscricoes(this.user.id).subscribe(
+            //     ({ inscricoes }) => this.inscricoes = inscricoes
+            //   );
+            // };
 
             if (roles.includes('ALUNO')) aluno.subscribe({
               error: this.logoutButton, next: prismaAluno => this.aluno = prismaAluno,
@@ -81,6 +95,14 @@ export class ProfileComponent extends MyValidators implements OnInit {
                 this.appendValues(this.formAluno, this.aluno as PrismaAluno,
                   'endereco', 'bairro', 'data_nasc', 'sexo'
                 );
+
+                const sexoValue = this.formAluno.get("sexo")?.value;
+
+                if (sexoValue) {
+                  const opt = this.genders.find(({ id }) => id == sexoValue);
+
+                  if (opt) opt.status = !0;
+                };
               }
             });
             else {
@@ -131,12 +153,13 @@ export class ProfileComponent extends MyValidators implements OnInit {
     updatePrismaUser.subscribe(() => location.reload());
   }
 
-  form = this.fb.group({
+  form: FormGroup<any> = this.fb.group({
     nome_comp: ['', Validators.required],
     cpf: ['', this.validCPFAndTel],
     email: ['', [Validators.required, Validators.email]],
     tel: ['', Validators.required],
     password: [''],
+    status: [''],
     aluno: this.fb.group({
       endereco: [''],
       bairro: [''],

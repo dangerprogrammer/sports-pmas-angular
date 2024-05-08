@@ -41,7 +41,7 @@ export class FormTableComponent implements AfterViewInit {
       setTimeout(() => {
         if (this.form.value.inscricoes) this.oldInscricoes = [...this.form.value.inscricoes];
         this.form.updateValueAndValidity();
-      }, 3e2);
+      }, 5e2);
 
       if (this.oldValue) this.form.valueChanges.subscribe((formValue: any) => {
         if (!this.oldValue.cpf) return this.form.setErrors({ 'loading': !0 });

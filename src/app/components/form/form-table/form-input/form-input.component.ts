@@ -25,7 +25,6 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() controlName!: string;
   @Input() type?: any;
   @Input() multiple: boolean = !1;
-  @Input() leastOne: boolean = !1;
   @Input() textarea: boolean = !1;
   @Input() readCPF: boolean = !1;
   @Input() autocomplete: string = 'on';

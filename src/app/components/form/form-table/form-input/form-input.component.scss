@@ -31,15 +31,9 @@
     &.no-edit {
         pointer-events: none !important;
 
-        .input-title {
-            color: #444;
-        }
-
-        .input {
-            color: #777;
-        }
-
         * {
+            filter: grayscale(1);
+            opacity: .8;
             pointer-events: none !important;
         }
     }

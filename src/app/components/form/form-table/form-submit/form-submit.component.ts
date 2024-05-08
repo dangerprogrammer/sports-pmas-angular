@@ -81,8 +81,9 @@ export class FormSubmitComponent implements OnInit {
     if (this.removePassword) delete prismaRes.password;
 
     if (this.submitEvent) {
-      this.freezeFormFunc(!0);
-      return this.submitEvent(prismaRes, this.form);
+      console.log(prismaRes);
+      // this.freezeFormFunc(!0);
+      // return this.submitEvent(prismaRes, this.form);
     };
   }
 }
