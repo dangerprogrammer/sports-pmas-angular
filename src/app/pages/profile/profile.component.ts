@@ -82,12 +82,12 @@ export class ProfileComponent extends MyValidators implements OnInit {
               if (opt) opt.status = !0;
             };
 
-            // if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && this.isAdmin)) {
-            //   this.hasHorarios = !0;
-            //   this.cadastro.search.searchInscricoes(this.user.id).subscribe(
-            //     ({ inscricoes }) => this.inscricoes = inscricoes
-            //   );
-            // };
+            if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && this.isAdmin)) {
+              this.hasHorarios = !0;
+              this.cadastro.search.searchInscricoes(this.user.id).subscribe(
+                ({ inscricoes }) => this.inscricoes = inscricoes
+              );
+            };
 
             if (roles.includes('ALUNO')) aluno.subscribe({
               error: this.logoutButton, next: prismaAluno => this.aluno = prismaAluno,
