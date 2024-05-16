@@ -43,7 +43,7 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
   user?: PrismaUser;
   aluno?: PrismaAluno;
   inscricoes?: inscricao[];
-  isAdmin?: boolean;
+  isAdmin: boolean = !1;
   hasHorarios: boolean = !1;
   noUsers: boolean = !1;
 

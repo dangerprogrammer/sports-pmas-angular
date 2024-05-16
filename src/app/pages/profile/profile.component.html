@@ -18,7 +18,7 @@
     @if (!noUsers) {
     <form-table [formGroup]="form" [form]="form" [submitEvent]="updateUser" [oldValue]="oldValue"
         submitText="Atualizar Informações">
-        <form-input [form]="form" controlName="nome_comp" [edit]="!!isAdmin">Nome Completo</form-input>
+        <form-input [form]="form" controlName="nome_comp" [edit]="isAdmin">Nome Completo</form-input>
         <form-input [form]="form" controlName="cpf" [edit]="!1">CPF</form-input>
         <form-input [form]="form" controlName="email" type="email" autocomplete="email">E-mail</form-input>
         <form-input [form]="form" controlName="password" type="password" autocomplete="new-password">Alterar
