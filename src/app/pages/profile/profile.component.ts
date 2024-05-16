@@ -1,32 +1,35 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MainComponent } from '../../components/main/main.component';
 import { FormTableComponent } from '../../components/form/form-table/form-table.component';
 import { FormInputComponent } from '../../components/form/form-table/form-input/form-input.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
 import { genders, inscricao, option, PrismaAluno, PrismaUser } from '../../types';
 import { MyValidators } from '../../tools';
 import { HorariosListComponent } from '../../components/horarios-list/horarios-list.component';
 import { updateUser } from '../../interfaces';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     HeaderComponent,
     HeaderButtonComponent,
     MainComponent,
     FormTableComponent,
     FormInputComponent,
-    HorariosListComponent
+    HorariosListComponent,
+    NgIf
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent extends MyValidators implements OnInit {
+export class ProfileComponent extends MyValidators implements OnInit, AfterContentChecked {
   constructor(
     private router: Router,
     private cadastro: CadastroService,
@@ -40,7 +43,7 @@ export class ProfileComponent extends MyValidators implements OnInit {
   user?: PrismaUser;
   aluno?: PrismaAluno;
   inscricoes?: inscricao[];
-  isAdmin: boolean = !1;
+  isAdmin?: boolean;
   hasHorarios: boolean = !1;
   noUsers: boolean = !1;
 
@@ -73,7 +76,7 @@ export class ProfileComponent extends MyValidators implements OnInit {
             const aluno = this.cadastro.search.searchAlunoById(this.user.id);
 
             this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel', 'status');
-            
+
             const statusValue = this.form.get("status")?.value;
 
             if (statusValue) {
@@ -118,6 +121,10 @@ export class ProfileComponent extends MyValidators implements OnInit {
         }
       })
     });
+  }
+
+  ngAfterContentChecked(): void {
+    this.cdr.detectChanges();
   }
 
   updateOld = (value: any) => {
