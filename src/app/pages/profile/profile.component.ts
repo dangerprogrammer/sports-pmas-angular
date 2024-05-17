@@ -44,6 +44,7 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
   isAdmin: boolean = !1;
   hasHorarios: boolean = !1;
   noUsers: boolean = !1;
+  self: boolean = !1;
 
   oldValue: any = {};
 
@@ -80,6 +81,11 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
         error: this.logoutButton, next: prismaUser => this.user = prismaUser, complete: () => {
           if (!this.user) this.noUsers = !0;
           else {
+            this.cadastro.search.searchUserByToken().subscribe({
+              error: this.logoutButton, next: user => {
+                if (user.cpf == this.user?.cpf || this.user?.cpf == 'ROOT') this.self = !0;
+              }
+            });
             const { roles } = this.user;
             const aluno = this.cadastro.search.searchAlunoById(this.user.id);
 

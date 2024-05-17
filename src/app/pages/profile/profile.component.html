@@ -30,7 +30,7 @@
             [edit]="!1">Nascimento</form-input>}
         @if (aluno) {<form-input [form]="formAluno" controlName="sexo" [options]="genders"
             [edit]="!1">Gênero</form-input>}
-        @if (isAdmin && statusLoaded) {<form-input [form]="form" controlName="status"
+        @if (isAdmin && statusLoaded && !self) {<form-input [form]="form" controlName="status"
             [options]="status">Status</form-input>}
         @if (hasHorarios) {
         <horarios-list (updateOld)="updateOld($event)" [form]="form" [inscricoes]="inscricoes"></horarios-list>
