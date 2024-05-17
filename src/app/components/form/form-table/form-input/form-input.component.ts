@@ -29,7 +29,6 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() readCPF: boolean = !1;
   @Input() autocomplete: string = 'on';
   @Input() options?: option[];
-  @Input() selectedOption: number = 0;
   @Input() wrongField: boolean = !1;
   @Input() inputText?: string;
   @Input() view: boolean = !1;

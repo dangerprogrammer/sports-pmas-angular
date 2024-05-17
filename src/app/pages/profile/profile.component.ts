@@ -11,7 +11,6 @@ import { genders, inscricao, option, PrismaAluno, PrismaUser } from '../../types
 import { MyValidators } from '../../tools';
 import { HorariosListComponent } from '../../components/horarios-list/horarios-list.component';
 import { updateUser } from '../../interfaces';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -23,8 +22,7 @@ import { NgIf } from '@angular/common';
     MainComponent,
     FormTableComponent,
     FormInputComponent,
-    HorariosListComponent,
-    NgIf
+    HorariosListComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -56,9 +54,19 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
   ];
 
   status: option[] = [
-    { id: 'ATIVO', text: 'Ativo' },
-    { id: 'INATIVO', text: 'Inativo' }
+    {
+      id: 'ATIVO', text: 'Ativo', action: (i: number) => {
+        this.form.get("status")?.setValue(this.status[i].id);
+      }
+    },
+    {
+      id: 'INATIVO', text: 'Inativo', action: (i: number) => {
+        this.form.get("status")?.setValue(this.status[i].id);
+      }
+    }
   ];
+
+  statusLoaded: boolean = !1;
 
   ngOnInit(): void {
     const refresh = this.cadastro.auth.refreshToken();
@@ -82,7 +90,11 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
             if (statusValue) {
               const opt = this.status.find(({ id }) => id == statusValue);
 
-              if (opt) opt.status = !0;
+              if (opt) {
+                opt.status = !0;
+
+                this.statusLoaded = !0;
+              }
             };
 
             if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && this.isAdmin)) {
