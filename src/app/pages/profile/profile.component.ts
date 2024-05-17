@@ -81,13 +81,14 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
         error: this.logoutButton, next: prismaUser => this.user = prismaUser, complete: () => {
           if (!this.user) this.noUsers = !0;
           else {
+            const { roles } = this.user;
+            const aluno = this.cadastro.search.searchAlunoById(this.user.id);
+            
             this.cadastro.search.searchUserByToken().subscribe({
               error: this.logoutButton, next: user => {
                 if (user.cpf == this.user?.cpf || this.user?.cpf == 'ROOT') this.self = !0;
               }
             });
-            const { roles } = this.user;
-            const aluno = this.cadastro.search.searchAlunoById(this.user.id);
 
             this.appendValues(this.form, this.user, 'nome_comp', 'cpf', 'email', 'tel', 'status');
 
