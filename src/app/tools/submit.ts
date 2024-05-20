@@ -26,7 +26,6 @@ export class CadastroSubmit {
     const prismaUser = this.cadastro.auth.createUser(res);
     const findedUser = this.cadastro.search.searchUser(res.cpf);
 
-    console.log(user);
     const isAdmin = user?.roles.includes('ADMIN');
 
     findedUser.subscribe(user => {
