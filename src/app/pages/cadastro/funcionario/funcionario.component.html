@@ -2,10 +2,12 @@
 <app-main>
     <app-form [titlesSwitch]="switchForms" [isFreeze]="isFreeze">
         <form-table tableName="professor" [form]="professorForm" [submitText]="professor.submitText"
-            [submitEvent]="submitFunction" (freezeForm)="onFreezeForm($event)">
+            [submitEvent]="submit" (freezeForm)="onFreezeForm($event)">
+            @if (!user) {
             <form-link link="/login">
                 <strong>Já possui uma conta? Faça login!</strong>
             </form-link>
+            }
             <form-input [form]="professorForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="professorForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="professorForm" controlName="email" type="email" autocomplete="email">E-mail</form-input>
@@ -13,11 +15,13 @@
             <form-input [form]="professorForm" controlName="password" type="password">Senha</form-input>
             <horarios-list [form]="professorForm" controlName="inscricoes"></horarios-list>
         </form-table>
-        <form-table tableName="admin" [form]="adminForm" [submitText]="admin.submitText" [submitEvent]="submitFunction"
+        <form-table tableName="admin" [form]="adminForm" [submitText]="admin.submitText" [submitEvent]="submit"
             (freezeForm)="onFreezeForm($event)">
+            @if (!user) {
             <form-link link="/login">
                 <strong>Já possui uma conta? Faça login!</strong>
             </form-link>
+            }
             <form-input [form]="adminForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="adminForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="adminForm" controlName="email" type="email" autocomplete="email">E-mail</form-input>
@@ -25,10 +29,12 @@
             <form-input [form]="adminForm" controlName="password" type="password">Senha</form-input>
         </form-table>
         <form-table tableName="custom" [form]="customForm" [submitText]="custom.submitText"
-            [submitEvent]="submitFunction" (freezeForm)="onFreezeForm($event)">
+            [submitEvent]="submit" (freezeForm)="onFreezeForm($event)">
+            @if (!user) {
             <form-link link="/login">
                 <strong>Já possui uma conta? Faça login!</strong>
             </form-link>
+            }
             <form-input [form]="customForm" controlName="nome_comp">Nome Completo</form-input>
             <form-input [form]="customForm" controlName="cpf" [readCPF]="true">CPF</form-input>
             <form-input [form]="customForm" controlName="email" type="email" autocomplete="email">E-mail</form-input>

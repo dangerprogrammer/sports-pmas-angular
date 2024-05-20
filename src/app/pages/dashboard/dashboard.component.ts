@@ -116,6 +116,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   goModalidades = () => this.router.navigate(["/modalidades"]);
 
+  goCadastro = () => this.router.navigate(["/cadastro"]);
+
   toggleSidebar = () => this.showSidebar = !this.showSidebar;
 
   goDashAdmin = () => {

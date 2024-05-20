@@ -4,6 +4,7 @@ import { horario, PrismaModalidade, PrismaUser } from '../../../types';
 import { forkJoin } from 'rxjs';
 import { LoadingContentComponent } from '../../loading-content/loading-content.component';
 import { TeacherModalidadeComponent } from '../../teacher-modalidade/teacher-modalidade.component';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'professor-dashboard',
@@ -18,7 +19,7 @@ export class ProfessorDashboardComponent {
   ) { }
 
   @Input() user!: PrismaUser;
-  @Input() createAlert!: Function;
+  @Input() alert!: AlertService;
 
   @ViewChild('modalidadesList', { read: ViewContainerRef }) modalidadesList!: ViewContainerRef;
 
@@ -54,6 +55,6 @@ export class ProfessorDashboardComponent {
     modalidadeRef.setInput('horarios', horarios);
     modalidadeRef.setInput('vagas', modalidade.vagas);
     modalidadeRef.setInput('title', modalidade.name);
-    modalidadeRef.setInput('createAlert', this.createAlert);
+    modalidadeRef.setInput('alert', this.alert);
   }
 }

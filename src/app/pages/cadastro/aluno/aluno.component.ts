@@ -5,7 +5,7 @@ import { FormComponent } from '../../../components/form/form.component';
 import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { genders } from '../../../types';
+import { genders, PrismaUser } from '../../../types';
 import { CadastroService } from '../../../services/cadastro.service';
 import { FormLinkComponent } from '../../../components/form-link/form-link.component';
 import { NgComponentOutlet } from '@angular/common';
@@ -13,6 +13,8 @@ import { NotificationsListComponent } from '../../../components/notifications-li
 import { NotificationService } from '../../../services/notification.service';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
 import { CadastroSubmit } from '../../../tools';
+import { Router } from '@angular/router';
+import { User } from '../../../interfaces';
 
 @Component({
   selector: 'app-aluno',
@@ -35,6 +37,7 @@ import { CadastroSubmit } from '../../../tools';
 export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
+    private route: Router,
     private service: CadastroService
   ) {
     super();
@@ -52,6 +55,10 @@ export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewI
 
   submitText: string = 'Cadastrar';
 
+  submit = (res: User, form: FormGroup) => this.submitFunction(res, form, this.user);
+
+  user?: PrismaUser;
+
   ngOnInit(): void {
     const cpf = this.form.get('cpf');
 
@@ -60,6 +67,22 @@ export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewI
 
       searchUser.subscribe(user => this.submitText = user ? 'Solicitar' : 'Cadastrar');
     });
+
+    if (!this.service.token) return;
+    
+    const userByToken = this.service.search.searchUserByToken();
+    const refresh = this.service.auth.refreshToken();
+
+    refresh.subscribe({
+      error: this.logout, complete: () => userByToken.subscribe({
+        error: this.logout, next: user => this.user = user
+      })
+    })
+  }
+
+  logout = () => {
+    localStorage.removeItem("auth");
+    this.route.navigate(["/login"]);
   }
 
   ngAfterViewInit(): void {

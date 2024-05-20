@@ -5,7 +5,7 @@ import { ComponentRef, inject, ViewContainerRef } from "@angular/core";
 import { CadastroService } from "../services/cadastro.service";
 import { Router } from "@angular/router";
 import { FormComponent } from "../components/form/form.component";
-import { horario, modalidade, modName, option, PrismaModalidade } from "../types";
+import { horario, modalidade, modName, option, PrismaModalidade, PrismaUser } from "../types";
 import { DateTools } from "./date-tools";
 import { forkJoin } from "rxjs";
 import { MyValidators } from "./validators";
@@ -22,9 +22,12 @@ export class CadastroSubmit {
     this.isFreeze = freeze;
   }
 
-  submitFunction = (res: User, form: FormGroup) => {
+  submitFunction = (res: User, form: FormGroup, user?: PrismaUser) => {
     const prismaUser = this.cadastro.auth.createUser(res);
     const findedUser = this.cadastro.search.searchUser(res.cpf);
+
+    console.log(user);
+    const isAdmin = user?.roles.includes('ADMIN');
 
     findedUser.subscribe(user => {
       if (!user) prismaUser.subscribe({
@@ -37,14 +40,39 @@ export class CadastroSubmit {
           });
         }, complete: () => {
           form.reset();
-          this.notification.addNotification({
-            text: 'Cadastro realizado com sucesso!\nRedirecionando para login...',
-            duration: 3
-          });
 
-          const { cpf, password } = res;
-          this.cadastro.loginData = { cpf, password };
-          setTimeout(() => this.router.navigate(["/login"]), 3.5e3);
+          if (isAdmin) {
+            const { cpf } = res;
+
+            const acceptPrisma = this.cadastro.auth.acceptUser({ cpf, accepted: !0 });
+
+            acceptPrisma.subscribe({
+              error: (err: any) => {
+                console.log(err);
+                this.notification.addNotification({
+                  text: err.message,
+                  error: !0,
+                  headerText: err.status
+                });
+              }, complete: () => {
+                this.notification.addNotification({
+                  text: 'Cadastro realizado com sucesso!',
+                  duration: 3
+                });
+
+                setTimeout(() => this.router.navigate(["/dashboard"]), 3.5e3);
+              }
+            });
+          } else {
+            this.notification.addNotification({
+              text: 'Cadastro realizado com sucesso!\nRedirecionando para login...',
+              duration: 3
+            });
+
+            const { cpf, password } = res;
+            this.cadastro.loginData = { cpf, password };
+            setTimeout(() => this.router.navigate(["/login"]), 3.5e3);
+          };
         }
       });
       else {

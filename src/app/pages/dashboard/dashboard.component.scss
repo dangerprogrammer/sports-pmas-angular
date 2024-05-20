@@ -66,6 +66,11 @@ dashboards-list {
     }
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
 .alerts {
     position: absolute;
     pointer-events: none;

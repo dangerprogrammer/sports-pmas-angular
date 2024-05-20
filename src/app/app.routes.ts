@@ -7,18 +7,17 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ModalidadesComponent } from './pages/modalidades/modalidades.component';
-import { acceptGuard, cadChildGuard, cadastroGuard, loginGuard, modGuard } from './guards';
+import { acceptGuard, cadChildGuard, loginGuard, modGuard } from './guards';
 
 export const routes: Routes = [
     {
         path: '', component: HomeComponent, canActivate: [loginGuard], title: 'Home'
     },
     {
-        path: 'cadastro', component: CadastroComponent, title: 'Cadastro',
-        canActivate: [cadastroGuard, loginGuard]
+        path: 'cadastro', component: CadastroComponent, title: 'Cadastro'
     },
     {
-        path: 'cadastro', canActivateChild: [cadChildGuard, loginGuard], children: [
+        path: 'cadastro', canActivateChild: [cadChildGuard], children: [
             { path: 'aluno', component: AlunoComponent },
             { path: 'funcionario', component: FuncionarioComponent }
         ]

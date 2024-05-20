@@ -1,11 +1,22 @@
 <app-header>
-    <header-button [click]="toggleSidebar" [class.no-click]="userRoles.length == 0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="48"
-                d="M88 152h336M88 256h336M88 360h336" />
-        </svg>
-        <span>Menu</span>
-    </header-button>
+    <div class="row">
+        <header-button [click]="toggleSidebar" [class.no-click]="userRoles.length == 0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="48"
+                    d="M88 152h336M88 256h336M88 360h336" />
+            </svg>
+            <span>Menu</span>
+        </header-button>
+        @if (userRoles.includes('ADMIN')) {
+        <header-button [click]="goCadastro">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                    d="M256 112v288M400 256H112" />
+            </svg>
+            <span>Criar Cadastro</span>
+        </header-button>
+        }
+    </div>
     <header-button [click]="logoutButton" iconSide="right">
         <span>Fazer Logout</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
@@ -131,7 +142,7 @@
                 <logout-button [click]="logoutButton"></logout-button>
             </main>
         </dashboard-sidebar>
-        <dashboards-list [dashboards]="userRoles" [user]="user" [createAlert]="alert.createAlert"></dashboards-list>
+        <dashboards-list [dashboards]="userRoles" [user]="user" [alert]="alert"></dashboards-list>
         }
     </loading-content>
     <creator-content></creator-content>

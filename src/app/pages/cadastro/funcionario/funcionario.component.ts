@@ -3,7 +3,7 @@ import { CadastrosHeaderComponent } from '../../../components/cadastros-header/c
 import { MainComponent } from '../../../components/main/main.component';
 import { FormComponent } from '../../../components/form/form.component';
 import { FormInputComponent } from '../../../components/form/form-table/form-input/form-input.component';
-import { formTitle, genders, option } from '../../../types';
+import { formTitle, genders, option, PrismaUser } from '../../../types';
 import { FormTableComponent } from '../../../components/form/form-table/form-table.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CadastroService } from '../../../services/cadastro.service';
@@ -13,6 +13,8 @@ import { NotificationService } from '../../../services/notification.service';
 import { CadastroSubmit } from '../../../tools';
 import { HorariosListComponent } from '../../../components/horarios-list/horarios-list.component';
 import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
+import { User } from '../../../interfaces';
 
 @Component({
   selector: 'app-funcionario',
@@ -34,6 +36,7 @@ import { NgIf } from '@angular/common';
 export class FuncionarioComponent extends CadastroSubmit implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
+    private route: Router,
     private service: CadastroService
   ) {
     super();
@@ -47,6 +50,10 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
     { id: 'OUTRO', text: 'Outro', status: !1 }
   ];
   submitTexts: string[] = ['Cadastrar', 'Cadastrar', 'Cadastrar'];
+
+  submit = (res: User, form: FormGroup) => this.submitFunction(res, form, this.user);
+
+  user?: PrismaUser;
 
   ngOnInit(): void {
     this.switchValidators(this.alunoEnable, this.alunoGroup, {
@@ -65,6 +72,22 @@ export class FuncionarioComponent extends CadastroSubmit implements OnInit, Afte
     this.updateRoles();
 
     [this.professorForm, this.adminForm, this.customForm].forEach(this.verifyCPFFrom);
+
+    if (!this.service.token) return;
+    
+    const userByToken = this.service.search.searchUserByToken();
+    const refresh = this.service.auth.refreshToken();
+
+    refresh.subscribe({
+      error: this.logout, complete: () => userByToken.subscribe({
+        error: this.logout, next: user => this.user = user
+      })
+    })
+  }
+
+  logout = () => {
+    localStorage.removeItem("auth");
+    this.route.navigate(["/login"]);
   }
 
   verifyCPFFrom = (form: FormGroup, indexForm: number) => {

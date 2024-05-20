@@ -3,6 +3,7 @@ import { horario, modName } from '../../types';
 import { DateTools, StringTools } from '../../tools';
 import { ModalidadeItemComponent } from './modalidade-item/modalidade-item.component';
 import { DividerComponent } from './divider/divider.component';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'teacher-modalidade',
@@ -15,7 +16,7 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
   @Input() horarios!: horario[];
   @Input() vagas!: number;
   @Input() title!: modName;
-  @Input() createAlert!: Function;
+  @Input() alert!: AlertService;
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -45,7 +46,7 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
         const formattedHorario = this.date.formatTime(horario.time);
         const title = `Alunos cadastrados às ${formattedHorario} em ${this.title}`;
 
-        if (alunos) itemElem.addEventListener('click', () => this.createAlert({ title, alunos }));
+        if (alunos) itemElem.addEventListener('click', () => this.alert.createAlert({ title, alunos }));
         else itemElem.classList.add('no-click');
       });
       this.cdr.detectChanges();

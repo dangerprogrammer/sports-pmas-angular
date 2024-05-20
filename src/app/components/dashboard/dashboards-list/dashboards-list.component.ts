@@ -3,6 +3,7 @@ import { AlunoDashboardComponent } from '../aluno-dashboard/aluno-dashboard.comp
 import { ProfessorDashboardComponent } from '../professor-dashboard/professor-dashboard.component';
 import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
 import { PrismaUser } from '../../../types';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'dashboards-list',
@@ -14,5 +15,5 @@ import { PrismaUser } from '../../../types';
 export class DashboardsListComponent {
   @Input() dashboards!: ('ALUNO' | 'PROFESSOR' | 'ADMIN')[];
   @Input() user!: PrismaUser;
-  @Input() createAlert!: Function;
+  @Input() alert!: AlertService;
 }
