@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, 
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CadastroService } from '../../../../services/cadastro.service';
-import { option } from '../../../../types';
+import { option, weekDays } from '../../../../types';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -14,7 +14,10 @@ import { NgIf } from '@angular/common';
 })
 export class FormInputComponent implements OnInit, AfterViewInit {
   defHorarioValue = '00:00';
-  horarioValue: any = this.defHorarioValue;
+  horarioValue: string = this.defHorarioValue;
+
+  weekDays: weekDays[] = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
+  weekDay?: string = this.weekDays[0];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -86,17 +89,21 @@ export class FormInputComponent implements OnInit, AfterViewInit {
           htmlOptions.filter(({ checked }) => checked).map(({ id }) => id.split('-')[0]) :
           htmlOptions.find(({ checked }) => checked)?.id.split('-')[0];
 
-        this.form.get(this.controlName)?.setValue(controlValue);
+        this.form.get(this.controlName)!.setValue(controlValue);
         this.cdr.detectChanges();
       };
 
-      const button = this.horarioSubscribe?.nativeElement;
+      if (this.builderOptions) {
+        this.weekDay = (this.weekDays[0] + '-feira').toUpperCase();
+      };
+
+      const button = this.horarioSubscribe?.nativeElement as HTMLButtonElement;
 
       if (button) {
         this.horarioSubText = 'Criar Horário';
         this.horarioIcon = 'add';
 
-        (button as HTMLButtonElement).onclick = this.addHorario;
+        button.onclick = this.addHorario;
         this.cdr.detectChanges();
       };
     });
@@ -124,8 +131,10 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
     this.enableAddHorario = !1;
 
+    console.log(this.weekDay);
+    return;
     if (this.builderOptions) {
-      this.builderOptions.push({ id: 0, text: this.horarioValue, status: !1 });
+      // this.builderOptions.push({ id: 0, text: this.horarioValue, status: !1 });
       this.sortBuilderOptions();
       this.form.get(this.controlName)?.setValue(this.builderOptions);
 

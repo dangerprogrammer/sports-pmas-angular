@@ -28,6 +28,12 @@
         } @else if (builderOptions) {
         <section class="col">
             <article class="row">
+                <select class="week_day" [(ngModel)]="weekDay" [ngModelOptions]="{standalone: !0}">
+                    @for (day of weekDays; track $index) {
+                    <option [value]="day.toLowerCase()">{{(day+'-feira').toUpperCase()}}
+                    </option>
+                    }
+                </select>
                 <input class="horario-input" type="time" [(ngModel)]="horarioValue"
                     (ngModelChange)="horarioChange($event)" [ngModelOptions]="{standalone: !0}">
                 <button #horarioSubscribe class="create-horario" [class.enable]="enableAddHorario">
@@ -81,8 +87,8 @@
             required pattern="[0-9]{2} [0-9]{5}-[0-9]{4}" placeholder="11 99999-9999">
         } @else if (controlName == 'password') {
         <span class="password-content">
-            <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="toggleEye ? 'text' : 'password'"
-                [autocomplete]="autocomplete" />
+            <input class="input" [class.wrong]="wrongField" [formControlName]="controlName"
+                [type]="toggleEye ? 'text' : 'password'" [autocomplete]="autocomplete" />
             <div class="password-eye" [class.not-see]="toggleEye" (click)="toggleEye = !toggleEye">
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon see" viewBox="0 0 512 512">
                     <circle cx="256" cy="256" r="64" />

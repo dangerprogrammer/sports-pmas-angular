@@ -132,6 +132,14 @@
             width: 100%;
         }
 
+        .week_day {
+            background: #eee;
+            text-transform: uppercase;
+            padding: .2em .4em;
+            border-radius: .3rem;
+            cursor: pointer;
+        }
+
         .horario-input {
             font-size: 1.4em;
             font-family: monospace;

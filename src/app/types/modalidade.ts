@@ -10,3 +10,5 @@ export type modalidade = {
 };
 
 export type modName = 'HIDRO' | 'NATACAO';
+
+export type weekDays = 'SEGUNDA' | 'TERCA' | 'QUARTA' | 'QUINTA' | 'SEXTA';
