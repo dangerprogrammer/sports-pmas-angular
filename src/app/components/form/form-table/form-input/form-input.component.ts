@@ -14,10 +14,8 @@ import { NgIf } from '@angular/common';
 })
 export class FormInputComponent implements OnInit, AfterViewInit {
   defHorarioValue = '00:00';
-  horarioValue: string = this.defHorarioValue;
 
   weekDays: weekDays[] = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
-  weekDay?: string = this.weekDays[0];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -49,6 +47,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('options') viewOptions?: QueryList<ElementRef>;
   @ViewChild('horarioSubscribe') horarioSubscribe?: ElementRef;
+  @ViewChild('weekDay') weekDay?: ElementRef;
+  @ViewChild('horarioValue') horarioValue?: ElementRef;
 
   ngOnInit(): void {
     const reader = this.form.get(this.controlName);
@@ -93,10 +93,6 @@ export class FormInputComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
       };
 
-      if (this.builderOptions) {
-        this.weekDay = (this.weekDays[0] + '-feira').toUpperCase();
-      };
-
       const button = this.horarioSubscribe?.nativeElement as HTMLButtonElement;
 
       if (button) {
@@ -106,13 +102,21 @@ export class FormInputComponent implements OnInit, AfterViewInit {
         button.onclick = this.addHorario;
         this.cdr.detectChanges();
       };
+      
+    const valueHorario = this.horarioValue?.nativeElement as HTMLInputElement;
+
+    if (valueHorario) valueHorario.value = this.defHorarioValue;
     });
   }
 
-  horarioChange = (value: string) => {
-    const hora = +value.substring(0, 2);
+  horarioChange = () => {
+    const valueHorario = this.horarioValue!.nativeElement as HTMLInputElement;
 
-    const hasHorario = this.builderOptions?.find(({ text }) => text == value);
+    const hora = +valueHorario.value.substring(0, 2),
+      dayWeek = this.weekDay!.nativeElement as HTMLSelectElement,
+      dayI = dayWeek.selectedIndex;
+
+    const hasHorario = this.builderOptions?.find(({ text }) => text == `${this.weekDays[dayI]} - ${valueHorario.value}`);
 
     if (hasHorario || (hora < 5)) {
       this.enableAddHorario = !1;
@@ -120,7 +124,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
       return;
     };
 
-    this.enableAddHorario = value != this.defHorarioValue;
+    this.enableAddHorario = valueHorario.value != this.defHorarioValue;
     this.cdr.detectChanges();
   }
 
@@ -129,16 +133,20 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   addHorario = (ev: Event) => {
     ev.preventDefault();
 
+    const dayWeek = this.weekDay!.nativeElement as HTMLSelectElement,
+      dayI = dayWeek.selectedIndex;
+
+    const valueHorario = this.horarioValue!.nativeElement as HTMLInputElement;
+
     this.enableAddHorario = !1;
 
-    console.log(this.weekDay);
-    return;
     if (this.builderOptions) {
-      // this.builderOptions.push({ id: 0, text: this.horarioValue, status: !1 });
+      this.builderOptions.push({ id: 0, text: `${this.weekDays[dayI]} - ${valueHorario.value}`, status: !1 });
       this.sortBuilderOptions();
-      this.form.get(this.controlName)?.setValue(this.builderOptions);
+      this.form.get(this.controlName)!.setValue(this.builderOptions);
 
-      this.horarioValue = this.defHorarioValue;
+      dayWeek.options[0].selected = !0;
+      valueHorario.value = this.defHorarioValue;
     };
 
     this.cdr.detectChanges();
@@ -156,19 +164,28 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   editHorario = (option: option, ev: Event) => {
     ev.preventDefault();
 
-    const button = this.horarioSubscribe?.nativeElement as HTMLButtonElement;
+    const button = this.horarioSubscribe!.nativeElement as HTMLButtonElement;
+
+    const dayWeek = this.weekDay!.nativeElement as HTMLSelectElement;
+
+    const valueHorario = this.horarioValue!.nativeElement as HTMLInputElement;
 
     option.status = !option.status;
 
     if (option.status) {
+      const [day, horario] = option.text.split(' - ');
+
+      const ind = this.weekDays.indexOf(day as weekDays);
       this.horarioSubText = 'Salvar Horário';
       this.horarioIcon = 'checkmark';
-      this.horarioValue = option.text;
+      dayWeek.options[ind].selected = !0;
+      valueHorario.value = horario;
       button.onclick = ev => this.saveEdit(option, ev);
     } else {
       this.horarioSubText = 'Criar Horário';
       this.horarioIcon = 'add';
-      this.horarioValue = this.defHorarioValue;
+      dayWeek.options[0].selected = !0;
+      valueHorario.value = this.defHorarioValue;
       button.onclick = this.addHorario;
     };
 
@@ -196,8 +213,13 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
     const button = this.horarioSubscribe?.nativeElement as HTMLButtonElement;
 
+    const dayWeek = this.weekDay!.nativeElement as HTMLSelectElement,
+      dayI = dayWeek.selectedIndex;
+
+    const valueHorario = this.horarioValue!.nativeElement as HTMLInputElement;
+
     if (this.builderOptions) {
-      option.text = this.horarioValue;
+      option.text = `${this.weekDays[dayI]} - ${valueHorario.value}`;
       option.status = !1;
 
       this.sortBuilderOptions();
@@ -205,7 +227,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
       this.horarioSubText = 'Criar Horário';
       this.horarioIcon = 'add';
-      this.horarioValue = this.defHorarioValue;
+      dayWeek.options[0].selected = !0;
+      valueHorario.value = this.defHorarioValue;
       button.onclick = this.addHorario;
     };
 

@@ -28,14 +28,13 @@
         } @else if (builderOptions) {
         <section class="col">
             <article class="row">
-                <select class="week_day" [(ngModel)]="weekDay" [ngModelOptions]="{standalone: !0}">
+                <select class="week_day" #weekDay (change)="horarioChange()">
                     @for (day of weekDays; track $index) {
                     <option [value]="day.toLowerCase()">{{(day+'-feira').toUpperCase()}}
                     </option>
                     }
                 </select>
-                <input class="horario-input" type="time" [(ngModel)]="horarioValue"
-                    (ngModelChange)="horarioChange($event)" [ngModelOptions]="{standalone: !0}">
+                <input class="horario-input" type="time" #horarioValue (change)="horarioChange()">
                 <button #horarioSubscribe class="create-horario" [class.enable]="enableAddHorario">
                     <span>{{horarioSubText}}</span>
                     <ng-container *ngIf="horarioIcon == 'add'">
