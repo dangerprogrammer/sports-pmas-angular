@@ -5,5 +5,5 @@ export type inscricao = {
     alunoId: number;
     professorId: number;
     aula: modName;
-    time: Date;
+    horarioId: number;
 }

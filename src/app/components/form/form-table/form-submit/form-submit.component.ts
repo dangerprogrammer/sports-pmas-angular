@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { weekDays } from '../../../../types';
 
 @Component({
   selector: 'form-submit',
@@ -63,17 +64,18 @@ export class FormSubmitComponent implements OnInit {
     };
 
     if (prismaRes.horarios) {
-      prismaRes.horarios = prismaRes.horarios.map((horario: any) => {
-        const hora = +horario.text.substring(0, 2);
-        const minuto = +horario.text.substring(3);
+      prismaRes.horarios = prismaRes.horarios.map(({ text }: { text: any }) => {
+        const [day, time]: [weekDays, string] = text.split(' - ');
+        const daysList: weekDays[] = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
+        const [hora, minuto] = time.split(':').map(c => +c);
         const data = new Date();
+        const indexDay = daysList.indexOf(day);
 
-        data.setUTCFullYear(2024, 0, 1);
         data.setUTCHours(hora, minuto, 0, 0);
 
         return {
-          time: data.toISOString(), periodo: hora >= 5 && hora < 12 ?
-            'MANHA' : hora >= 12 && hora < 18 ? 'TARDE' : 'NOITE'
+          time: data.toISOString(), day: daysList[indexDay],
+          periodo: hora >= 5 && hora < 12 ? 'MANHA' : hora >= 12 && hora < 18 ? 'TARDE' : 'NOITE'
         };
       });
     }

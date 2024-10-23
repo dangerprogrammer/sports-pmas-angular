@@ -26,11 +26,12 @@ export class AlunoDashboardComponent implements OnInit {
   modalidades: PrismaModalidade[] = [];
 
   createHorarios = (modalidade: PrismaModalidade, horarios: horario[]) => {
+    console.log(horarios);
     horarios.forEach(horario => {
-      const horarioRef = this.horariosList?.createComponent(AlunoHorarioComponent);
+      const horarioRef = this.horariosList!.createComponent(AlunoHorarioComponent);
 
-      horarioRef?.setInput('modalidade', modalidade);
-      horarioRef?.setInput('horario', horario);
+      horarioRef.setInput('modalidade', modalidade);
+      horarioRef.setInput('horario', horario);
     });
   }
 

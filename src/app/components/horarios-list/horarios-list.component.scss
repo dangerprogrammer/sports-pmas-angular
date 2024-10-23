@@ -5,6 +5,16 @@
     flex-direction: column;
     gap: .5em;
 
+    &.no-edit {
+        pointer-events: none !important;
+
+        * {
+            filter: grayscale(1);
+            opacity: .8;
+            pointer-events: none !important;
+        }
+    }
+
     .title {
         font-size: 1.2em;
         color: global.$main-color;

@@ -202,7 +202,7 @@ export class ModSubmit extends DateTools {
 
     let form = this.fb.group({
       name: [modalidade.name, Validators.required],
-      horarios: [formatHorarios.map(({ time }) => { return { id: 0, text: time, status: !1 } }), horarios.length && Validators.required],
+      horarios: [formatHorarios.map(({ day, time }) => { return { id: 0, text: `${day} - ${time}`, status: !1 } }), horarios.length && Validators.required],
       local: this.fb.group({
         endereco: [modalidade.endereco, Validators.required],
         bairro: [modalidade.bairro, Validators.required]
@@ -230,7 +230,7 @@ export class ModSubmit extends DateTools {
       form,
       formInputsList: [
         { form, controlName: 'name', inputText: 'Modalidade', options: optionsName },
-        { form, controlName: 'horarios', inputText: 'Horários', builderOptions: formatHorarios.map(({ time }) => { return { id: 0, text: time, status: !1 } }) },
+        { form, controlName: 'horarios', inputText: 'Horários', builderOptions: formatHorarios.map(({ day, time }) => { return { id: 0, text: `${day} - ${time}`, status: !1 } }) },
         { form: localForm, controlName: 'endereco', inputText: 'Endereço' },
         { form: localForm, controlName: 'bairro', inputText: 'Bairro' },
         { form, controlName: 'vagas', inputText: 'Vagas' }

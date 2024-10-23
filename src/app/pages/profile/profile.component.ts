@@ -83,7 +83,7 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
           else {
             const { roles } = this.user;
             const aluno = this.cadastro.search.searchAlunoById(this.user.id);
-            
+
             this.cadastro.search.searchUserByToken().subscribe({
               error: this.logoutButton, next: user => {
                 if (user.cpf == this.user?.cpf || this.user?.cpf == 'ROOT') this.self = !0;
@@ -104,7 +104,7 @@ export class ProfileComponent extends MyValidators implements OnInit, AfterConte
               }
             };
 
-            if (roles.includes('PROFESSOR') || (roles.includes('ALUNO') && this.isAdmin)) {
+            if (roles.includes('PROFESSOR') || roles.includes('ALUNO')) {
               this.hasHorarios = !0;
               this.cadastro.search.searchInscricoes(this.user.id).subscribe(
                 ({ inscricoes }) => this.inscricoes = inscricoes

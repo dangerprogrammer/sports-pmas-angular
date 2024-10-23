@@ -154,8 +154,9 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
   sortBuilderOptions = () => {
     if (this.builderOptions) this.builderOptions = this.builderOptions.sort(({ text: textA }, { text: textB }) => {
-      const valueA = +(textA.substring(0, 2)) * 60 + +textA.substring(3),
-        valueB = +(textB.substring(0, 2)) * 60 + +textB.substring(3);
+      const timeA = textA.split(' - ')[1], timeB = textB.split(' - ')[1],
+        valueA = +(timeA.substring(0, 2)) * 60 + +timeA.substring(3),
+        valueB = +(timeB.substring(0, 2)) * 60 + +timeB.substring(3);
 
       return valueA - valueB;
     });

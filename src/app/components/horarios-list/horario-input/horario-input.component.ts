@@ -21,7 +21,7 @@ export class HorarioInputComponent extends DateTools implements OnInit {
   checked: boolean = !1;
 
   ngOnInit(): void {
-    this.checked = !!this.inscricoes?.find(({ aula, time }) => this.horario.time == time && this.modalidade.name == aula);
+    this.checked = !!this.inscricoes?.find(({ aula, horarioId }) => this.horario.id == horarioId && this.modalidade.name == aula);
   }
 
   updateInscricoes({ target: t }: Event) {
@@ -30,7 +30,7 @@ export class HorarioInputComponent extends DateTools implements OnInit {
       options = [...optionsHTML].map(({ firstChild }) => firstChild),
       index = options.findIndex(({ id }) => id == target.htmlFor),
       option = options
-        .map((o, ind) => { return { aula: this.modalidade.name, horario: this.horarios[ind].time } })[index];
+        .map((_, ind) => { return { aula: this.modalidade.name, horario: this.horarios[ind].time } })[index];
 
     return this.updateHorario(option);
   }

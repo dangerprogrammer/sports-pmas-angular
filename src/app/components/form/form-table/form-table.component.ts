@@ -43,18 +43,22 @@ export class FormTableComponent implements AfterViewInit {
         this.form.updateValueAndValidity();
       }, 5e2);
 
-      if (this.oldValue) this.form.valueChanges.subscribe((formValue: any) => {
-        if (!this.oldValue.cpf) return this.form.setErrors({ 'loading': !0 });
-
-        if (this.oldInscricoes) this.oldValue.inscricoes = this.oldInscricoes;
-        else {
-          delete this.oldValue.inscricoes;
-          delete formValue.inscricoes;
-        };
-        const isEqual = this.compareForms(formValue, this.oldValue);
-
-        this.form.setErrors(isEqual ? { 'equal': !0 } : null);
-      });
+      if (this.oldValue) {
+        this.form.valueChanges.subscribe((formValue: any) => {
+          // NÃO FAÇO IDÉIA DO PQ TEM ESSA LINHA!!! MAS DEVE SER ÚTIL KKKKKKK
+          // if (!this.oldValue.cpf) return this.form.setErrors({ 'loading': !0 });
+  
+          if (this.oldInscricoes) this.oldValue.inscricoes = this.oldInscricoes;
+          else {
+            delete this.oldValue.inscricoes;
+            delete formValue.inscricoes;
+          };
+          const isEqual = this.compareForms(formValue, this.oldValue);
+  
+          // console.log(formValue, this.oldValue);
+          this.form.setErrors(isEqual ? { 'equal': !0 } : null);
+        });
+      };
     });
   }
 

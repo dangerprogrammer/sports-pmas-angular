@@ -129,6 +129,8 @@ export class CadastroService {
 
     searchHorariosSubscribe: ({ name }: PrismaModalidade, inscricoes: inscricao[]) => this.http.post<horario[]>(`nest-api/search/horarios-subscribe/${name}`, inscricoes),
 
+    searchHorario: (id: number) => this.http.get<horario>(`nest-api/search/horario/${id}`),
+
     searchSolic: (id: number) => {
       const { access_token } = this.token;
       const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });

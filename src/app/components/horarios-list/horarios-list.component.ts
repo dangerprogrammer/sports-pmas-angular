@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { horario, inscricao, modName, PrismaModalidade } from '../../types';
+import { horario, inscricao, modName, PrismaAluno, PrismaModalidade } from '../../types';
 import { HorarioHeaderComponent } from './horario-header/horario-header.component';
 import { forkJoin } from 'rxjs';
 
@@ -19,6 +19,8 @@ export class HorariosListComponent implements OnInit {
 
   @Input() form!: FormGroup;
   @Input() inscricoes?: inscricao[];
+  @Input() edit: boolean = !0;
+  @Input() aluno?: PrismaAluno;
 
   @Output() updateOld = new EventEmitter();
 
@@ -70,10 +72,10 @@ export class HorariosListComponent implements OnInit {
     prismaModalidades.subscribe(modalidades => {
       this.modalidades = modalidades;
 
-      const prismaHorariosList = this.modalidades.map(this.cadastro.search.searchHorarios);
+      const prismaHorariosList = modalidades.map(this.cadastro.search.searchHorarios);
 
       forkJoin(prismaHorariosList).subscribe(data => {
-        this.inscricoes?.forEach(({ aula, time }) => this.updateHorario({ aula, horario: time }));
+        
 
         this.updateOld.emit(this.form.value);
 
@@ -83,6 +85,12 @@ export class HorariosListComponent implements OnInit {
 
           if (horarios.length) this.addHorario(modalidade, horarios);
         };
+        
+        this.inscricoes?.forEach(({ aula, horarioId }) => {
+          this.cadastro.search.searchHorario(horarioId).subscribe(({ time }) => 
+            this.updateHorario({ aula, horario: time })
+          )
+        });
       });
     });
   }

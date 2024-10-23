@@ -33,7 +33,7 @@
         @if (isAdmin && statusLoaded && !self) {<form-input [form]="form" controlName="status"
             [options]="status">Status</form-input>}
         @if (hasHorarios) {
-        <horarios-list (updateOld)="updateOld($event)" [form]="form" [inscricoes]="inscricoes"></horarios-list>
+        <horarios-list (updateOld)="updateOld($event)" [form]="form" [inscricoes]="inscricoes" [aluno]="aluno" [edit]="isAdmin"></horarios-list>
         }
     </form-table>
     } @else {

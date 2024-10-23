@@ -1,4 +1,4 @@
-<section class="horarios-input" [formGroup]="form">
+<section class="horarios-input" [formGroup]="form" [class.no-edit]="!edit">
     <h1 class="title">Horários e modalidades</h1>
     <li class="horarios-list" [class.hidden]="!horariosList.length">
         <ng-container #horarios></ng-container>
