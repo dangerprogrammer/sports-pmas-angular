@@ -30,7 +30,7 @@ export class HorarioInputComponent extends DateTools implements OnInit {
       options = [...optionsHTML].map(({ firstChild }) => firstChild),
       index = options.findIndex(({ id }) => id == target.htmlFor),
       option = options
-        .map((_, ind) => { return { aula: this.modalidade.name, horario: this.horarios[ind].time } })[index];
+        .map((_, ind) => { return { aula: this.modalidade.name, horario: this.horarios[ind].time, week_day: this.horarios[ind].day } })[index];
 
     return this.updateHorario(option);
   }

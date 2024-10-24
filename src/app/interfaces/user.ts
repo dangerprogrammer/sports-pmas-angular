@@ -1,4 +1,4 @@
-import { horario, modalidade, modName, role } from "../types";
+import { horario, modalidade, modName, role, weekDays } from "../types";
 
 interface Aluno {
     endereco: string;
@@ -22,6 +22,7 @@ export interface User {
     inscricoes: {
         horario: horario;
         modalidade: modalidade;
+        week_day: weekDays;
     }[];
 
     solic: {
