@@ -3,7 +3,6 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { HeaderButtonComponent } from '../../components/header/header-button/header-button.component';
 import { MainComponent } from '../../components/main/main.component';
 import { Router } from '@angular/router';
-import { modName } from '../../types';
 import { CadastroService } from '../../services/cadastro.service';
 import { CreateHorarioComponent } from '../../components/create-horario/create-horario.component';
 import { CreateModalidadeComponent } from '../../components/create-modalidade/create-modalidade.component';
@@ -46,7 +45,7 @@ export class ModalidadesComponent extends ModSubmit implements AfterViewInit {
     });
   }
 
-  onCreateMod = ({ names }: { names: modName[] }) => {
+  onCreateMod = ({ names }: { names: string[] }) => {
     this.addNewMod(names);
   }
 

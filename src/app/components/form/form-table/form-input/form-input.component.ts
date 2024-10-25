@@ -37,6 +37,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() index: number = 0;
   @Input() edit: boolean = !0;
   @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
+  @Input() submitFormEvent?: Function;
 
   @Output() inputForm: EventEmitter<any> = new EventEmitter();
 
@@ -234,6 +235,16 @@ export class FormInputComponent implements OnInit, AfterViewInit {
     };
 
     this.cdr.detectChanges();
+  }
+
+  enterEvent = (ev: Event) => {
+    ev.preventDefault();
+    
+    if (this.form.valid) this.submitFormEvent!();
+  }
+
+  enterHorario = (ev: Event) => {
+    if (!this.enableAddHorario) ev.preventDefault();
   }
 
   emitAction(ev: Event, index: number) {

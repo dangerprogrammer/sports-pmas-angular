@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { alunoType, horario, inscricao, modName, PrismaAluno } from '../../../types';
+import { alunoType, horario, PrismaAluno } from '../../../types';
 import { DateTools, StringTools } from '../../../tools';
 import { CadastroService } from '../../../services/cadastro.service';
 import { JsonPipe } from '@angular/common';
@@ -15,7 +15,7 @@ import { forkJoin } from 'rxjs';
 export class ModalidadeItemComponent extends DateTools implements OnInit {
   @Input() horario!: horario;
   @Input() vagas!: number;
-  @Input() title!: modName;
+  @Input() title!: string;
   @Input() isTitle: boolean = !1;
 
   @Output() clickEvent = new EventEmitter<PrismaAluno[] | false>();

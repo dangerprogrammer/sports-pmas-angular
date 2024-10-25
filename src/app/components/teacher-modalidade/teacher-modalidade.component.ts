@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
-import { horario, modName } from '../../types';
+import { horario } from '../../types';
 import { DateTools, StringTools } from '../../tools';
 import { ModalidadeItemComponent } from './modalidade-item/modalidade-item.component';
 import { DividerComponent } from './divider/divider.component';
@@ -15,7 +15,7 @@ import { AlertService } from '../../services/alert.service';
 export class TeacherModalidadeComponent extends StringTools implements AfterViewInit {
   @Input() horarios!: horario[];
   @Input() vagas!: number;
-  @Input() title!: modName;
+  @Input() title!: string;
   @Input() alert!: AlertService;
 
   constructor(

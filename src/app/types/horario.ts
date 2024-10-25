@@ -5,4 +5,6 @@ export type horario = {
     day: weekDays;
     time: Date;
     periodo: 'MANHA' | 'TARDE' | 'NOITE';
+    vagas: number;
+    available: number;
 };

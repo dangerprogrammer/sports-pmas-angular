@@ -5,7 +5,7 @@ import { ComponentRef, inject, ViewContainerRef } from "@angular/core";
 import { CadastroService } from "../services/cadastro.service";
 import { Router } from "@angular/router";
 import { FormComponent } from "../components/form/form.component";
-import { horario, modalidade, modName, option, PrismaModalidade, PrismaUser } from "../types";
+import { horario, modalidade, option, PrismaModalidade, PrismaUser } from "../types";
 import { DateTools } from "./date-tools";
 import { forkJoin } from "rxjs";
 import { MyValidators } from "./validators";
@@ -150,7 +150,8 @@ export class ModSubmit extends DateTools {
   enableCreateMod: boolean = !0;
   modalidadesList: PrismaModalidade[] = [];
   modalidadesView!: ViewContainerRef;
-  availableNames: modName[] = ['HIDRO', 'NATACAO'];
+  // BUSCAR OS NOMES DO BANCO! E CRIAR SISTEMA PARA CRIAR NOVOS NOMES
+  availableNames: string[] = ['HIDRO', 'NATACAO'];
 
   searchModSubmit = (modalidades: PrismaModalidade[], data?: { form: FormGroup, formRef: ComponentRef<any> }) => {
     this.modalidadesList = modalidades.sort(({ name: nameA }, { name: nameB }) =>
@@ -228,6 +229,7 @@ export class ModSubmit extends DateTools {
     formRef.setInput('titleForm', modalidade.name);
     formRef.setInput('createMod', {
       form,
+      submitEventForms: !0,
       formInputsList: [
         { form, controlName: 'name', inputText: 'Modalidade', options: optionsName },
         { form, controlName: 'horarios', inputText: 'Horários', builderOptions: formatHorarios.map(({ day, time }) => { return { id: 0, text: `${day} - ${time}`, status: !1 } }) },
@@ -250,7 +252,7 @@ export class ModSubmit extends DateTools {
     createMod.subscribe(() => prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades, data)));
   }
 
-  addNewMod = (modNames: modName[]) => {
+  addNewMod = (modNames: string[]) => {
     const formRef = this.modalidadesView.createComponent(FormComponent);
 
     const form = this.fb.group({
@@ -278,6 +280,7 @@ export class ModSubmit extends DateTools {
     formRef.setInput('titleSmall', !0);
     formRef.setInput('createMod', {
       form,
+      submitEventForms: !0,
       formInputsList: [
         { form, controlName: 'name', inputText: 'Modalidades', options: optionsName },
         { form, controlName: 'horarios', inputText: 'Horários', builderOptions: [] },

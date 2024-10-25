@@ -13,6 +13,7 @@ import { FormInputComponent } from './form-input/form-input.component';
 export class FormTableComponent implements AfterViewInit {
   @Input() form!: FormGroup;
   @Input() formInputsList?: any[];
+  @Input() submitEventForms: boolean = !1;
   @Input() oldValue?: any;
   @Input() submitText: string = "Cadastrar";
   @Input() submitEvent?: Function;
@@ -22,8 +23,11 @@ export class FormTableComponent implements AfterViewInit {
 
   @ContentChildren(FormInputComponent) formInput!: QueryList<ElementRef>;
   @ViewChild('inputs', { read: ViewContainerRef }) formInputs!: ViewContainerRef;
+  @ViewChild(FormSubmitComponent) formSubmit!: FormSubmitComponent;
 
   oldInscricoes?: any[];
+
+  submitFormEvent = () => this.formSubmit.submitForm();
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -33,6 +37,8 @@ export class FormTableComponent implements AfterViewInit {
 
           inputRef.setInput('view', !0);
           inputRef.setInput('index', this.index);
+
+          if (this.submitEventForms) inputRef.setInput('submitFormEvent', this.submitFormEvent);
 
           for (let inputField in input) inputRef.setInput(inputField, input[inputField]);
         };

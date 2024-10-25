@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { horario, inscricao, modName, PrismaModalidade } from '../../../types';
+import { horario, inscricao, PrismaModalidade } from '../../../types';
 import { HorarioInputComponent } from '../horario-input/horario-input.component';
 import { StringTools } from '../../../tools';
 import { FormGroup } from '@angular/forms';
@@ -27,7 +27,7 @@ export class HorarioHeaderComponent extends StringTools implements AfterViewInit
 
   @Output() updateHorario = new EventEmitter();
 
-  setUpdateHorario = (horario: { aula: modName, horario: Date }) => this.updateHorario.emit(horario);
+  setUpdateHorario = (horario: { aula: string, horario: Date }) => this.updateHorario.emit(horario);
 
   ngAfterViewInit(): void {
     if (this.form) this.horarios.forEach(horario => {

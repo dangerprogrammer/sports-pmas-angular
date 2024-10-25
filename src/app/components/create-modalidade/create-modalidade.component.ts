@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { modName, PrismaModalidade } from '../../types';
+import { PrismaModalidade } from '../../types';
 
 @Component({
   selector: 'create-modalidade',
@@ -10,10 +10,10 @@ import { modName, PrismaModalidade } from '../../types';
 })
 export class CreateModalidadeComponent {
   @Input() modalidades!: PrismaModalidade[];
-  @Input() availableNames!: modName[];
+  @Input() availableNames!: string[];
   @Output() createMod = new EventEmitter();
 
-  hasMod = (name: modName) => this.modalidades.find(({ name: modName }) => modName == name);
+  hasMod = (name: string) => this.modalidades.find(({ name: modName }) => modName == name);
 
   runCreateMod = () => {
     const names = this.availableNames.filter(name => !this.hasMod(name));

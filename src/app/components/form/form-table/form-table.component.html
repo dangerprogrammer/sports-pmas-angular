@@ -9,4 +9,4 @@
     <ng-content select="horarios-list"></ng-content>
     <ng-content></ng-content>
 </section>
-<form-submit [form]="form" [submitEvent]="submitEvent" [freezeFormFunc]="freezeFormFunc" [removePassword]="oldValue">{{submitText}}</form-submit>
+<form-submit [form]="form" [submitEvent]="submitEvent" [freezeFormFunc]="freezeFormFunc" [removePassword]="oldValue" #formSubmit>{{submitText}}</form-submit>

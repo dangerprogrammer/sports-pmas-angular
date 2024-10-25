@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CadastroService } from './services/cadastro.service';
 import { User } from './interfaces';
 
@@ -12,13 +12,31 @@ import { User } from './interfaces';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private cadastro: CadastroService
+    private cadastro: CadastroService,
+    private router: Router
   ) { }
 
   generateSize = 1e3;
 
   ngOnInit(): void {
+    document.addEventListener('visibilitychange', this.visibilityChange);
+    document.addEventListener('click', this.visibilityChange);
     // this.generateUser(0);
+  }
+
+  visibilityChange = () => {
+    if (document.visibilityState == 'visible') {
+      console.log('Voltou a página!');
+      const userByToken = this.cadastro.search.searchUserByToken();
+      const refresh = this.cadastro.auth.refreshToken();
+
+      refresh.subscribe({ error: this.logout, complete: () => userByToken.subscribe({ error: this.logout }) });
+    };
+  }
+
+  logout = () => {
+    localStorage.removeItem("auth");
+    this.router.navigate(["/login"]);
   }
 
   generateUser = (i: number) => {

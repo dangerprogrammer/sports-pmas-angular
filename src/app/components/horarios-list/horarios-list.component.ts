@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CadastroService } from '../../services/cadastro.service';
-import { horario, inscricao, modName, PrismaAluno, PrismaModalidade } from '../../types';
+import { horario, inscricao, PrismaAluno, PrismaModalidade } from '../../types';
 import { HorarioHeaderComponent } from './horario-header/horario-header.component';
 import { forkJoin } from 'rxjs';
 
@@ -29,7 +29,7 @@ export class HorariosListComponent implements OnInit {
   horariosList: any[] = [];
   hideAdd: boolean = !1;
   modalidades: PrismaModalidade[] = [];
-  activeHorarios: { aula: modName, horario: Date }[] = [];
+  activeHorarios: { aula: string, horario: Date }[] = [];
 
   addHorario = (modalidade: PrismaModalidade, horarios: horario[] = []) => {
     this.horariosList.push({ component: HorarioHeaderComponent });
@@ -44,7 +44,7 @@ export class HorariosListComponent implements OnInit {
     headerRef.instance.updateHorario.subscribe(this.updateHorario);
   };
 
-  updateHorario = (horario: { aula: modName, horario: Date }) => {
+  updateHorario = (horario: { aula: string, horario: Date }) => {
     const compareHorarios = (a: any, b: any) => JSON.stringify(a) == JSON.stringify(b);
     const findedHorario = this.activeHorarios.find(h => compareHorarios(horario, h));
 

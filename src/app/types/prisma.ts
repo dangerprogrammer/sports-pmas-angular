@@ -1,6 +1,5 @@
 import { role } from "./cadastro";
 import { horario } from "./horario";
-import { modName } from "./modalidade";
 
 export type PrismaUser = {
     id: number;
@@ -49,10 +48,9 @@ export type PrismaSolic = {
 }
 
 export type PrismaModalidade = {
-    name: modName;
+    name: string;
     endereco: string;
     bairro: string;
-    available: number;
     horarios?: horario[];
     vagas: number;
 }

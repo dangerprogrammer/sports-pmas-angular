@@ -8,7 +8,8 @@
         @for (option of options; track $index) {
         <div class="radio-option">
             <input [type]="multiple ? 'checkbox' : 'radio'" [id]="option.id+'-'+index" [value]="option.id" #options
-                hidden [formControlName]="controlName" [name]="controlName+'-'+index" />
+                hidden [formControlName]="controlName" [name]="controlName+'-'+index"
+                (keydown.enter)="enterEvent($event)" />
             <label [htmlFor]="option.id+'-'+index" class="option" [class.multiple]="multiple"
                 (click)="emitAction($event, $index)">
                 <div class="option-icon">
@@ -34,7 +35,8 @@
                     </option>
                     }
                 </select>
-                <input class="horario-input" type="time" #horarioValue (change)="horarioChange()">
+                <input class="horario-input" type="time" #horarioValue (change)="horarioChange()"
+                    (keydown.enter)="enterHorario($event)">
                 <button #horarioSubscribe class="create-horario" [class.enable]="enableAddHorario">
                     <span>{{horarioSubText}}</span>
                     <ng-container *ngIf="horarioIcon == 'add'">
@@ -80,14 +82,17 @@
         } @else {
         @if (controlName == 'cpf' && readCPF) {
         <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"
-            [autocomplete]="autocomplete" [showMaskTyped]="true" mask="000.000.000-00" placeHolderCharacter="0" />
+            (keydown.enter)="enterEvent($event)" [autocomplete]="autocomplete" [showMaskTyped]="true"
+            mask="000.000.000-00" placeHolderCharacter="0" />
         } @else if (controlName == 'tel') {
         <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" type="tel" id="tel" name="tel"
-            required pattern="[0-9]{2} [0-9]{5}-[0-9]{4}" placeholder="11 99999-9999">
+            required pattern="[0-9]{2} [0-9]{5}-[0-9]{4}" placeholder="11 99999-9999"
+            (keydown.enter)="enterEvent($event)">
         } @else if (controlName == 'password') {
         <span class="password-content">
             <input class="input" [class.wrong]="wrongField" [formControlName]="controlName"
-                [type]="toggleEye ? 'text' : 'password'" [autocomplete]="autocomplete" />
+                (keydown.enter)="enterEvent($event)" [type]="toggleEye ? 'text' : 'password'"
+                [autocomplete]="autocomplete" />
             <div class="password-eye" [class.not-see]="toggleEye" (click)="toggleEye = !toggleEye">
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon see" viewBox="0 0 512 512">
                     <circle cx="256" cy="256" r="64" />
@@ -104,7 +109,7 @@
         </span>
         } @else {
         <input class="input" [class.wrong]="wrongField" [formControlName]="controlName" [type]="type"
-            [autocomplete]="autocomplete" />
+            [autocomplete]="autocomplete" (keydown.enter)="enterEvent($event)" />
         }
         }
     </div>

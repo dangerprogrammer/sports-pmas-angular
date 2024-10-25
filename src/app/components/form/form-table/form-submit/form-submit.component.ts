@@ -16,36 +16,35 @@ export class FormSubmitComponent implements OnInit {
   @Input() removePassword: boolean = !1;
 
   ngOnInit(): void {
-    const nome_comp = this.form.get("nome_comp");
+    const nome_comp = this.form.get<string>("nome_comp");
 
     if (nome_comp) nome_comp.valueChanges.subscribe(nome => {
       if (nome == '@d') {
-        const cpf = this.form.get("cpf");
-        const password = this.form.get("password");
-        const email = this.form.get("email");
-        const tel = this.form.get("tel");
-        const endereco = this.form.get("aluno.endereco");
-        const bairro = this.form.get("aluno.bairro");
-        const data_nasc = this.form.get("aluno.data_nasc");
-
         nome_comp.setValue('Patrick Vieira Léo', { emitEvent: !1 });
-        if (cpf) cpf.setValue('52591490848');
-        if (password) password.setValue('123456');
-        if (email) email.setValue('papatrileo@gmail.com');
-        if (tel) tel.setValue('15 98100-4777');
-        if (endereco) endereco.setValue('Avenida Itália');
-        if (bairro) bairro.setValue('Monte Bianco');
-        if (data_nasc) data_nasc.setValue('2004-12-10');
+
+        this.appendValues(
+          { field: 'cpf', value: '52591490848' },
+          { field: 'password', value: '123456' },
+          { field: 'email', value: 'papatrileo@gmail.com' },
+          { field: 'tel', value: '15 98100-4777' },
+          { field: 'aluno.endereco', value: 'Avenida Itália' },
+          { field: 'aluno.bairro', value: 'Monte Bianco' },
+          { field: 'aluno.data_nasc', value: '2004-12-10' }
+        );
 
         this.form.updateValueAndValidity();
       };
     });
   }
 
+  appendValues = (...values: { field: string, value: string }[]) => {
+    for (const { field, value } of values) this.form.get(field)?.setValue(value);
+  }
+
   hasRole = (roles: any[], role: string) => roles.find(r => r == role);
 
-  submitForm(ev: Event) {
-    ev.preventDefault();
+  submitForm(ev?: Event) {
+    ev?.preventDefault();
 
     const prismaRes = this.form.value;
 

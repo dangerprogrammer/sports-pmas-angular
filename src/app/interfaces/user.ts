@@ -1,4 +1,4 @@
-import { horario, modalidade, modName, role, weekDays } from "../types";
+import { horario, modalidade, role, weekDays } from "../types";
 
 interface Aluno {
     endereco: string;
@@ -45,7 +45,7 @@ export interface updateUser {
     admin?: Admin;
 
     inscricoes?: {
-        aula: modName;
+        aula: string;
         horario: Date;
     }[];
 }
