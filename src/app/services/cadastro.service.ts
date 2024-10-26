@@ -78,6 +78,13 @@ export class CadastroService {
       return this.http.patch<PrismaModalidade>('nest-api/auth/update/modalidade', { name, update }, { headers });
     },
 
+    deleteModalidade: (name: string) => {
+      const { access_token } = this.token;
+      const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
+
+      return this.http.post<string>('nest-api/auth/delete/modalidade', { name }, { headers });
+    },
+
     acceptUser: (data: { cpf: string, accepted: boolean }) => {
       const { access_token } = this.token;
       const headers = new HttpHeaders({ Authorization: `bearer ${access_token}` });
@@ -108,6 +115,8 @@ export class CadastroService {
 
   search = {
     searchUser: (cpf: string) => this.http.get<PrismaUser>(`nest-api/search/user/${cpf}`),
+
+    searchModalidade: (mod: string) => this.http.get<PrismaModalidade>(`nest-api/search/modalidade/${mod}`),
 
     searchUserById: (id: number) => this.http.get<PrismaUser>(`nest-api/search/user/id/${id}`),
 

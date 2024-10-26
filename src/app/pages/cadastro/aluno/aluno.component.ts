@@ -60,14 +60,6 @@ export class AlunoComponent extends CadastroSubmit implements OnInit, AfterViewI
   user?: PrismaUser;
 
   ngOnInit(): void {
-    const cpf = this.form.get('cpf');
-
-    cpf?.valueChanges.subscribe(data => {
-      const searchUser = this.service.search.searchUser(data as string);
-
-      searchUser.subscribe(user => this.submitText = user ? 'Solicitar' : 'Cadastrar');
-    });
-
     if (!this.service.token) return;
     
     const userByToken = this.service.search.searchUserByToken();

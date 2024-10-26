@@ -12,7 +12,9 @@ import { weekDays } from '../../../../types';
 export class FormSubmitComponent implements OnInit {
   @Input() form!: FormGroup;
   @Input() submitEvent?: Function;
-  @Input() freezeFormFunc!: any;
+  @Input() freezeFormFunc?: any;
+  @Input() closeFormFunc?: any;
+  @Input() deleteForm: boolean = !1;
   @Input() removePassword: boolean = !1;
 
   ngOnInit(): void {
@@ -45,6 +47,8 @@ export class FormSubmitComponent implements OnInit {
 
   submitForm(ev?: Event) {
     ev?.preventDefault();
+
+    if (this.deleteForm) return this.closeFormFunc!(!0);
 
     const prismaRes = this.form.value;
 
@@ -82,7 +86,7 @@ export class FormSubmitComponent implements OnInit {
     if (this.removePassword) delete prismaRes.password;
 
     if (this.submitEvent) {
-      this.freezeFormFunc(!0);
+      this.freezeFormFunc!(!0);
       return this.submitEvent(prismaRes, this.form);
     };
   }

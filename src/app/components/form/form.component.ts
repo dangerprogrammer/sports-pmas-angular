@@ -21,6 +21,7 @@ export class FormComponent implements AfterViewInit {
   @Input() isFreeze: boolean = !1;
   @Input() loginForm: boolean = !1;
   @Input() freezeForm?: Function;
+  @Input() closeForm?: Function;
   @Input() index?: number;
 
   @ViewChildren('title') titles!: ElementRef[];
@@ -44,6 +45,7 @@ export class FormComponent implements AfterViewInit {
       this.cdr.detectChanges();
 
       tableRef.instance.freezeForm.subscribe(this.freezeForm);
+      tableRef.instance.closeForm.subscribe(this.closeForm);
     };
   }
 

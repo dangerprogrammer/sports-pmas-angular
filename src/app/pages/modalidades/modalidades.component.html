@@ -19,12 +19,10 @@
         <li class="modalidades-list" [hidden]="!modalidadesList.length">
             <ng-container #modalidades></ng-container>
         </li>
-        <create-modalidade
-        [modalidades]="modalidadesList"
-        [availableNames]="availableNames"
-        (createMod)="onCreateMod($event)"
-        [hidden]="!enableCreateMod"
-        />
+        <create-modalidade (createMod)="onCreateMod()" />
     </main>
     <creator-content></creator-content>
+    <notifications-list>
+        <ng-container #notifications></ng-container>
+    </notifications-list>
 </app-main>

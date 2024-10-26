@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { horario, inscricao, PrismaModalidade } from '../../../types';
 import { HorarioInputComponent } from '../horario-input/horario-input.component';
-import { StringTools } from '../../../tools';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -11,12 +10,10 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './horario-header.component.html',
   styleUrl: './horario-header.component.scss'
 })
-export class HorarioHeaderComponent extends StringTools implements AfterViewInit {
+export class HorarioHeaderComponent implements AfterViewInit {
   constructor(
     private cdr: ChangeDetectorRef
-  ) {
-    super();
-  }
+  ) {}
 
   @Input() modalidade!: PrismaModalidade;
   @Input() horarios!: horario[];

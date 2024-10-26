@@ -1,4 +1,4 @@
-<button class="submit-button" [class.submit]="form.valid" (click)="submitForm($event)">
+<button class="submit-button" [class.submit]="deleteForm ? !0 : form.valid" (click)="submitForm($event)">
     <span>
         <ng-content></ng-content>
     </span>

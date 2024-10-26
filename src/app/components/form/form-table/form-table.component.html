@@ -9,4 +9,7 @@
     <ng-content select="horarios-list"></ng-content>
     <ng-content></ng-content>
 </section>
-<form-submit [form]="form" [submitEvent]="submitEvent" [freezeFormFunc]="freezeFormFunc" [removePassword]="oldValue" #formSubmit>{{submitText}}</form-submit>
+<div class="submit-row">
+    <form-submit [form]="form" [submitEvent]="submitEvent" [freezeFormFunc]="freezeFormFunc" [removePassword]="oldValue" #formSubmit>{{submitText}}</form-submit>
+@if (deleteEvent) {<form-submit [deleteForm]="!0" [form]="form" [closeFormFunc]="closeFormFunc" #formSubmitDelete>{{deleteText}}</form-submit>}
+</div>

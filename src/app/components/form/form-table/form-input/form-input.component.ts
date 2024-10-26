@@ -28,6 +28,8 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() multiple: boolean = !1;
   @Input() textarea: boolean = !1;
   @Input() readCPF: boolean = !1;
+  @Input() readMod: boolean = !1;
+  @Input() modName?: string;
   @Input() autocomplete: string = 'on';
   @Input() options?: option[];
   @Input() wrongField: boolean = !1;
@@ -36,7 +38,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
   @Input() builderOptions?: option[];
   @Input() index: number = 0;
   @Input() edit: boolean = !0;
-  @Input() wrongMsg: string = 'Já existe um usuário com este CPF!';
+  @Input() wrongMsg?: string;
   @Input() submitFormEvent?: Function;
 
   @Output() inputForm: EventEmitter<any> = new EventEmitter();
@@ -57,7 +59,25 @@ export class FormInputComponent implements OnInit, AfterViewInit {
     if (this.controlName == 'cpf' && this.readCPF) reader?.valueChanges.subscribe((cpf: string) => {
       const searchUser = this.cadastro.search.searchUser(cpf);
 
-      if (reader.valid) searchUser.subscribe(user => this.wrongField = !!user);
+      if (reader.valid) searchUser.subscribe(user => {
+        this.wrongField = !!user;
+        this.wrongMsg = 'Já existe um usuário com este CPF!';
+
+        reader.setErrors(this.wrongField ? { 'wrong-field': this.wrongField } : null);
+        this.form.updateValueAndValidity();
+      });
+    });
+
+    if (this.readMod) reader?.valueChanges.subscribe((mod: string) => {
+      const searchMod = this.cadastro.search.searchModalidade(mod);
+
+      if (reader.valid) searchMod.subscribe(modalidade => {
+        this.wrongField = !!modalidade && modalidade.name != this.modName;
+        this.wrongMsg = 'Já existe uma modalidade com este nome!';
+
+        reader.setErrors(this.wrongField ? { 'wrong-field': this.wrongField } : null);
+        this.form.updateValueAndValidity();
+      });
     });
   }
 
@@ -103,10 +123,10 @@ export class FormInputComponent implements OnInit, AfterViewInit {
         button.onclick = this.addHorario;
         this.cdr.detectChanges();
       };
-      
-    const valueHorario = this.horarioValue?.nativeElement as HTMLInputElement;
 
-    if (valueHorario) valueHorario.value = this.defHorarioValue;
+      const valueHorario = this.horarioValue?.nativeElement as HTMLInputElement;
+
+      if (valueHorario) valueHorario.value = this.defHorarioValue;
     });
   }
 
@@ -239,7 +259,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
   enterEvent = (ev: Event) => {
     ev.preventDefault();
-    
+
     if (this.form.valid) this.submitFormEvent!();
   }
 

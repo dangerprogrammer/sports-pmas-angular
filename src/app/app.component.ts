@@ -19,18 +19,29 @@ export class AppComponent implements OnInit {
   generateSize = 1e3;
 
   ngOnInit(): void {
-    document.addEventListener('visibilitychange', this.visibilityChange);
-    document.addEventListener('click', this.visibilityChange);
+    document.addEventListener('visibilitychange', () => this.visibilityChange());
+    document.addEventListener('click', () => this.visibilityChange(!0));
     // this.generateUser(0);
   }
 
-  visibilityChange = () => {
-    if (document.visibilityState == 'visible') {
-      console.log('Voltou a página!');
+  clickable: boolean = !0;
+  timeoutClick: number = 10e3;
+
+  visibilityChange = (click: boolean = !1) => {
+    const clickCondition = click ? this.clickable : !0;
+
+    if (document.visibilityState == 'visible' && this.cadastro.token && clickCondition) {
       const userByToken = this.cadastro.search.searchUserByToken();
       const refresh = this.cadastro.auth.refreshToken();
 
-      refresh.subscribe({ error: this.logout, complete: () => userByToken.subscribe({ error: this.logout }) });
+      refresh.subscribe({ error: this.logout, complete: () =>
+        userByToken.subscribe({ error: this.logout })
+      });
+
+      if (click) {
+        this.clickable = !1;
+        setTimeout(() => this.clickable = !0, this.timeoutClick);
+      };
     };
   }
 

@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { horario } from '../../types';
-import { DateTools, StringTools } from '../../tools';
+import { DateTools } from '../../tools';
 import { ModalidadeItemComponent } from './modalidade-item/modalidade-item.component';
 import { DividerComponent } from './divider/divider.component';
 import { AlertService } from '../../services/alert.service';
@@ -12,7 +12,7 @@ import { AlertService } from '../../services/alert.service';
   templateUrl: './teacher-modalidade.component.html',
   styleUrl: './teacher-modalidade.component.scss'
 })
-export class TeacherModalidadeComponent extends StringTools implements AfterViewInit {
+export class TeacherModalidadeComponent extends DateTools implements AfterViewInit {
   @Input() horarios!: horario[];
   @Input() vagas!: number;
   @Input() title!: string;
@@ -23,8 +23,6 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
   ) {
     super();
   }
-
-  date = new DateTools();
 
   @ViewChild('listHorarios', { read: ViewContainerRef }) listHorarios!: ViewContainerRef;
 
@@ -43,7 +41,7 @@ export class TeacherModalidadeComponent extends StringTools implements AfterView
 
       const { location: { nativeElement: itemElem } } = itemRef;
       itemRef.instance.clickEvent.subscribe(alunos => {
-        const formattedHorario = this.date.formatTime(horario.time);
+        const formattedHorario = this.formatTime(horario.time);
         const title = `Alunos cadastrados às ${formattedHorario} em ${this.title}`;
 
         if (alunos) itemElem.addEventListener('click', () => this.alert.createAlert({ title, alunos }));

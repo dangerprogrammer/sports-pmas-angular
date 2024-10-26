@@ -45,10 +45,10 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
           this.alunos = alunos;
           this.clickEvent.emit(alunos);
 
-          const infantil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) <= 11);
-          const juvenil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) > 11 && this.yearsOld(data_nasc) <= 17);
-          const adulto = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) > 17 && this.yearsOld(data_nasc) <= 59);
-          const idoso = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) > 59);
+          const infantil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) < 12);
+          const juvenil = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) >= 12 && this.yearsOld(data_nasc) < 18);
+          const adulto = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) >= 18 && this.yearsOld(data_nasc) < 60);
+          const idoso = alunos.find(({ data_nasc }) => this.yearsOld(data_nasc) >= 60);
 
           const has = (aType: alunoType) => this.alunoTypes.find(aT => aT == aType);
 
@@ -57,7 +57,7 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
           if (adulto && !has('ADULTO')) this.alunoTypes.push('ADULTO');
           if (idoso && !has('IDOSO')) this.alunoTypes.push('IDOSO');
 
-          this.formattedTypes = this.alunoTypes.map(aType => this.string.capitalize(aType)).join(', ');
+          this.formattedTypes = this.alunoTypes.join(', ');
         });
       });
     };

@@ -8,6 +8,7 @@ import { CreateHorarioComponent } from '../../components/create-horario/create-h
 import { CreateModalidadeComponent } from '../../components/create-modalidade/create-modalidade.component';
 import { ModSubmit } from '../../tools';
 import { CreatorContentComponent } from '../../components/creator-content/creator-content.component';
+import { NotificationsListComponent } from '../../components/notifications-list/notifications-list.component';
 
 @Component({
   selector: 'app-modalidades',
@@ -18,7 +19,8 @@ import { CreatorContentComponent } from '../../components/creator-content/creato
     MainComponent,
     CreateModalidadeComponent,
     CreateHorarioComponent,
-    CreatorContentComponent
+    CreatorContentComponent,
+    NotificationsListComponent
   ],
   templateUrl: './modalidades.component.html',
   styleUrl: './modalidades.component.scss'
@@ -37,16 +39,20 @@ export class ModalidadesComponent extends ModSubmit implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.modalidadesView = this.modalidades;
-    
+
     setTimeout(() => {
       const prismaModalidades = this.service.search.searchModalidades();
 
-      prismaModalidades.subscribe(modalidades => this.searchModSubmit(modalidades));
+      prismaModalidades.subscribe(modalidades => {
+        modalidades = modalidades.sort((a, b) => a.name.localeCompare(b.name));
+        
+        this.searchModSubmit({ modalidades });
+      });
     });
   }
 
-  onCreateMod = ({ names }: { names: string[] }) => {
-    this.addNewMod(names);
+  onCreateMod = () => {
+    this.addNewMod();
   }
 
   goDashboard = () => this.router.navigate(["/dashboard"]);
