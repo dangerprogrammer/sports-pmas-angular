@@ -35,7 +35,7 @@
                     </option>
                     }
                 </select>
-                <input class="horario-input" type="time" #horarioValue (change)="horarioChange()"
+                <input class="horario-input" type="time" step="60" #horarioValue (change)="horarioChange()"
                     (keydown.enter)="enterHorario($event)">
                 <button #horarioSubscribe class="create-horario" [class.enable]="enableAddHorario">
                     <span>{{horarioSubText}}</span>

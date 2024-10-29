@@ -2,12 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { horario, inscricao, modalidade } from '../../../types';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DateTools } from '../../../tools';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'horario-input',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule],
   templateUrl: './horario-input.component.html',
   styleUrl: './horario-input.component.scss'
 })
