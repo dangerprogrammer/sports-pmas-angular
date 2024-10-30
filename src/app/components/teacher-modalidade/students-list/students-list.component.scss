@@ -19,5 +19,23 @@
 }
 
 table {
+    margin: 1em 1.5em;
     width: 100%;
+
+    &, th, td {
+        border: 1px solid #111;
+        border-collapse: collapse;
+    }
+
+    th {
+        padding: .2em .75em;
+    }
+
+    td {
+        padding: .5em 1em;
+    }
+
+    .center {
+        text-align: center;
+    }
 }

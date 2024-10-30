@@ -2,17 +2,16 @@ import { Component, ElementRef, Input } from '@angular/core';
 import jsPDF from 'jspdf';
 
 @Component({
-  selector: 'app-pdf-printer',
+  selector: 'pdf-printer',
   standalone: true,
   imports: [],
-  templateUrl: './pdf-printer.component.html',
-  styleUrl: './pdf-printer.component.scss'
+  template: ''
 })
 export class PdfPrinterComponent {
   @Input() content!: ElementRef;
 
   printPDF(saveName: string) {
-    const doc = new jsPDF('portrait', 'mm', 'A4');
+    const doc = new jsPDF('portrait', 'px', 'A4');
 
     doc.html(this.content.nativeElement, {
       callback(doc) {
