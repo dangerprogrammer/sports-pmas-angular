@@ -17,7 +17,7 @@ export class DateTools {
     }
 
     yearsOld(time: Date) {
-        const diff = (new Date() as unknown as number) - (new Date(time) as unknown as number);
+        const diff = (new Date() as any as number) - (new Date(time) as any as number);
 
         return Math.floor(diff / (1e3 * 60 * 60 * 24 * 365.25));
     }

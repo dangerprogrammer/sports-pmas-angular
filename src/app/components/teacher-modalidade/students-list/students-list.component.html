@@ -1,0 +1,13 @@
+<table #content border="1">
+    <thead>
+        <tr>Lista de Presença</tr>
+    </thead>
+    <tbody>
+        @for (aluno of loadAlunos; track $index) {
+        <tr>
+            <td>{{aluno.nome_comp}}</td>
+        </tr>
+        }
+    </tbody>
+</table>
+<button class="print-students" (click)="printStudents()">Imprimir Chamada</button>

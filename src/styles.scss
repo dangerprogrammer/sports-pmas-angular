@@ -125,6 +125,12 @@ horario-input {
     display: flex;
 }
 
+app-students-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .ionicon {
     display: block;
     height: 1em;

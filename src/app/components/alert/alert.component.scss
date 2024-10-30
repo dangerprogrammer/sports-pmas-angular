@@ -1,3 +1,6 @@
+@use '../../../styles.scss' as global;
+@use "sass:color";
+
 .alert-component {
     display: flex;
     flex-direction: column;
@@ -20,12 +23,13 @@
         gap: 1em;
 
         .close-button {
+            $color: #f00;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2em;
             background: transparent;
-            color: #f00a;
+            color: color.adjust($color, $lightness: 20%);
             transition: .2s ease-in-out color;
             cursor: pointer;
 
@@ -36,17 +40,12 @@
             }
 
             &:hover {
-                color: #f00;
+                color: $color;
 
                 .ionicon {
                     scale: 1;
                 }
             }
         }
-    }
-
-    .alert-content {
-        display: flex;
-        flex-direction: column;
     }
 }

@@ -40,7 +40,7 @@ export class ModalidadeItemComponent extends DateTools implements OnInit {
 
         if (!alunos.length) this.clickEvent.emit(!1);
         forkJoin(alunos).subscribe(alunos => {
-          alunos = alunos.filter((aluno, i) => i == alunos.findIndex(al => al.id == aluno.id));
+          alunos = alunos.filter((aluno, i) => i == alunos.findIndex(({ id }) => id == aluno.id));
 
           this.alunos = alunos;
           this.clickEvent.emit(alunos);

@@ -8,10 +8,5 @@
             </svg>
         </button>
     </header>
-    <section class="alert-content">
-        @if (alunos) {
-            <aluno-desc/>
-            <ng-container #alunosList></ng-container>
-        }
-    </section>
+    <ng-template #content></ng-template>
 </article>

@@ -1,4 +1,4 @@
-import { ComponentRef, Injectable, ViewContainerRef } from "@angular/core";
+import { Component, ComponentRef, Injectable, ViewContainerRef } from "@angular/core";
 import { AlertComponent } from "../components/alert/alert.component";
 
 @Injectable({
@@ -11,14 +11,15 @@ export class AlertService {
 
     alertsCount: number = -1;
 
-    createAlert(data?: any) {
+    createAlert({ title, renderComponent }: { title?: string, renderComponent: (content: ViewContainerRef) => ComponentRef<any> }) {
         const alertRef = this.alerts.createComponent(AlertComponent);
 
         this.alertsCount++;
 
         alertRef.setInput('index', this.alertsCount);
-
-        if (data) for (const field in data) alertRef.setInput(field, data[field]);
+        
+        alertRef.setInput('title', title);
+        alertRef.setInput('renderComponent', renderComponent);
 
         alertRef.location.nativeElement.style.zIndex = this.alertsCount;
         alertRef.instance.delete.subscribe(() => this.deleteAlert(alertRef));

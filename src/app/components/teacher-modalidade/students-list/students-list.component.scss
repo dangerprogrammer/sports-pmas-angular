@@ -1,0 +1,23 @@
+@use '../../../../styles.scss' as global;
+@use "sass:color";
+
+.print-students {
+    padding: .5em 2em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: .5em;
+    background-color: global.$main-color;
+    color: #eee;
+    transition: background-color .2s;
+
+    &:hover {
+        background-color: color.adjust(global.$main-color, $lightness: -10%);
+    }
+}
+
+table {
+    width: 100%;
+}

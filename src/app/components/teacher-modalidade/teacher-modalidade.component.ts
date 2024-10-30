@@ -4,6 +4,7 @@ import { DateTools } from '../../tools';
 import { ModalidadeItemComponent } from './modalidade-item/modalidade-item.component';
 import { DividerComponent } from './divider/divider.component';
 import { AlertService } from '../../services/alert.service';
+import { StudentsListComponent } from './students-list/students-list.component';
 
 @Component({
   selector: 'teacher-modalidade',
@@ -44,7 +45,17 @@ export class TeacherModalidadeComponent extends DateTools implements AfterViewIn
         const formattedHorario = this.formatTime(horario.time);
         const title = `Alunos cadastrados às ${formattedHorario} em ${this.title}`;
 
-        if (alunos) itemElem.addEventListener('click', () => this.alert.createAlert({ title, alunos }));
+        const listStudents = (content: ViewContainerRef) => {
+          const list = content.createComponent(StudentsListComponent);
+
+          list.setInput('alunos', alunos);
+          list.setInput('horario', horario);
+          list.setInput('title', this.title);
+
+          return list;
+        };
+
+        if (alunos) itemElem.addEventListener('click', () => this.alert.createAlert({ title, renderComponent: listStudents }));
         else itemElem.classList.add('no-click');
       });
       this.cdr.detectChanges();
