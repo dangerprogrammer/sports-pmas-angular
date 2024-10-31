@@ -1,29 +1,27 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { horario, PrismaAluno } from '../../../types';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { horario, PrismaAluno, weekDays } from '../../../types';
 import { PdfPrinterComponent } from '../../pdf-printer/pdf-printer.component';
 import { DateTools } from '../../../tools';
-import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-students-list',
   standalone: true,
-  imports: [NgFor],
+  imports: [],
   templateUrl: './students-list.component.html',
   styleUrl: './students-list.component.scss'
 })
 export class StudentsListComponent implements OnInit {
-  constructor(
-    private cdr: ChangeDetectorRef
-  ) {}
-  
+  constructor() {}
+
   date = new DateTools();
 
-  @Input() alunos!: PrismaAluno[];
-  @Input() horario!: horario;
-  @Input() title!: string;
+  @Input() alunos: PrismaAluno[] = [];
+  @Input() horario: horario = { id: 0, day: 'DOMINGO', time: new Date(), periodo: 'MANHA', vagas: 0, available: 0 };
+  @Input() title: string = '';
 
-  loadAlunos: PrismaAluno[] = [];
-  
+  localDate: Date = new Date();
+  weekDays: weekDays[] = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO'];
+
   @ViewChild('content') content!: ElementRef;
   @ViewChild('tableList', { read: ViewContainerRef, static: !0 }) tableList!: ViewContainerRef;
 
@@ -32,16 +30,17 @@ export class StudentsListComponent implements OnInit {
   printStudents = () => {
     this.pdf.content = this.content;
 
-    const { day, time } = this.horario, date = new Date(time);
+    const { day, time } = this.horario;
 
-    this.pdf.printPDF(`Chamada ${day.toLowerCase()} ${this.date.formatTime(time)} - ${date.toLocaleDateString()}`);
+
+    this.pdf.printPDF(`Chamada ${day.toLowerCase()} ${this.date.formatTime(time)} - ${this.localDate.toLocaleDateString()}`);
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.loadAlunos = this.alunos;
+    const { day, time } = this.horario, date = new Date(time), diff = this.weekDays.indexOf(day) - date.getDay();
 
-      this.cdr.detectChanges();
-    });
+    date.setDate(date.getDate() + (diff + 7) % 7);
+
+    this.localDate = date;
   }
 }

@@ -31,8 +31,7 @@
             <article class="row">
                 <select class="week_day" #weekDay (change)="horarioChange()">
                     @for (day of weekDays; track $index) {
-                    <option [value]="day.toLowerCase()">{{(day+'-feira').toUpperCase()}}
-                    </option>
+                    <option [value]="day.toLowerCase()">{{day}}</option>
                     }
                 </select>
                 <input class="horario-input" type="time" step="60" #horarioValue (change)="horarioChange()"

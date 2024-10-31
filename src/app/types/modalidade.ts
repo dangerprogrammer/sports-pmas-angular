@@ -9,4 +9,4 @@ export type modalidade = {
     };
 };
 
-export type weekDays = 'SEGUNDA' | 'TERCA' | 'QUARTA' | 'QUINTA' | 'SEXTA';
+export type weekDays = 'DOMINGO' | 'SEGUNDA' | 'TERCA' | 'QUARTA' | 'QUINTA' | 'SEXTA' | 'SÁBADO';

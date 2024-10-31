@@ -15,7 +15,7 @@ import { NgIf } from '@angular/common';
 export class FormInputComponent implements OnInit, AfterViewInit {
   defHorarioValue = '00:00';
 
-  weekDays: weekDays[] = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
+  weekDays: weekDays[] = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO'];
 
   constructor(
     private cdr: ChangeDetectorRef,
