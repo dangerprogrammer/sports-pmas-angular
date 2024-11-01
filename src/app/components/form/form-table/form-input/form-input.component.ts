@@ -15,7 +15,7 @@ import { NgIf } from '@angular/common';
 export class FormInputComponent implements OnInit, AfterViewInit {
   defHorarioValue = '00:00';
 
-  weekDays: weekDays[] = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO'];
+  weekDays: weekDays[] = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO'];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -162,7 +162,7 @@ export class FormInputComponent implements OnInit, AfterViewInit {
     this.enableAddHorario = !1;
 
     if (this.builderOptions) {
-      this.builderOptions.push({ id: 0, text: `${this.weekDays[dayI]} - ${valueHorario.value}`, status: !1 });
+      this.builderOptions.push({ id: 0, text: `${this.weekDays[dayI]} - ${valueHorario.value.slice(0, this.defHorarioValue.length)}`, status: !1 });
       this.sortBuilderOptions();
       this.form.get(this.controlName)!.setValue(this.builderOptions);
 

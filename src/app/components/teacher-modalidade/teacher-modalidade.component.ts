@@ -48,9 +48,10 @@ export class TeacherModalidadeComponent extends DateTools implements AfterViewIn
         const listStudents = (content: ViewContainerRef) => {
           const list = content.createComponent(StudentsListComponent);
 
-          if (alunos) list.setInput('alunos', alunos.sort(({ nome_comp: nomeA }, { nome_comp: nomeB }) => nomeA > nomeB ? 1 : nomeA < nomeB ? -1 : 0));
-          list.setInput('horario', horario);
-          list.setInput('title', this.title);
+          if (alunos) list.instance.setAlunos = alunos.sort(({ nome_comp: nomeA }, { nome_comp: nomeB }) => nomeA > nomeB ? 1 : nomeA < nomeB ? -1 : 0);
+
+          list.instance.setHorario = horario;
+          list.instance.setTitle = this.title;
 
           return list;
         };

@@ -69,7 +69,7 @@ export class FormSubmitComponent implements OnInit {
     if (prismaRes.horarios) {
       prismaRes.horarios = prismaRes.horarios.map(({ text }: { text: any }) => {
         const [day, time]: [weekDays, string] = text.split(' - ');
-        const daysList: weekDays[] = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO'];
+        const daysList: weekDays[] = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO'];
         const [hora, minuto] = time.split(':').map(c => +c);
         const data = new Date();
         const indexDay = daysList.indexOf(day);

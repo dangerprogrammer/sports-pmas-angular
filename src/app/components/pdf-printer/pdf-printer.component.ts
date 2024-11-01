@@ -11,7 +11,7 @@ export class PdfPrinterComponent {
   @Input() content!: ElementRef;
 
   printPDF(saveName: string) {
-    const doc = new jsPDF('portrait', 'px', 'A4');
+    const doc = new jsPDF('portrait', 'pt', 'A4');
 
     doc.html(this.content.nativeElement, {
       callback(doc) {

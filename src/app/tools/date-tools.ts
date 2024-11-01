@@ -7,7 +7,7 @@ export class DateTools {
             date.setHours(date.getUTCHours(), date.getUTCMinutes());
 
             return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        } else return null;
+        } else return;
     }
 
     formatDate(time: Date) {
